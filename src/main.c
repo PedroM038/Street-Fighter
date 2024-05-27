@@ -3,7 +3,7 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
 
-#include "../include/square.h"
+#include "../include/rectangle.h"
 
 #define XSCREEN 1280
 #define YSCREEN 720
@@ -22,10 +22,10 @@ int main (void) {
     al_register_event_source(queue, al_get_display_event_source(disp));
     al_register_event_source(queue, al_get_timer_event_source(timer));
 
-    square* player1 = squareCreate (100, 50, YSCREEN - 50, XSCREEN, YSCREEN);
+    rectangle* player1 = rectangleCreate(108, 240, 54, YSCREEN - 120, XSCREEN, YSCREEN); 
     if (!player1) return 1;
     
-    square* player2 = squareCreate (100, XSCREEN - 50, YSCREEN - 50, XSCREEN, YSCREEN);
+    rectangle* player2 = rectangleCreate(108, 240, XSCREEN - 54, YSCREEN - 120, XSCREEN, YSCREEN);
     if (!player2) return 2;
 
 
@@ -39,8 +39,8 @@ int main (void) {
 
         if (event.type == 30){
             al_clear_to_color(al_map_rgb(0, 0, 0));																																			
-			al_draw_filled_rectangle(player1->x - player1->side/2, player1->y - player1->side/2, player1->x + player1->side/2, player1->y + player1->side/2, al_map_rgb(255, 0, 0));
-			al_draw_filled_rectangle(player2->x - player2->side/2, player2->y - player2->side/2, player2->x + player2->side/2, player2->y + player2->side/2, al_map_rgb(0, 0, 255));
+			al_draw_filled_rectangle(player1->x - player1->base/2, player1->y - player1->height/2, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
+			al_draw_filled_rectangle(player2->x - player2->base/2, player2->y - player2->height/2, player2->x + player2->base/2, player2->y + player2->height/2, al_map_rgb(0, 0, 255));
             al_flip_display();
         }
 
@@ -51,8 +51,8 @@ int main (void) {
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
-    squareDestroy(player1);
-    squareDestroy(player2);
+    rectangleDestroy(player1);
+    rectangleDestroy(player2);
 
     return 0;
 }
