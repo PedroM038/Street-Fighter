@@ -1,6 +1,8 @@
 #ifndef __RECTANGLE__
 #define __RECTANGLE__
 
+#include "joystick.h"
+
 #define RECTANGLE_STEP 20
 
 typedef struct {
@@ -8,6 +10,7 @@ typedef struct {
     unsigned char height;
     unsigned short x;
     unsigned short y;
+    joystick* control;
 } rectangle;
 
 rectangle* rectangleCreate(unsigned char base, unsigned char height, unsigned short x, unsigned short y, unsigned short maxX, unsigned short maxY);

@@ -8,6 +8,41 @@
 #define XSCREEN 1280
 #define YSCREEN 720
 
+void updatePosition(rectangle* player1, rectangle* player2){
+    
+    if (player1->control->left){
+        rectangleMove(player1, 1, 0, XSCREEN, YSCREEN);
+    }
+
+    if (player1->control->right){
+        rectangleMove(player1, 1, 1, XSCREEN, YSCREEN);
+    }
+
+    if (player1->control->up){
+        rectangleMove(player1, 1, 2, XSCREEN, YSCREEN);
+    }
+
+    if (player1->control->down){
+        rectangleMove(player1, 1, 3, XSCREEN, YSCREEN);
+    }
+
+    if (player2->control->left){
+        rectangleMove(player2, 1, 0, XSCREEN, YSCREEN);
+    }
+
+    if (player2->control->right){
+        rectangleMove(player2, 1, 1, XSCREEN, YSCREEN);
+    }
+
+    if (player2->control->up){
+        rectangleMove(player2, 1, 2, XSCREEN, YSCREEN);
+    }
+
+    if (player2->control->down){
+        rectangleMove(player2, 1, 3, XSCREEN, YSCREEN);
+    }
+}
+
 int main (void) {
     al_init();
     al_init_primitives_addon();
@@ -38,10 +73,22 @@ int main (void) {
         al_wait_for_event(queue, &event);
 
         if (event.type == 30){
+            updatePosition(player1, player2);
             al_clear_to_color(al_map_rgb(0, 0, 0));																																			
 			al_draw_filled_rectangle(player1->x - player1->base/2, player1->y - player1->height/2, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
 			al_draw_filled_rectangle(player2->x - player2->base/2, player2->y - player2->height/2, player2->x + player2->base/2, player2->y + player2->height/2, al_map_rgb(0, 0, 255));
             al_flip_display();
+        }
+
+        else if ((event.type == 10) || (event.type == 12)){
+            if (event.keyboard.keycode == 1) joystickLeft(player1->control);
+            else if (event.keyboard.keycode == 4) joystickRight(player1->control);
+            else if (event.keyboard.keycode == 23) joystickUp(player1->control);
+            else if (event.keyboard.keycode == 19) joystickDown(player1->control);
+            else if (event.keyboard.keycode == 82) joystickLeft(player2->control);
+            else if (event.keyboard.keycode == 83) joystickRight(player2->control);
+            else if (event.keyboard.keycode == 84) joystickUp(player2->control);
+            else if (event.keyboard.keycode == 85) joystickDown(player2->control);
         }
 
         else if (event.type == 42) break;

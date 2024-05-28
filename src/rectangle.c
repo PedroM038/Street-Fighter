@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/rectangle.h"
+#include "../include/joystick.h"
 
 rectangle* rectangleCreate(unsigned char base, unsigned char height, unsigned short x, unsigned short y, unsigned short maxX, unsigned short maxY){
 
@@ -11,25 +12,23 @@ rectangle* rectangleCreate(unsigned char base, unsigned char height, unsigned sh
     newRectangle->height = height;
     newRectangle->x = x;
     newRectangle->y = y;
+    newRectangle->control = joystickCreate();
     return newRectangle;
 }
 
 void rectangleMove(rectangle* element, unsigned char steps, unsigned short trajectory, unsigned short maxX, unsigned short maxY){
 
     if (!trajectory){ //esquerda
-        //Verifica se a movimentação para a esquerda é desejada e possível; se sim, efetiva a mesma
         if ((element->x - steps*RECTANGLE_STEP) - element->base/2 >= 0)
             element->x = element->x - steps*RECTANGLE_STEP;
     }
 
     else if (trajectory == 1){ //direita
-        //Verifica se a movimentação para a direita é desejada e possível; se sim, efetiva a mesma
         if ((element->x + steps*RECTANGLE_STEP) + element->base/2 <= maxX) 
             element->x = element->x + steps*RECTANGLE_STEP;
     }
 
     else if (trajectory == 2){ //cima
-        //Verifica se a movimentação para cima é desejada e possível; se sim, efetiva a mesma
         if ((element->y - steps*RECTANGLE_STEP) - element->height/2 >= 0) 
             element->y = element->y - steps*RECTANGLE_STEP;
     }
@@ -42,5 +41,6 @@ void rectangleMove(rectangle* element, unsigned char steps, unsigned short traje
 }
 
 void rectangleDestroy(rectangle* element){
+    joystickDestroy(element->control);
     free(element);
 }
