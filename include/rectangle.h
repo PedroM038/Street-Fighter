@@ -3,7 +3,7 @@
 
 #include "joystick.h"
 
-#define RECTANGLE_STEP 20
+#define RECTANGLE_STEP 15
 
 typedef struct {
     unsigned char base;

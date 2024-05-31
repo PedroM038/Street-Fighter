@@ -1,3 +1,5 @@
+//comp: gcc rectangle.c joystick.c main.c -o rectangle -I/usr/include/x86_64-linux-gnu -lallegro_main -lallegro_font -lallegro_primitives -lallegro
+
 #include <stdio.h>
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
@@ -8,40 +10,75 @@
 #define XSCREEN 1280
 #define YSCREEN 720
 
+unsigned char collision(rectangle* p1, rectangle* p2){
+    if (p1->x + p1->base / 2 >= p2->x - p2->base / 2 &&  
+        p1->x - p1->base / 2 <= p2->x + p2->base / 2 &&  
+        p1->y + p1->height / 2 >= p2->y - p2->height / 2 &&  
+        p1->y - p1->height / 2 <= p2->y + p2->height / 2) {  
+            return 1;
+    }
+    return 0;
+}
 void updatePosition(rectangle* player1, rectangle* player2){
+    int prevX, prevY;
     
-    if (player1->control->left){
+    prevX = player1->x;
+    prevY = player1->y;
+    if (player1->control->left) {
         rectangleMove(player1, 1, 0, XSCREEN, YSCREEN);
+        if (collision(player1, player2)) { player1->x = prevX; player1->y = prevY; }
     }
 
-    if (player1->control->right){
+    prevX = player1->x;
+    prevY = player1->y;
+    if (player1->control->right) {
         rectangleMove(player1, 1, 1, XSCREEN, YSCREEN);
+        if (collision(player1, player2)) { player1->x = prevX; player1->y = prevY; }
     }
 
-    if (player1->control->up){
+    prevX = player1->x;
+    prevY = player1->y;
+    if (player1->control->up) {
         rectangleMove(player1, 1, 2, XSCREEN, YSCREEN);
+        if (collision(player1, player2)) { player1->x = prevX; player1->y = prevY; }
     }
 
-    if (player1->control->down){
+    prevX = player1->x;
+    prevY = player1->y;
+    if (player1->control->down) {
         rectangleMove(player1, 1, 3, XSCREEN, YSCREEN);
+        if (collision(player1, player2)) { player1->x = prevX; player1->y = prevY; }
     }
 
-    if (player2->control->left){
+    prevX = player2->x;
+    prevY = player2->y;
+    if (player2->control->left) {
         rectangleMove(player2, 1, 0, XSCREEN, YSCREEN);
+        if (collision(player1, player2)) { player2->x = prevX; player2->y = prevY; }
     }
 
-    if (player2->control->right){
+    prevX = player2->x;
+    prevY = player2->y;
+    if (player2->control->right) {
         rectangleMove(player2, 1, 1, XSCREEN, YSCREEN);
+        if (collision(player1, player2)) { player2->x = prevX; player2->y = prevY; }
     }
 
-    if (player2->control->up){
+    prevX = player2->x;
+    prevY = player2->y;
+    if (player2->control->up) {
         rectangleMove(player2, 1, 2, XSCREEN, YSCREEN);
+        if (collision(player1, player2)) { player2->x = prevX; player2->y = prevY; }
     }
 
-    if (player2->control->down){
+    prevX = player2->x;
+    prevY = player2->y;
+    if (player2->control->down) {
         rectangleMove(player2, 1, 3, XSCREEN, YSCREEN);
+        if (collision(player1, player2)) { player2->x = prevX; player2->y = prevY; }
     }
 }
+
 
 int main (void) {
     al_init();
