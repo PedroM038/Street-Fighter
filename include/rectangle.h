@@ -10,6 +10,8 @@ typedef struct {
     unsigned char height;
     unsigned short x;
     unsigned short y;
+    unsigned short squat;
+    unsigned short jump;
     joystick* control;
 } rectangle;
 

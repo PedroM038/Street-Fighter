@@ -12,6 +12,8 @@ rectangle* rectangleCreate(unsigned char base, unsigned char height, unsigned sh
     newRectangle->height = height;
     newRectangle->x = x;
     newRectangle->y = y;
+    newRectangle->squat = 0;
+    newRectangle->jump = 0;
     newRectangle->control = joystickCreate();
     return newRectangle;
 }

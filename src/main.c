@@ -43,13 +43,6 @@ void updatePosition(rectangle* player1, rectangle* player2){
         if (collision(player1, player2)) { player1->x = prevX; player1->y = prevY; }
     }
 
-    prevX = player1->x;
-    prevY = player1->y;
-    if (player1->control->down) {
-        rectangleMove(player1, 1, 3, XSCREEN, YSCREEN);
-        if (collision(player1, player2)) { player1->x = prevX; player1->y = prevY; }
-    }
-
     prevX = player2->x;
     prevY = player2->y;
     if (player2->control->left) {
@@ -68,13 +61,6 @@ void updatePosition(rectangle* player1, rectangle* player2){
     prevY = player2->y;
     if (player2->control->up) {
         rectangleMove(player2, 1, 2, XSCREEN, YSCREEN);
-        if (collision(player1, player2)) { player2->x = prevX; player2->y = prevY; }
-    }
-
-    prevX = player2->x;
-    prevY = player2->y;
-    if (player2->control->down) {
-        rectangleMove(player2, 1, 3, XSCREEN, YSCREEN);
         if (collision(player1, player2)) { player2->x = prevX; player2->y = prevY; }
     }
 }
@@ -104,16 +90,28 @@ int main (void) {
     ALLEGRO_EVENT event;
     al_start_timer(timer);
 
-    char flag = 0;
-
     while(1){
         al_wait_for_event(queue, &event);
 
         if (event.type == 30){
             updatePosition(player1, player2);
-            al_clear_to_color(al_map_rgb(0, 0, 0));																																			
-			al_draw_filled_rectangle(player1->x - player1->base/2, player1->y - player1->height/2, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
-			al_draw_filled_rectangle(player2->x - player2->base/2, player2->y - player2->height/2, player2->x + player2->base/2, player2->y + player2->height/2, al_map_rgb(0, 0, 255));
+            al_clear_to_color(al_map_rgb(0, 0, 0));
+            if (player1->squat && player2->squat && !player1->jump && !player2->jump) {
+                al_draw_filled_rectangle(player1->x - player1->base/2, player1->y, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
+    			al_draw_filled_rectangle(player2->x - player2->base/2, player2->y, player2->x + player2->base/2, player2->y + player2->height/2, al_map_rgb(0, 0, 255));
+            }
+			else if (player1->squat && !player1->jump) {
+                al_draw_filled_rectangle(player1->x - player1->base/2, player1->y, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
+    			al_draw_filled_rectangle(player2->x - player2->base/2, player2->y - player2->height/2, player2->x + player2->base/2, player2->y + player2->height/2, al_map_rgb(0, 0, 255));                
+            }
+            else if (player2->squat && !player2->jump) {
+                al_draw_filled_rectangle(player1->x - player1->base/2, player1->y - player1->height/2, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
+    			al_draw_filled_rectangle(player2->x - player2->base/2, player2->y, player2->x + player2->base/2, player2->y + player2->height/2, al_map_rgb(0, 0, 255));
+            }
+            else {
+                al_draw_filled_rectangle(player1->x - player1->base/2, player1->y - player1->height/2, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
+			    al_draw_filled_rectangle(player2->x - player2->base/2, player2->y - player2->height/2, player2->x + player2->base/2, player2->y + player2->height/2, al_map_rgb(0, 0, 255));
+            }
             al_flip_display();
         }
 
@@ -121,11 +119,11 @@ int main (void) {
             if (event.keyboard.keycode == 1) joystickLeft(player1->control);
             else if (event.keyboard.keycode == 4) joystickRight(player1->control);
             else if (event.keyboard.keycode == 23) joystickUp(player1->control);
-            else if (event.keyboard.keycode == 19) joystickDown(player1->control);
+            else if (event.keyboard.keycode == 19) player1->squat = player1->squat ^ 1;
             else if (event.keyboard.keycode == 82) joystickLeft(player2->control);
             else if (event.keyboard.keycode == 83) joystickRight(player2->control);
             else if (event.keyboard.keycode == 84) joystickUp(player2->control);
-            else if (event.keyboard.keycode == 85) joystickDown(player2->control);
+            else if (event.keyboard.keycode == 85) player2->squat = player2->squat ^ 1;
         }
 
         else if (event.type == 42) break;
