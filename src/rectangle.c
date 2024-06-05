@@ -40,7 +40,6 @@ void rectangleMove(rectangle* element, double steps, unsigned short trajectory, 
     }
 
     else if (trajectory == 3){ //baixo
-        //Verifica se a movimentação para baixo é desejada e possível; se sim, efetiva a mesma
         if ((element->y + steps*RECTANGLE_STEP) + element->height/2 <= maxY) 
             element->y = element->y + steps*RECTANGLE_STEP;
     }

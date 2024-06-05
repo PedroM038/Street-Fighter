@@ -16,8 +16,8 @@ typedef struct {
     unsigned short squat;
     unsigned short jump;
     unsigned short frame;
-    double velocityY; // Velocidade vertical
-    double accelerationY; // Aceleração vertical (gravidade)
+    double velocityY;
+    double accelerationY;
     joystick* control;
 } rectangle;
 

@@ -23,7 +23,7 @@ unsigned char collision(rectangle* p1, rectangle* p2){
 void updateJump(rectangle* playerJump, rectangle* other){
     if (playerJump->control->up && playerJump->jump == 0 && playerJump->y == playerJump->yInit) {
         playerJump->jump = 1;
-        playerJump->velocityY = -40; // Valor inicial da velocidade para o pulo
+        playerJump->velocityY = -40;
     }
 
     if (playerJump->jump) {
@@ -32,7 +32,7 @@ void updateJump(rectangle* playerJump, rectangle* other){
 
         if (collision(playerJump, other)) {
             playerJump->y -= playerJump->velocityY;
-            playerJump->velocityY = 0; // Anula a velocidade ao colidir
+            playerJump->velocityY = 0; 
         }
 
         if (playerJump->y >= playerJump->yInit) {
@@ -131,10 +131,13 @@ int main (void) {
         else if ((event.type == 10) || (event.type == 12)){
             if (event.keyboard.keycode == 1) joystickLeft(player1->control);
             else if (event.keyboard.keycode == 4) joystickRight(player1->control);
+            
             if (event.keyboard.keycode == 23) joystickUp(player1->control);
             else if (event.keyboard.keycode == 19) player1->squat = player1->squat ^ 1;
+            
             if (event.keyboard.keycode == 82) joystickLeft(player2->control);
             else if (event.keyboard.keycode == 83) joystickRight(player2->control);
+            
             if (event.keyboard.keycode == 84) joystickUp(player2->control);
             else if (event.keyboard.keycode == 85) player2->squat = player2->squat ^ 1;
         }
