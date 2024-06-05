@@ -4,21 +4,25 @@
 #include "../include/joystick.h"
 
 rectangle* rectangleCreate(unsigned char base, unsigned char height, unsigned short x, unsigned short y, unsigned short maxX, unsigned short maxY){
-
     if ((x - base/2 < 0) || (x + base/2 > maxX) || (y - height/2 < 0) || (y + height/2 > maxY)) return NULL;
 
     rectangle *newRectangle = (rectangle*) malloc(sizeof(rectangle));
     newRectangle->base = base;
     newRectangle->height = height;
+    newRectangle->xInit = x;
+    newRectangle->yInit = y;
     newRectangle->x = x;
     newRectangle->y = y;
     newRectangle->squat = 0;
     newRectangle->jump = 0;
+    newRectangle->frame = 0;
+    newRectangle->velocityY = 0;
+    newRectangle->accelerationY = GRAVITY;
     newRectangle->control = joystickCreate();
     return newRectangle;
 }
 
-void rectangleMove(rectangle* element, unsigned char steps, unsigned short trajectory, unsigned short maxX, unsigned short maxY){
+void rectangleMove(rectangle* element, double steps, unsigned short trajectory, unsigned short maxX, unsigned short maxY){
 
     if (!trajectory){ //esquerda
         if ((element->x - steps*RECTANGLE_STEP) - element->base/2 >= 0)

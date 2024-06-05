@@ -19,9 +19,33 @@ unsigned char collision(rectangle* p1, rectangle* p2){
     }
     return 0;
 }
+
+void updateJump(rectangle* playerJump, rectangle* other){
+    if (playerJump->control->up && playerJump->jump == 0 && playerJump->y == playerJump->yInit) {
+        playerJump->jump = 1;
+        playerJump->velocityY = -40; // Valor inicial da velocidade para o pulo
+    }
+
+    if (playerJump->jump) {
+        playerJump->velocityY += playerJump->accelerationY;
+        playerJump->y += playerJump->velocityY;
+
+        if (collision(playerJump, other)) {
+            playerJump->y -= playerJump->velocityY;
+            playerJump->velocityY = 0; // Anula a velocidade ao colidir
+        }
+
+        if (playerJump->y >= playerJump->yInit) {
+            playerJump->y = playerJump->yInit;
+            playerJump->jump = 0;
+            playerJump->velocityY = 0;
+        }
+    }
+}
+
 void updatePosition(rectangle* player1, rectangle* player2){
     int prevX, prevY;
-    
+
     prevX = player1->x;
     prevY = player1->y;
     if (player1->control->left) {
@@ -36,12 +60,7 @@ void updatePosition(rectangle* player1, rectangle* player2){
         if (collision(player1, player2)) { player1->x = prevX; player1->y = prevY; }
     }
 
-    prevX = player1->x;
-    prevY = player1->y;
-    if (player1->control->up) {
-        rectangleMove(player1, 1, 2, XSCREEN, YSCREEN);
-        if (collision(player1, player2)) { player1->x = prevX; player1->y = prevY; }
-    }
+    updateJump(player1, player2);
 
     prevX = player2->x;
     prevY = player2->y;
@@ -56,13 +75,7 @@ void updatePosition(rectangle* player1, rectangle* player2){
         rectangleMove(player2, 1, 1, XSCREEN, YSCREEN);
         if (collision(player1, player2)) { player2->x = prevX; player2->y = prevY; }
     }
-
-    prevX = player2->x;
-    prevY = player2->y;
-    if (player2->control->up) {
-        rectangleMove(player2, 1, 2, XSCREEN, YSCREEN);
-        if (collision(player1, player2)) { player2->x = prevX; player2->y = prevY; }
-    }
+    updateJump(player2, player1);
 }
 
 
@@ -71,7 +84,7 @@ int main (void) {
     al_init_primitives_addon();
     al_install_keyboard();
 
-    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 30.0);
+    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
     ALLEGRO_FONT* font = al_create_builtin_font();
     ALLEGRO_DISPLAY* disp = al_create_display(1280, 720);
@@ -118,11 +131,11 @@ int main (void) {
         else if ((event.type == 10) || (event.type == 12)){
             if (event.keyboard.keycode == 1) joystickLeft(player1->control);
             else if (event.keyboard.keycode == 4) joystickRight(player1->control);
-            else if (event.keyboard.keycode == 23) joystickUp(player1->control);
+            if (event.keyboard.keycode == 23) joystickUp(player1->control);
             else if (event.keyboard.keycode == 19) player1->squat = player1->squat ^ 1;
-            else if (event.keyboard.keycode == 82) joystickLeft(player2->control);
+            if (event.keyboard.keycode == 82) joystickLeft(player2->control);
             else if (event.keyboard.keycode == 83) joystickRight(player2->control);
-            else if (event.keyboard.keycode == 84) joystickUp(player2->control);
+            if (event.keyboard.keycode == 84) joystickUp(player2->control);
             else if (event.keyboard.keycode == 85) player2->squat = player2->squat ^ 1;
         }
 
