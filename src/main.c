@@ -1,6 +1,7 @@
 //comp: gcc rectangle.c joystick.c main.c -o rectangle -I/usr/include/x86_64-linux-gnu -lallegro_main -lallegro_font -lallegro_primitives -lallegro
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
@@ -9,6 +10,7 @@
 
 #define XSCREEN 1280
 #define YSCREEN 720
+
 
 unsigned char collision(rectangle* p1, rectangle* p2){
     if (p1->x + p1->base / 2 >= p2->x - p2->base / 2 &&  
@@ -61,6 +63,7 @@ void updatePosition(rectangle* player1, rectangle* player2){
     }
 
     updateJump(player1, player2);
+    updatePunch(player1, player2);
 
     prevX = player2->x;
     prevY = player2->y;
@@ -76,6 +79,7 @@ void updatePosition(rectangle* player1, rectangle* player2){
         if (collision(player1, player2)) { player2->x = prevX; player2->y = prevY; }
     }
     updateJump(player2, player1);
+    updatePunch(player2, player1);
 }
 
 
@@ -125,23 +129,60 @@ int main (void) {
                 al_draw_filled_rectangle(player1->x - player1->base/2, player1->y - player1->height/2, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
 			    al_draw_filled_rectangle(player2->x - player2->base/2, player2->y - player2->height/2, player2->x + player2->base/2, player2->y + player2->height/2, al_map_rgb(0, 0, 255));
             }
+
+            unsigned short punchReach = (player1->base / 2) + 20;
+            if (player1->attackPunch->punch && player1->attackPunch->walkBackward) {
+                unsigned short punchX = player1->x - player1->base / 2;
+                al_draw_filled_rectangle(punchX, player1->y - player1->height / 4, punchX - punchReach, player1->y, al_map_rgb(255, 0, 0));
+            } else if (player1->attackPunch->punch && player1->attackPunch->walkForward) {
+                unsigned short punchX = player1->x + player1->base / 2;
+                al_draw_filled_rectangle(punchX, player1->y - player1->height / 4, punchX + punchReach, player1->y, al_map_rgb(255, 0, 0));
+            }
+
+            if (player2->attackPunch->punch && player2->attackPunch->walkBackward) {
+                unsigned short punchX = player2->x - player2->base / 2;
+                al_draw_filled_rectangle(punchX, player2->y - player2->height / 4, punchX - punchReach, player2->y, al_map_rgb(0, 0, 255));
+            } else if (player2->attackPunch->punch && player2->attackPunch->walkForward) {
+                unsigned short punchX = player2->x + player2->base / 2;
+                al_draw_filled_rectangle(punchX, player2->y - player2->height / 4, punchX + punchReach, player2->y, al_map_rgb(0, 0, 255));
+            }
+
+            if (player1->attackPunch->collision) al_draw_text(font, al_map_rgb(255,0,0), XSCREEN/2 + 75, YSCREEN/2 - 20, 0, "PUNCH PLAYER 1 !");
+            else if (player2->attackPunch->collision) al_draw_text(font, al_map_rgb(0,0,255), XSCREEN/2 - 75, YSCREEN/2 - 20, 0, "PUNCH PLAYER 2!");
+            
             al_flip_display();
         }
 
         else if ((event.type == 10) || (event.type == 12)){
-            if (event.keyboard.keycode == 1) joystickLeft(player1->control);
-            else if (event.keyboard.keycode == 4) joystickRight(player1->control);
+            if (event.keyboard.keycode == 1){
+                joystickLeft(player1->control);
+            }
+            else if (event.keyboard.keycode == 4){
+                joystickRight(player1->control);
+        
+            }
             
             if (event.keyboard.keycode == 23) joystickUp(player1->control);
             else if (event.keyboard.keycode == 19) player1->squat = player1->squat ^ 1;
+
+            if (event.keyboard.keycode == ALLEGRO_KEY_SPACE && player1->attackPunch->punchCooldown == 0) player1->attackPunch->punch = 1;
             
-            if (event.keyboard.keycode == 82) joystickLeft(player2->control);
-            else if (event.keyboard.keycode == 83) joystickRight(player2->control);
+            if (event.keyboard.keycode == 82) {
+                joystickLeft(player2->control);
+                player2->attackPunch->walkBackward = 1;
+                player2->attackPunch->walkForward = 0;
+            }
+            else if (event.keyboard.keycode == 83) {
+                joystickRight(player2->control);
+                player2->attackPunch->walkBackward = 0;
+                player2->attackPunch->walkForward = 1;
+            }
             
             if (event.keyboard.keycode == 84) joystickUp(player2->control);
             else if (event.keyboard.keycode == 85) player2->squat = player2->squat ^ 1;
-        }
 
+            if (event.keyboard.keycode == ALLEGRO_KEY_ENTER && player2->attackPunch->punchCooldown == 0) player2->attackPunch->punch = 1;
+        }
         else if (event.type == 42) break;
     }
 
