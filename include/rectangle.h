@@ -6,15 +6,16 @@
 #define RECTANGLE_STEP 10
 #define GRAVITY 2
 
-typedef struct fight{
+typedef struct attack{
     unsigned short punch;
+    unsigned short kick;
     unsigned short frame;
-    unsigned short punchCooldown;
+    unsigned short cooldown;
     unsigned short hit;
     unsigned char walkForward;
     unsigned char walkBackward;
     unsigned char collision;
-} fight;
+} attack;
 
 typedef struct rectangle{
     unsigned char base;
@@ -27,7 +28,7 @@ typedef struct rectangle{
     unsigned short jump;
     double velocityY;
     double accelerationY;
-    fight* attackPunch;
+    attack* fight;
     joystick* control;
 } rectangle;
 
@@ -38,9 +39,11 @@ void rectangleDestroy(rectangle* element);
 
 
 //fighter.h
-fight* punchInit();
+attack* fightInit();
 unsigned char punchCollision(rectangle* attacker, rectangle* target);
 void updatePunch(rectangle* attacker, rectangle* target);
+unsigned char kickCollision(rectangle* attacker, rectangle* target);
+void updateKick(rectangle* attacker, rectangle* target);
 void fightDestroy(rectangle* player);
 
 #endif

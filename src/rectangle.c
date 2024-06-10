@@ -17,7 +17,7 @@ rectangle* rectangleCreate(unsigned char base, unsigned char height, unsigned sh
     newRectangle->velocityY = 0;
     newRectangle->accelerationY = GRAVITY;
     newRectangle->control = joystickCreate();
-    newRectangle->attackPunch = punchInit();
+    newRectangle->fight = fightInit();
     return newRectangle;
 }
 
@@ -50,12 +50,13 @@ void rectangleDestroy(rectangle* element){
     free(element);
 }
 
-fight* punchInit(){
-    fight* p = malloc(sizeof(fight));
+attack* fightInit(){
+    attack* p = malloc(sizeof(attack));
     p->frame = 0;
     p->hit = 0;
     p->punch = 0;
-    p->punchCooldown = 0;
+    p->kick = 0;
+    p->cooldown = 0;
     p->walkBackward = 0;
     p->walkForward = 0;
     p->collision = 0;
@@ -63,24 +64,24 @@ fight* punchInit(){
 }
 
 void updatePunch(rectangle* attacker, rectangle* target) {
-    if (attacker->attackPunch->punch) {
+    if (attacker->fight->punch) {
         // Verifica a colisão do soco
         if (punchCollision(attacker, target)) {
-            attacker->attackPunch->collision = 1;
+            attacker->fight->collision = 1;
             // Aqui você pode adicionar lógica para reduzir a vida do adversário ou outros efeitos
         }
 
         // Atualiza o frame do soco
-        attacker->attackPunch->frame++;
-        if (attacker->attackPunch->frame > 10) {
-            attacker->attackPunch->punch = 0;
-            attacker->attackPunch->frame = 0;
-            attacker->attackPunch->hit = 0;
-            attacker->attackPunch->collision = 0;
-            attacker->attackPunch->punchCooldown = 30;
+        attacker->fight->frame++;
+        if (attacker->fight->frame > 10) {
+            attacker->fight->punch = 0;
+            attacker->fight->frame = 0;
+            attacker->fight->hit = 0;
+            attacker->fight->collision = 0;
+            attacker->fight->cooldown = 30;
         }
-    } else if (attacker->attackPunch->punchCooldown > 0) {
-        attacker->attackPunch->punchCooldown --;
+    } else if (attacker->fight->cooldown > 0) {
+        attacker->fight->cooldown --;
     }
 }
 
@@ -90,39 +91,99 @@ unsigned char punchCollision(rectangle* attacker, rectangle* target) {
     unsigned short punchReach = (attacker->base / 2) + 20;
 
     if (attacker->x <= target->x){
-        attacker->attackPunch->walkForward = 1;
-        attacker->attackPunch->walkBackward = 0; 
+        attacker->fight->walkForward = 1;
+        attacker->fight->walkBackward = 0; 
     }
     else{
-        attacker->attackPunch->walkBackward = 1;
-        attacker->attackPunch->walkForward = 0;
+        attacker->fight->walkBackward = 1;
+        attacker->fight->walkForward = 0;
     }
 
-    if (attacker->attackPunch->punch) {
-        if (attacker->attackPunch->walkForward && 
+    if (attacker->fight->punch) {
+        if (attacker->fight->walkForward && 
             attacker->x + punchReach >= target->x - target->base / 2 &&
             attacker->x <= target->x + target->base / 2 &&
             attacker->y + attacker->height / 2 >= target->y - target->height / 2 &&
             attacker->y - attacker->height / 2 <= target->y + target->height / 2 &&
-            attacker->attackPunch->hit == 0) {
-            attacker->attackPunch->hit = 1;
+            attacker->fight->hit == 0) {
+            attacker->fight->hit = 1;
             return 1;
         }
 
-        if (attacker->attackPunch->walkBackward &&
+        if (attacker->fight->walkBackward &&
             attacker->x - punchReach <= target->x + target->base / 2 &&
             attacker->x >= target->x - target->base / 2 &&
             attacker->y + attacker->height / 2 >= target->y - target->height / 2 &&
             attacker->y - attacker->height / 2 <= target->y + target->height / 2 &&
-            attacker->attackPunch->hit == 0) {
-            attacker->attackPunch->hit = 1;
+            attacker->fight->hit == 0) {
+            attacker->fight->hit = 1;
             return 1;
         }
     }
     return 0;
 }
 
+unsigned char kickCollision(rectangle* attacker, rectangle* target){
+    
+    // Ajuste os valores conforme necessário para o alcance do soco
+    unsigned short kickReach = (attacker->base / 2) + 70;
+
+    if (attacker->x <= target->x){
+        attacker->fight->walkForward = 1;
+        attacker->fight->walkBackward = 0; 
+    }
+    else{
+        attacker->fight->walkBackward = 1;
+        attacker->fight->walkForward = 0;
+    }
+
+    if (attacker->fight->kick) {
+        if (attacker->fight->walkForward && 
+            attacker->x + kickReach >= target->x - target->base / 2 &&
+            attacker->x <= target->x + target->base / 2 &&
+            attacker->y + attacker->height / 2 >= target->y - target->height / 2 &&
+            attacker->y - attacker->height / 2 <= target->y + target->height / 2 &&
+            attacker->fight->hit == 0) {
+            attacker->fight->hit = 1;
+            return 1;
+        }
+
+        if (attacker->fight->walkBackward &&
+            attacker->x - kickReach <= target->x + target->base / 2 &&
+            attacker->x >= target->x - target->base / 2 &&
+            attacker->y + attacker->height / 2 >= target->y - target->height / 2 &&
+            attacker->y - attacker->height / 2 <= target->y + target->height / 2 &&
+            attacker->fight->hit == 0) {
+            attacker->fight->hit = 1;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void updateKick(rectangle* attacker, rectangle* target){
+
+    if (attacker->fight->kick) {
+        // Verifica a colisão do soco
+        if (kickCollision(attacker, target)) {
+            attacker->fight->collision = 1;
+            // Aqui você pode adicionar lógica para reduzir a vida do adversário ou outros efeitos
+        }
+
+        // Atualiza o frame do chute
+        attacker->fight->frame++;
+        if (attacker->fight->frame > 10) {
+            attacker->fight->kick = 0;
+            attacker->fight->frame = 0;
+            attacker->fight->hit = 0;
+            attacker->fight->collision = 0;
+            attacker->fight->cooldown = 30;
+        }
+    } else if (attacker->fight->cooldown > 0) attacker->fight->cooldown --;
+}
+
+
 void fightDestroy(rectangle* player){
-    free(player->attackPunch);
+    free(player->fight);
 }
 
