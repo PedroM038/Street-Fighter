@@ -131,7 +131,7 @@ int main (void) {
                 al_draw_filled_rectangle(player1->x - player1->base/2, player1->y - player1->height/2, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
 			    al_draw_filled_rectangle(player2->x - player2->base/2, player2->y - player2->height/2, player2->x + player2->base/2, player2->y + player2->height/2, al_map_rgb(0, 0, 255));
             }
-            unsigned short punchReach = (player1->base / 2) + 20;
+            unsigned short punchReach = (player1->base / 2) + 40;
             unsigned short kickReach = (player1->base / 2) + 70;
 
             // Player 1 punch
@@ -171,7 +171,11 @@ int main (void) {
             }
             
             if (player1->fight->collision) al_draw_text(font, al_map_rgb(255,0,0), XSCREEN/2 + 75, YSCREEN/2 - 20, 0, "PUNCH PLAYER 1 !");
-            else if (player2->fight->collision) al_draw_text(font, al_map_rgb(0,0,255), XSCREEN/2 - 75, YSCREEN/2 - 20, 0, "PUNCH PLAYER 2!");
+            else if (player2->fight->collision) al_draw_text(font, al_map_rgb(0,0,255), XSCREEN/2 - 75, YSCREEN/2 - 20, 0, "PUNCH PLAYER 2 !");
+
+            if (player1->fight->life <= 0 && player2->fight->life <= 0) break;
+            else if (player1->fight->life <= 0) break;
+            else if (player2->fight->life <= 0) break;
             
             al_flip_display();
         }

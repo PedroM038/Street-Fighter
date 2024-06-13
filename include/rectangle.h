@@ -5,6 +5,8 @@
 
 #define RECTANGLE_STEP 10
 #define GRAVITY 2
+#define HITPUNCH 5
+#define HITKICK 10
 
 typedef struct attack{
     unsigned short punch;
@@ -15,6 +17,7 @@ typedef struct attack{
     unsigned char walkForward;
     unsigned char walkBackward;
     unsigned char collision;
+    unsigned char life;
 } attack;
 
 typedef struct rectangle{

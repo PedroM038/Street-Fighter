@@ -60,6 +60,7 @@ attack* fightInit(){
     p->walkBackward = 0;
     p->walkForward = 0;
     p->collision = 0;
+    p->life = 100;
     return p;
 }
 
@@ -68,7 +69,7 @@ void updatePunch(rectangle* attacker, rectangle* target) {
         // Verifica a colisão do soco
         if (punchCollision(attacker, target)) {
             attacker->fight->collision = 1;
-            // Aqui você pode adicionar lógica para reduzir a vida do adversário ou outros efeitos
+            attacker->fight->life -= HITPUNCH;
         }
 
         // Atualiza o frame do soco
@@ -88,7 +89,7 @@ void updatePunch(rectangle* attacker, rectangle* target) {
 unsigned char punchCollision(rectangle* attacker, rectangle* target) {
     
     // Ajuste os valores conforme necessário para o alcance do soco
-    unsigned short punchReach = (attacker->base / 2) + 20;
+    unsigned short punchReach = (attacker->base / 2) + 70;
 
     if (attacker->x <= target->x){
         attacker->fight->walkForward = 1;
@@ -167,6 +168,7 @@ void updateKick(rectangle* attacker, rectangle* target){
         // Verifica a colisão do soco
         if (kickCollision(attacker, target)) {
             attacker->fight->collision = 1;
+            attacker->fight->life -= HITKICK;
             // Aqui você pode adicionar lógica para reduzir a vida do adversário ou outros efeitos
         }
 
