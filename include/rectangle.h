@@ -3,7 +3,7 @@
 
 #include "joystick.h"
 
-#define RECTANGLE_STEP 10
+#define RECTANGLE_STEP 8
 #define GRAVITY 2
 #define HITPUNCH 5
 #define HITKICK 10

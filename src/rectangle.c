@@ -101,7 +101,7 @@ unsigned char punchCollision(rectangle* attacker, rectangle* target) {
     }
 
     if (attacker->fight->punch) {
-        if (attacker->fight->walkForward && 
+        if (attacker->fight->walkForward &&
             attacker->x + punchReach >= target->x - target->base / 2 &&
             attacker->x <= target->x + target->base / 2 &&
             attacker->y + attacker->height / 2 >= target->y - target->height / 2 &&

@@ -99,10 +99,10 @@ int main (void) {
     al_register_event_source(queue, al_get_display_event_source(disp));
     al_register_event_source(queue, al_get_timer_event_source(timer));
 
-    rectangle* player1 = rectangleCreate(108, 240, 54, YSCREEN - 120, XSCREEN, YSCREEN); 
+    rectangle* player1 = rectangleCreate(200, 240, 100, YSCREEN - 120, XSCREEN, YSCREEN); 
     if (!player1) return 1;
     
-    rectangle* player2 = rectangleCreate(108, 240, XSCREEN - 54, YSCREEN - 120, XSCREEN, YSCREEN);
+    rectangle* player2 = rectangleCreate(200, 240, XSCREEN - 100, YSCREEN - 120, XSCREEN, YSCREEN);
     if (!player2) return 2;
 
 
@@ -134,40 +134,62 @@ int main (void) {
             unsigned short punchReach = (player1->base / 2) + 40;
             unsigned short kickReach = (player1->base / 2) + 70;
 
-            // Player 1 punch
+            // Player 1 punch walkBackward
             if (player1->fight->punch && player1->fight->walkBackward) {
+                if (!player1->squat) {
                 unsigned short punchX = player1->x - player1->base / 2;
-                al_draw_filled_rectangle(punchX, player1->y - player1->height / 4, punchX - punchReach, player1->y, al_map_rgb(255, 255, 255));
+                al_draw_filled_rectangle(punchX, player1->y - player1->height/2, punchX - punchReach, player1->y, al_map_rgb(255, 255, 255));
+                } else {
+                unsigned short punchX = player1->x - player1->base / 2;
+                al_draw_filled_rectangle(punchX, player1->y + player1->height/2, punchX - punchReach, player1->y, al_map_rgb(255, 255, 255));    
+                }
+            //Player 1 punch walkForward
             } else if (player1->fight->punch && player1->fight->walkForward) {
+                if (!player1->squat) {
                 unsigned short punchX = player1->x + player1->base / 2;
-                al_draw_filled_rectangle(punchX, player1->y - player1->height / 4, punchX + punchReach, player1->y, al_map_rgb(255, 255, 255));
+                al_draw_filled_rectangle(punchX, player1->y - player1->height/2, punchX + punchReach, player1->y, al_map_rgb(255, 255, 255));
+                } else {
+                unsigned short punchX = player1->x + player1->base / 2;
+                al_draw_filled_rectangle(punchX, player1->y + player1->height/2, punchX + punchReach, player1->y, al_map_rgb(255, 255, 255));    
+                }
             }
 
             // Player 1 kick
             if (player1->fight->kick && player1->fight->walkForward) {
                 unsigned short kickX = player1->x + player1->base / 2;
-                al_draw_filled_rectangle(kickX, player1->y, kickX + kickReach, player1->y + player1->height / 4, al_map_rgb(255, 255, 255));
+                al_draw_filled_rectangle(kickX, player1->y, kickX + kickReach, player1->y + player1->height / 2, al_map_rgb(255, 255, 255));
             } else if (player1->fight->kick && player1->fight->walkBackward) {
                 unsigned short kickX = player1->x - player1->base / 2;
-                al_draw_filled_rectangle(kickX, player1->y, kickX - kickReach, player1->y + player1->height / 4, al_map_rgb(255, 255, 255));
+                al_draw_filled_rectangle(kickX, player1->y, kickX - kickReach, player1->y + player1->height / 2, al_map_rgb(255, 255, 255));
             }
 
-            // Player 2 punch
+            // Player 2 punch walkBackward
             if (player2->fight->punch && player2->fight->walkBackward) {
+                if (!player2->squat) {
                 unsigned short punchX = player2->x - player2->base / 2;
-                al_draw_filled_rectangle(punchX, player2->y - player2->height / 4, punchX - punchReach, player2->y, al_map_rgb(255, 255, 255));
+                al_draw_filled_rectangle(punchX, player2->y - player2->height/2, punchX - punchReach, player2->y, al_map_rgb(255, 255, 255));
+                } else {
+                unsigned short punchX = player2->x - player2->base / 2;
+                al_draw_filled_rectangle(punchX, player2->y + player2->height/2, punchX - punchReach, player2->y, al_map_rgb(255, 255, 255));    
+                }
+            //Player 1 punch walkForward
             } else if (player2->fight->punch && player2->fight->walkForward) {
+                if (!player2->squat) {
                 unsigned short punchX = player2->x + player2->base / 2;
-                al_draw_filled_rectangle(punchX, player2->y - player2->height / 4, punchX + punchReach, player2->y, al_map_rgb(255, 255, 255));
+                al_draw_filled_rectangle(punchX, player2->y - player2->height/2, punchX + punchReach, player2->y, al_map_rgb(255, 255, 255));
+                } else {
+                unsigned short punchX = player2->x + player2->base / 2;
+                al_draw_filled_rectangle(punchX, player2->y + player2->height/2, punchX + punchReach, player2->y, al_map_rgb(255, 255, 255));    
+                }
             }
 
             // Player 2 kick
             if (player2->fight->kick && player2->fight->walkForward) {
                 unsigned short kickX = player2->x + player2->base / 2;
-                al_draw_filled_rectangle(kickX, player2->y, kickX + kickReach, player2->y + player2->height / 4, al_map_rgb(255, 255, 255));
+                al_draw_filled_rectangle(kickX, player2->y, kickX + kickReach, player2->y + player2->height, al_map_rgb(255, 255, 255));
             } else if (player2->fight->kick && player2->fight->walkBackward) {
                 unsigned short kickX = player2->x - player2->base / 2;
-                al_draw_filled_rectangle(kickX, player2->y, kickX - kickReach, player2->y + player2->height / 4, al_map_rgb(255, 255, 255));
+                al_draw_filled_rectangle(kickX, player2->y, kickX - kickReach, player2->y + player2->height, al_map_rgb(255, 255, 255));
             }
             
             if (player1->fight->collision) al_draw_text(font, al_map_rgb(255,0,0), XSCREEN/2 + 75, YSCREEN/2 - 20, 0, "PUNCH PLAYER 1 !");
