@@ -25,6 +25,6 @@ player* playerInit(unsigned char character, unsigned char base, unsigned char he
 void playerDestroy(player* element){
     
     joystickDestroy(element->control);
-    fightDestroy(element);
+    fightDestroy(element->fight);
     free(element);
 }

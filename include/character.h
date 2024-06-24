@@ -28,7 +28,8 @@ typedef struct player{
     joystick* control;
 } player;
 
-player* playerInit();
+player* playerInit(unsigned char character, unsigned char base, unsigned char height, unsigned short x, 
+    unsigned short y, unsigned short maxX, unsigned short maxY);
+    
 void playerDestroy(player* element);
-
 #endif

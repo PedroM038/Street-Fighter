@@ -1,6 +1,9 @@
 #ifndef __FIGHTER__
 #define __FIGHTER__
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #define STEP 8
 #define GRAVITY 2
 #define HITPUNCH 10

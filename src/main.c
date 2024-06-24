@@ -1,4 +1,4 @@
-//comp: gcc rectangle.c joystick.c main.c -o rectangle -I/usr/include/x86_64-linux-gnu -lallegro_main -lallegro_font -lallegro_primitives -lallegro
+//comp: gcc stateMachine.c character.c fighter.c health.c screen.c joystick.c main.c -o shadowCombat -I/usr/include/x86_64-linux-gnu -lallegro_main -lallegro_font -lallegro_primitives -lallegro
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,81 +6,12 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
 
-#include "../include/rectangle.h"
+#include "../include/fighter.h"
 #include "../include/screen.h"
-
-unsigned char collision(rectangle* p1, rectangle* p2){
-    if (p1->x + p1->base / 2 >= p2->x - p2->base / 2 &&  
-        p1->x - p1->base / 2 <= p2->x + p2->base / 2 &&  
-        p1->y + p1->height / 2 >= p2->y - p2->height / 2 &&  
-        p1->y - p1->height / 2 <= p2->y + p2->height / 2) {  
-            return 1;
-    }
-    return 0;
-}
-
-void updateJump(rectangle* playerJump, rectangle* other){
-    if (playerJump->control->up && playerJump->jump == 0 && playerJump->y == playerJump->yInit) {
-        playerJump->jump = 1;
-        playerJump->velocityY = -40;
-    }
-
-    if (playerJump->jump) {
-        playerJump->velocityY += playerJump->accelerationY;
-        playerJump->y += playerJump->velocityY;
-
-        if (collision(playerJump, other)) {
-            playerJump->y -= playerJump->velocityY;
-            playerJump->velocityY = 0; 
-        }
-
-        if (playerJump->y >= playerJump->yInit) {
-            playerJump->y = playerJump->yInit;
-            playerJump->jump = 0;
-            playerJump->velocityY = 0;
-        }
-    }
-}
-
-void updatePosition(rectangle* player1, rectangle* player2){
-    int prevX, prevY;
-
-    prevX = player1->x;
-    prevY = player1->y;
-    if (player1->control->left) {
-        rectangleMove(player1, 1, 0, XSCREEN, YSCREEN);
-        if (collision(player1, player2)) { player1->x = prevX; player1->y = prevY; }
-    }
-
-    prevX = player1->x;
-    prevY = player1->y;
-    if (player1->control->right) {
-        rectangleMove(player1, 1, 1, XSCREEN, YSCREEN);
-        if (collision(player1, player2)) { player1->x = prevX; player1->y = prevY; }
-    }
-
-    updateJump(player1, player2);
-    updatePunch(player1, player2);
-    updateKick(player1, player2);
-
-    prevX = player2->x;
-    prevY = player2->y;
-    if (player2->control->left) {
-        rectangleMove(player2, 1, 0, XSCREEN, YSCREEN);
-        if (collision(player1, player2)) { player2->x = prevX; player2->y = prevY; }
-    }
-
-    prevX = player2->x;
-    prevY = player2->y;
-    if (player2->control->right) {
-        rectangleMove(player2, 1, 1, XSCREEN, YSCREEN);
-        if (collision(player1, player2)) { player2->x = prevX; player2->y = prevY; }
-    }
-    updateJump(player2, player1);
-    updatePunch(player2, player1);
-    updateKick(player2, player1);
-}
-
+#include "../include/stateMachine.h"
+#include "../include/character.h"
+#include "../include/health.h"
+#include "../include/joystick.h"
 
 int main (void) {
     al_init();
@@ -96,10 +27,10 @@ int main (void) {
     al_register_event_source(queue, al_get_display_event_source(disp));
     al_register_event_source(queue, al_get_timer_event_source(timer));
 
-    rectangle* player1 = rectangleCreate(200, 240, 100, YSCREEN - 120, XSCREEN, YSCREEN); 
+    player* player1 = playerInit(KIRA, 200, 240, 100, YSCREEN - 120, XSCREEN, YSCREEN); 
     if (!player1) return 1;
     
-    rectangle* player2 = rectangleCreate(200, 240, XSCREEN - 100, YSCREEN - 120, XSCREEN, YSCREEN);
+    player* player2 = playerInit(HANZO, 200, 240, XSCREEN - 100, YSCREEN - 120, XSCREEN, YSCREEN);
     if (!player2) return 2;
 
 
@@ -132,7 +63,7 @@ int main (void) {
             unsigned short kickReach = (player1->base / 2) + 70;
 
             // Player 1 punch walkBackward
-            if (player1->fight->punch && player1->fight->walkBackward) {
+            if (player1->fight->punch && player1->walkBackward) {
                 if (!player1->squat) {
                 unsigned short punchX = player1->x - player1->base / 2;
                 al_draw_filled_rectangle(punchX, player1->y - player1->height/2, punchX - punchReach, player1->y, al_map_rgb(255, 255, 255));
@@ -141,7 +72,7 @@ int main (void) {
                 al_draw_filled_rectangle(punchX, player1->y + player1->height/2, punchX - punchReach, player1->y, al_map_rgb(255, 255, 255));    
                 }
             //Player 1 punch walkForward
-            } else if (player1->fight->punch && player1->fight->walkForward) {
+            } else if (player1->fight->punch && player1->walkForward) {
                 if (!player1->squat) {
                 unsigned short punchX = player1->x + player1->base / 2;
                 al_draw_filled_rectangle(punchX, player1->y - player1->height/2, punchX + punchReach, player1->y, al_map_rgb(255, 255, 255));
@@ -152,16 +83,16 @@ int main (void) {
             }
 
             // Player 1 kick
-            if (player1->fight->kick && player1->fight->walkForward) {
+            if (player1->fight->kick && player1->walkForward) {
                 unsigned short kickX = player1->x + player1->base / 2;
                 al_draw_filled_rectangle(kickX, player1->y, kickX + kickReach, player1->y + player1->height / 2, al_map_rgb(255, 255, 255));
-            } else if (player1->fight->kick && player1->fight->walkBackward) {
+            } else if (player1->fight->kick && player1->walkBackward) {
                 unsigned short kickX = player1->x - player1->base / 2;
                 al_draw_filled_rectangle(kickX, player1->y, kickX - kickReach, player1->y + player1->height / 2, al_map_rgb(255, 255, 255));
             }
 
             // Player 2 punch walkBackward
-            if (player2->fight->punch && player2->fight->walkBackward) {
+            if (player2->fight->punch && player2->walkBackward) {
                 if (!player2->squat) {
                 unsigned short punchX = player2->x - player2->base / 2;
                 al_draw_filled_rectangle(punchX, player2->y - player2->height/2, punchX - punchReach, player2->y, al_map_rgb(255, 255, 255));
@@ -170,7 +101,7 @@ int main (void) {
                 al_draw_filled_rectangle(punchX, player2->y + player2->height/2, punchX - punchReach, player2->y, al_map_rgb(255, 255, 255));    
                 }
             //Player 1 punch walkForward
-            } else if (player2->fight->punch && player2->fight->walkForward) {
+            } else if (player2->fight->punch && player2->walkForward) {
                 if (!player2->squat) {
                 unsigned short punchX = player2->x + player2->base / 2;
                 al_draw_filled_rectangle(punchX, player2->y - player2->height/2, punchX + punchReach, player2->y, al_map_rgb(255, 255, 255));
@@ -181,10 +112,10 @@ int main (void) {
             }
 
             // Player 2 kick
-            if (player2->fight->kick && player2->fight->walkForward) {
+            if (player2->fight->kick && player2->walkForward) {
                 unsigned short kickX = player2->x + player2->base / 2;
                 al_draw_filled_rectangle(kickX, player2->y, kickX + kickReach, player2->y + player2->height, al_map_rgb(255, 255, 255));
-            } else if (player2->fight->kick && player2->fight->walkBackward) {
+            } else if (player2->fight->kick && player2->walkBackward) {
                 unsigned short kickX = player2->x - player2->base / 2;
                 al_draw_filled_rectangle(kickX, player2->y, kickX - kickReach, player2->y + player2->height, al_map_rgb(255, 255, 255));
             }
@@ -216,13 +147,13 @@ int main (void) {
             
             if (event.keyboard.keycode == 82) {
                 joystickLeft(player2->control);
-                player2->fight->walkBackward = 1;
-                player2->fight->walkForward = 0;
+                player2->walkBackward = 1;
+                player2->walkForward = 0;
             }
             else if (event.keyboard.keycode == 83) {
                 joystickRight(player2->control);
-                player2->fight->walkBackward = 0;
-                player2->fight->walkForward = 1;
+                player2->walkBackward = 0;
+                player2->walkForward = 1;
             }
             
             if (event.keyboard.keycode == 84) joystickUp(player2->control);
@@ -238,8 +169,8 @@ int main (void) {
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
-    rectangleDestroy(player1);
-    rectangleDestroy(player2);
+    playerDestroy(player1);
+    playerDestroy(player2);
 
     return 0;
 }
