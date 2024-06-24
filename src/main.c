@@ -7,10 +7,7 @@
 #include <allegro5/allegro_primitives.h>
 
 #include "../include/rectangle.h"
-
-#define XSCREEN 1280
-#define YSCREEN 720
-
+#include "../include/screen.h"
 
 unsigned char collision(rectangle* p1, rectangle* p2){
     if (p1->x + p1->base / 2 >= p2->x - p2->base / 2 &&  
