@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <allegro5/allegro_image.h>
 
 #include "character.h"
 #include "fighter.h"

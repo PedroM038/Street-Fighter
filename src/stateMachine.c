@@ -1,4 +1,5 @@
 #include "../include/stateMachine.h"
+#include <allegro5/allegro_image.h>
 
 void playerMove(player* element, double steps, unsigned short trajectory, unsigned short maxX, unsigned short maxY){
 
@@ -48,6 +49,10 @@ void updateJump(player* playerJump, player* other){
         if (collision(playerJump, other)) {
             playerJump->y -= playerJump->velocityY;
             playerJump->velocityY = 0; 
+            playerJump->isTop = 1;
+        }
+        else {
+            playerJump->isTop = 0;
         }
 
         if (playerJump->y >= playerJump->yInit) {
@@ -55,6 +60,61 @@ void updateJump(player* playerJump, player* other){
             playerJump->jump = 0;
             playerJump->velocityY = 0;
         }
+    }
+}
+
+void updateStop(player* p){
+    if (!p->control->right && !p->control->left && !p->jump && !p->squat){
+        p->stop->isStop = 1;
+        unsigned short maxFrame = 90;
+        if (p->walkForward && p->hero == KIRA) {
+            if(p->stop->frame % maxFrame >= 74)
+                p->stop->picture = al_load_bitmap("../media/Kira/parado/000.png");
+            else if (p->stop->frame % maxFrame >= 58)
+                p->stop->picture = al_load_bitmap("../media/Kira/parado/001.png");
+            else if (p->stop->frame % maxFrame >= 44)
+                p->stop->picture = al_load_bitmap("../media/Kira/parado/002.png");
+            else if (p->stop->frame % maxFrame >= 32)
+                p->stop->picture = al_load_bitmap("../media/Kira/parado/003.png");
+            else if (p->stop->frame % maxFrame >= 16)
+                p->stop->picture = al_load_bitmap("../media/Kira/parado/002.png");
+            else if (p->stop->frame % maxFrame >= 0)
+                p->stop->picture = al_load_bitmap("../media/Kira/parado/001.png");
+            
+            if (!p->stop->picture){
+                fprintf(stderr, "Não foi possível carregar a imagem");
+                exit(EXIT_FAILURE);
+            }
+            
+            p->stop->frame += 1;
+            if (p->stop->frame >= maxFrame) p->stop->frame = 0;
+        } 
+        else if (p->walkBackward && p->hero == KIRA) {
+            if(p->stop->frame % maxFrame >= 74)
+                p->stop->picture = al_load_bitmap("../media/Kira/parado/000B.png");
+            else if (p->stop->frame % maxFrame >= 58)
+                 p->stop->picture = al_load_bitmap("../media/Kira/parado/001B.png");
+            else if (p->stop->frame % maxFrame >= 44)
+                p->stop->picture = al_load_bitmap("../media/Kira/parado/002B.png");
+            else if (p->stop->frame % maxFrame >= 32)
+                p->stop->picture = al_load_bitmap("../media/Kira/parado/003B.png");
+            else if (p->stop->frame % maxFrame >= 16)
+                p->stop->picture = al_load_bitmap("../media/Kira/parado/002B.png");
+            else if (p->stop->frame % maxFrame >= 0)
+                p->stop->picture = al_load_bitmap("../media/Kira/parado/001B.png");
+        
+            if (!p->stop->picture){
+                fprintf(stderr, "Não foi possível carregar a imagem");
+                 exit(EXIT_FAILURE);
+            }
+                
+            p->stop->frame += 1;
+            if (p->stop->frame >= maxFrame) p->stop->frame = 0;
+        }
+    }
+    else{
+        p->stop->isStop = 0;
+        p->stop->frame = 0;
     }
 }
 
@@ -88,7 +148,8 @@ void updatePosition(player* player1, player* player2){
         playerMove(player1, 1, 1, XSCREEN, YSCREEN);
         if (collision(player1, player2)) { player1->x = prevX; player1->y = prevY; }
     }
-
+    
+    updateStop(player1);
     updateJump(player1, player2);
     updatePunch(player1, player2);
     updateKick(player1, player2);
@@ -106,9 +167,12 @@ void updatePosition(player* player1, player* player2){
         playerMove(player2, 1, 1, XSCREEN, YSCREEN);
         if (collision(player1, player2)) { player2->x = prevX; player2->y = prevY; }
     }
+
+    updateStop(player2);
     updateJump(player2, player1);
     updatePunch(player2, player1);
     updateKick(player2, player1);
+
 }
 
 unsigned char punchCollision(player* attacker, player* target){

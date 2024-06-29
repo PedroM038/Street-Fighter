@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro5.h>
 
 #include "fighter.h"
 #include "joystick.h"
@@ -10,10 +12,16 @@
 #define KIRA 1
 #define HANZO 2
 
+typedef struct stateStop{
+    unsigned char isStop;
+    unsigned short frame;
+    ALLEGRO_BITMAP* picture;    
+} stateStop;
+
 typedef struct player{
     unsigned char hero;     //KIRA OR HANZO
-    unsigned char base;     //total base measurement
-    unsigned char height;   //total height meansurement
+    unsigned short base;     //total base measurement
+    unsigned short height;   //total height meansurement
     unsigned short xInit;   
     unsigned short yInit;   
     unsigned short x;       //center X point
@@ -22,13 +30,17 @@ typedef struct player{
     unsigned short jump;
     unsigned char walkForward;
     unsigned char walkBackward;
+    unsigned char isTop;
     double velocityY;
     double accelerationY;
     attack* fight;
     joystick* control;
+    stateStop* stop;
 } player;
 
-player* playerInit(unsigned char character, unsigned char base, unsigned char height, unsigned short x, 
+stateStop* stopInit();
+
+player* playerInit(unsigned char character, unsigned short base, unsigned short height, unsigned short x, 
     unsigned short y, unsigned short maxX, unsigned short maxY);
     
 void playerDestroy(player* element);

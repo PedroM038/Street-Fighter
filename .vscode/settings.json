@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "joystick.h": "c",
-        "allegro_primitives.h": "c"
+        "allegro_primitives.h": "c",
+        "fighter.h": "c",
+        "stdlib.h": "c"
     }
 }
