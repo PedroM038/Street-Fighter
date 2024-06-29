@@ -35,8 +35,9 @@ int main (void) {
 
     // Carregar imagem de fundo
 
-    map* bMap = mapInit();
+    /*map* bMap = mapInit();
     battleMap (bMap, 1);
+    */
    
     player* player1 = playerInit(KIRA, 240, 260, 200, YSCREEN - 240, XSCREEN, YSCREEN); 
     if (!player1) return 1;
@@ -54,7 +55,7 @@ int main (void) {
             updatePosition(player1, player2);
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
-        al_draw_scaled_bitmap(
+        /*al_draw_scaled_bitmap(
             bMap->background,
             0, 0,
             al_get_bitmap_width(bMap->background),
@@ -63,7 +64,7 @@ int main (void) {
             XSCREEN,
             YSCREEN,
             0
-        );
+        );*/
 
             if (player1->squat && player2->squat && !player1->jump && !player2->jump) {
                 al_draw_filled_rectangle(player1->x - player1->base/2, player1->y, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
@@ -155,12 +156,31 @@ int main (void) {
                 float player_bitmap_height = al_get_bitmap_height(player1->stop->picture);
     
                 // Calcula a largura e a altura do retângulo do player 1
-                float player_rect_width = player1->base * 1.5;
-                float player_rect_height = player1->height * 1.5;
+                float player_rect_width = player1->base * 1.2;
+                float player_rect_height = player1->height * 1.2;
     
                 // Desenha o bitmap do personagem no retângulo do player 1
                 al_draw_scaled_bitmap(
                     player1->stop->picture,
+                    0, 0,
+                    player_bitmap_width, player_bitmap_height,
+                    player1->x - player_rect_width /2, player1->y - player_rect_height/2,
+                    player_rect_width, player_rect_height,
+                    0
+                );
+            }
+            if (player1->walking->isWalking) {
+                // Calcula a largura e a altura do bitmap do personagem
+                float player_bitmap_width = al_get_bitmap_width(player1->walking->picture);
+                float player_bitmap_height = al_get_bitmap_height(player1->walking->picture);
+    
+                // Calcula a largura e a altura do retângulo do player 1
+                float player_rect_width = player1->base * 1.2;
+                float player_rect_height = player1->height * 1.2;
+    
+                // Desenha o bitmap do personagem no retângulo do player 1
+                al_draw_scaled_bitmap(
+                    player1->walking->picture,
                     0, 0,
                     player_bitmap_width, player_bitmap_height,
                     player1->x - player_rect_width / 2, player1->y - player_rect_height/2,
@@ -175,10 +195,7 @@ int main (void) {
             if (event.keyboard.keycode == 1){
                 joystickLeft(player1->control);
             }
-            else if (event.keyboard.keycode == 4){
-                joystickRight(player1->control);
-        
-            }
+            else if (event.keyboard.keycode == 4) joystickRight(player1->control);
             
             if (event.keyboard.keycode == 23) joystickUp(player1->control);
             else if (event.keyboard.keycode == 19 && !player2->isTop) player1->squat = player1->squat ^ 1;
@@ -186,16 +203,8 @@ int main (void) {
             if (event.keyboard.keycode == ALLEGRO_KEY_SPACE && player1->fight->cooldown == 0) player1->fight->punch = 1;
             else if (event.keyboard.keycode == ALLEGRO_KEY_F && player1->fight->cooldown == 0) player1->fight->kick = 1;
             
-            if (event.keyboard.keycode == 82) {
-                joystickLeft(player2->control);
-                player2->walkBackward = 1;
-                player2->walkForward = 0;
-            }
-            else if (event.keyboard.keycode == 83) {
-                joystickRight(player2->control);
-                player2->walkBackward = 0;
-                player2->walkForward = 1;
-            }
+            if (event.keyboard.keycode == 82) joystickLeft(player2->control);
+            else if (event.keyboard.keycode == 83) joystickRight(player2->control);
             
             if (event.keyboard.keycode == 84) joystickUp(player2->control);
             else if (event.keyboard.keycode == 85 && !player1->isTop) player2->squat = player2->squat ^ 1;
@@ -206,13 +215,14 @@ int main (void) {
         else if (event.type == 42) break;
     }
 
-    al_destroy_bitmap(bMap->background);
-    free(bMap);
+    //al_destroy_bitmap(bMap->background);
+    //free(bMap);
     al_destroy_font(font);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
-    playerDestroy(player1);
-    playerDestroy(player2);
+    //playerDestroy(player1);
+    //playerDestroy(player2);
     al_destroy_display(disp);
     return 0;
 }
+

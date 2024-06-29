@@ -118,62 +118,92 @@ void updateStop(player* p){
     }
 }
 
-void updatePosition(player* player1, player* player2){
+// Função para atualizar o frame do jogador
+void updateWalkingFrame(player* player, unsigned short* frame, ALLEGRO_BITMAP** frames, int direction) {
+    unsigned short frameIndex = (*frame / 8) % 12;
+    if (direction == 1) {  // Se direção for para frente
+        player->walking->picture = frames[frameIndex];
+    } else {  // Se direção for para trás
+        player->walking->picture = frames[11 - frameIndex];
+    }
+    (*frame)++;
+    if (*frame >= 96) *frame = 0;
+}
 
+void updatePosition(player* player1, player* player2) {
     int prevX, prevY;
+    unsigned short maxFrame = 96;
 
-    if (player1->x <= player2->x){
+    // Determinar se os jogadores estão caminhando para frente ou para trás
+    if (player1->x <= player2->x) {
         player1->walkBackward = 0;
         player1->walkForward = 1;
         player2->walkBackward = 1;
-        player2->walkForward = 0; 
-    }
-    else{
+        player2->walkForward = 0;
+    } else {
         player1->walkBackward = 1;
         player1->walkForward = 0;
         player2->walkBackward = 0;
         player2->walkForward = 1;
     }
 
+    // Atualizar posição e animação do Player 1
     prevX = player1->x;
     prevY = player1->y;
     if (player1->control->left) {
         playerMove(player1, 1, 0, XSCREEN, YSCREEN);
-        if (collision(player1, player2)) { player1->x = prevX; player1->y = prevY; }
+        if (collision(player1, player2)) {
+            player1->x = prevX;
+            player1->y = prevY;
+        }
+        player1->walking->isWalking = 1;
+        if (!player1->jump && !player1->squat && player1->hero == KIRA)
+                updateWalkingFrame(player1, &player1->walking->frame, player1->walking->walkBackwardFrames, 1);
+    } else if (player1->control->right) {
+        playerMove(player1, 1, 1, XSCREEN, YSCREEN);
+        if (collision(player1, player2)) {
+            player1->x = prevX;
+            player1->y = prevY;
+        }
+        player1->walking->isWalking = 1;
+        if (!player1->jump && !player1->squat && player1->hero == KIRA)
+            updateWalkingFrame(player1, &player1->walking->frame, player1->walking->walkForwardFrames, 1);
+    } else {
+        player1->walking->isWalking = 0;
+        player1->walking->frame = 0;
     }
 
-    prevX = player1->x;
-    prevY = player1->y;
-    if (player1->control->right) {
-        playerMove(player1, 1, 1, XSCREEN, YSCREEN);
-        if (collision(player1, player2)) { player1->x = prevX; player1->y = prevY; }
-    }
-    
+    // Atualizar outros estados do Player 1
     updateStop(player1);
     updateJump(player1, player2);
     updatePunch(player1, player2);
     updateKick(player1, player2);
 
+    // Atualizar posição e animação do Player 2
     prevX = player2->x;
     prevY = player2->y;
     if (player2->control->left) {
         playerMove(player2, 1, 0, XSCREEN, YSCREEN);
-        if (collision(player1, player2)) { player2->x = prevX; player2->y = prevY; }
+        if (collision(player1, player2)) {
+            player2->x = prevX;
+            player2->y = prevY;
+        }
     }
-
-    prevX = player2->x;
-    prevY = player2->y;
     if (player2->control->right) {
         playerMove(player2, 1, 1, XSCREEN, YSCREEN);
-        if (collision(player1, player2)) { player2->x = prevX; player2->y = prevY; }
+        if (collision(player1, player2)) {
+            player2->x = prevX;
+            player2->y = prevY;
+        }
     }
 
+    // Atualizar outros estados do Player 2
     updateStop(player2);
     updateJump(player2, player1);
     updatePunch(player2, player1);
     updateKick(player2, player1);
-
 }
+
 
 unsigned char punchCollision(player* attacker, player* target){
      
