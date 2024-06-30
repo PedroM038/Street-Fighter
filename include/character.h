@@ -26,6 +26,17 @@ typedef struct stateWalking{
     ALLEGRO_BITMAP* walkBackwardFrames[12];
 } stateWalking;
 
+typedef struct stateJump{
+    unsigned short isJump;
+    unsigned short frame;
+    unsigned char isTop;
+    double velocityY;
+    double accelerationY;
+    ALLEGRO_BITMAP* picture;
+    ALLEGRO_BITMAP* walkForwardFrames[6];
+    ALLEGRO_BITMAP* walkBackwardFrames[6];
+} stateJump;
+
 typedef struct player{
     unsigned char hero;     //KIRA OR HANZO
     unsigned short base;     //total base measurement
@@ -35,20 +46,18 @@ typedef struct player{
     unsigned short x;       //center X point
     unsigned short y;       //center Y point
     unsigned short squat;   
-    unsigned short jump;
     unsigned char walkForward;
     unsigned char walkBackward;
-    unsigned char isTop;
-    double velocityY;
-    double accelerationY;
     attack* fight;
     joystick* control;
     stateStop* stop;
     stateWalking* walking;
+    stateJump* jump;
 } player;
 
 stateStop* stopInit();
 stateWalking* walkingInit();
+stateJump* jumpInit();
 
 player* playerInit(unsigned char character, unsigned short base, unsigned short height, unsigned short x, 
     unsigned short y, unsigned short maxX, unsigned short maxY);

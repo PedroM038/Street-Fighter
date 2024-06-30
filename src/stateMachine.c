@@ -35,36 +35,56 @@ unsigned char collision(player* p1, player* p2){
     return 0;
 }
 
+void updateJumpFrame(player* player, unsigned short* frame, ALLEGRO_BITMAP** frames, int direction) {
+    
+    unsigned short frameIndex = (*frame / 9) % 6;
+
+    if (direction == 1) {  
+        player->jump->picture = frames[frameIndex];
+    } else {
+        player->jump->picture = frames[5 - frameIndex];
+    }
+    (*frame)++;
+    if (*frame >= 54) *frame = 0;
+}
+
 void updateJump(player* playerJump, player* other){
     
-    if (playerJump->control->up && playerJump->jump == 0 && playerJump->y == playerJump->yInit) {
-        playerJump->jump = 1;
-        playerJump->velocityY = -40;
+    if (playerJump->control->up && playerJump->jump->isJump == 0 && playerJump->y == playerJump->yInit) {
+        playerJump->jump->isJump = 1;
+        playerJump->jump->velocityY = -40;
     }
 
-    if (playerJump->jump) {
-        playerJump->velocityY += playerJump->accelerationY;
-        playerJump->y += playerJump->velocityY;
+    if (playerJump->jump->isJump) {
+        playerJump->jump->velocityY += playerJump->jump->accelerationY;
+        playerJump->y += playerJump->jump->velocityY;
 
         if (collision(playerJump, other)) {
-            playerJump->y -= playerJump->velocityY;
-            playerJump->velocityY = 0; 
-            playerJump->isTop = 1;
+            playerJump->y -= playerJump->jump->velocityY;
+            playerJump->jump->velocityY = 0; 
+            playerJump->jump->isTop = 1;
         }
         else {
-            playerJump->isTop = 0;
+            playerJump->jump->isTop = 0;
+            if(playerJump->control->right)
+                updateJumpFrame(playerJump, &playerJump->jump->frame, playerJump->jump->walkForwardFrames, 1);
+            else if (playerJump->control->left)
+                updateJumpFrame(playerJump, &playerJump->jump->frame, playerJump->jump->walkBackwardFrames, 1);
+            else
+                updateJumpFrame(playerJump, &playerJump->jump->frame, playerJump->jump->walkForwardFrames, 1);
         }
 
         if (playerJump->y >= playerJump->yInit) {
             playerJump->y = playerJump->yInit;
-            playerJump->jump = 0;
-            playerJump->velocityY = 0;
+            playerJump->jump->isJump = 0;
+            playerJump->jump->velocityY = 0;
+            playerJump->jump->frame = 0;
         }
     }
 }
 
 void updateStop(player* p){
-    if (!p->control->right && !p->control->left && !p->jump && !p->squat){
+    if (!p->control->right && !p->control->left && !p->jump->isJump && !p->squat){
         p->stop->isStop = 1;
         unsigned short maxFrame = 90;
         if (p->walkForward && p->hero == KIRA) {
@@ -157,7 +177,7 @@ void updatePosition(player* player1, player* player2) {
             player1->y = prevY;
         }
         player1->walking->isWalking = 1;
-        if (!player1->jump && !player1->squat && player1->hero == KIRA)
+        if (!player1->jump->isJump && !player1->squat && player1->hero == KIRA)
                 updateWalkingFrame(player1, &player1->walking->frame, player1->walking->walkBackwardFrames, 1);
     } else if (player1->control->right) {
         playerMove(player1, 1, 1, XSCREEN, YSCREEN);
@@ -166,7 +186,7 @@ void updatePosition(player* player1, player* player2) {
             player1->y = prevY;
         }
         player1->walking->isWalking = 1;
-        if (!player1->jump && !player1->squat && player1->hero == KIRA)
+        if (!player1->jump->isJump && !player1->squat && player1->hero == KIRA)
             updateWalkingFrame(player1, &player1->walking->frame, player1->walking->walkForwardFrames, 1);
     } else {
         player1->walking->isWalking = 0;
@@ -208,7 +228,6 @@ void updatePosition(player* player1, player* player2) {
 unsigned char punchCollision(player* attacker, player* target){
      
     unsigned short punchReach = (attacker->base / 2) + 70;
-
 
     if (attacker->fight->punch) {
         if (attacker->walkForward &&

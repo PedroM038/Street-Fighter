@@ -15,14 +15,15 @@ player* playerInit(unsigned char character, unsigned short base, unsigned short 
     newPlayer->x = x;
     newPlayer->y = y;
     newPlayer->squat = 0;
-    newPlayer->jump = 0;
+    /*newPlayer->jump = 0;
     newPlayer->isTop = 0;
     newPlayer->velocityY = 0;
-    newPlayer->accelerationY = GRAVITY;
+    newPlayer->accelerationY = GRAVITY;*/
     newPlayer->control = joystickCreate();
     newPlayer->fight = fightInit();
     newPlayer->stop = stopInit();
     newPlayer->walking = walkingInit();
+    newPlayer->jump = jumpInit();
     return newPlayer;
 }
 
@@ -59,6 +60,36 @@ stateWalking* walkingInit(){
     a->frame = 0;
     a->isWalking = 0;
     return a;
+}
+
+stateJump* jumpInit(){
+    stateJump* j = malloc(sizeof(stateJump));
+
+    char framePath[100];
+    for (int i = 0; i < 6; i++){
+        snprintf(framePath, sizeof(framePath), "../media/Kira/pulo/%03d.png", i);
+        j->walkForwardFrames[i] = al_load_bitmap(framePath);
+        if (!j->walkForwardFrames[i]) {
+            fprintf(stderr, "Não foi possível carregar a imagem %03d\n", i);
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    for (int i = 0; i < 6; i++){
+        snprintf(framePath, sizeof(framePath), "../media/Kira/pulo/%03dB.png", i);
+        j->walkBackwardFrames[i] = al_load_bitmap(framePath);
+        if (!j->walkBackwardFrames[i]) {
+            fprintf(stderr, "Não foi possível carregar a imagem %03d\n", i);
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    j->frame = 0;
+    j->isJump = 0;
+    j->velocityY = 0;
+    j->accelerationY = GRAVITY;
+    j->isTop = 0;
+    return j;
 }
 
 void playerDestroy(player* element){
