@@ -15,10 +15,6 @@ player* playerInit(unsigned char character, unsigned short base, unsigned short 
     newPlayer->x = x;
     newPlayer->y = y;
     newPlayer->squat = 0;
-    /*newPlayer->jump = 0;
-    newPlayer->isTop = 0;
-    newPlayer->velocityY = 0;
-    newPlayer->accelerationY = GRAVITY;*/
     newPlayer->control = joystickCreate();
     newPlayer->fight = fightInit();
     newPlayer->stop = stopInit();
@@ -31,75 +27,62 @@ stateStop* stopInit(){
     stateStop* a = malloc(sizeof(stateStop));
     a->frame = 0;
     a->isStop = 1;
+
+    //insere em um vetor as posicoes x de cada sprite na imagem
+    for(int i = 0; i < 18; i++){
+        a->xPicture[i] = i * 200;
+    }
+
+    a->actualPicture = 0;
+    
+    a->sprite = al_load_bitmap("../media/Kira/stop/stopSprites.png");
+    if (!a->sprite){
+        fprintf(stderr, "Não foi possível carregar o sprite stop\n");
+        exit(EXIT_FAILURE);
+    }
+
     return a;
 }
 
 stateWalking* walkingInit(){
-    stateWalking* a = malloc(sizeof(stateWalking));
-    // Carregar as imagens de caminhada para frente
-    char framePath[100];
-    for (int i = 0; i < 12; i++) {
-        snprintf(framePath, sizeof(framePath), "../media/Kira/caminhando/%03d.png", i);
-        a->walkForwardFrames[i] = al_load_bitmap(framePath);
-        if (!a->walkForwardFrames[i]) {
-            fprintf(stderr, "Não foi possível carregar a imagem %03d\n", i);
-            exit(EXIT_FAILURE);
-        }
+    stateWalking* w = malloc(sizeof(stateWalking));
+    w->frame = 0;
+    w->isWalking = 0;
+    for(int i = 0; i < 20; i++){
+        w->xPicture[i] = i * 200;
+    }
+    w->actualPicture = 0;
+    w->sprite = al_load_bitmap("../media/Kira/walking/walkingSprites.png");
+    if (!w->sprite){
+        fprintf(stderr, "Não foi possível carregar o sprite walking\n");
+        exit(EXIT_FAILURE);
     }
 
-    // Carregar as imagens de caminhada para trás
-    for (int i = 0; i < 12; i++) {
-        snprintf(framePath, sizeof(framePath), "../media/Kira/caminhando/%03dB.png", i);
-        a->walkBackwardFrames[i] = al_load_bitmap(framePath);
-        if (!a->walkBackwardFrames[i]) {
-            fprintf(stderr, "Não foi possível carregar a imagem %03dB\n", i);
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    a->frame = 0;
-    a->isWalking = 0;
-    return a;
+    return w;
 }
 
 stateJump* jumpInit(){
+
     stateJump* j = malloc(sizeof(stateJump));
-
-    char framePath[100];
-    for (int i = 0; i < 6; i++){
-        snprintf(framePath, sizeof(framePath), "../media/Kira/pulo/%03d.png", i);
-        j->walkForwardFrames[i] = al_load_bitmap(framePath);
-        if (!j->walkForwardFrames[i]) {
-            fprintf(stderr, "Não foi possível carregar a imagem %03d\n", i);
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    for (int i = 0; i < 6; i++){
-        snprintf(framePath, sizeof(framePath), "../media/Kira/pulo/%03dB.png", i);
-        j->walkBackwardFrames[i] = al_load_bitmap(framePath);
-        if (!j->walkBackwardFrames[i]) {
-            fprintf(stderr, "Não foi possível carregar a imagem %03d\n", i);
-            exit(EXIT_FAILURE);
-        }
-    }
-
     j->frame = 0;
     j->isJump = 0;
     j->velocityY = 0;
     j->accelerationY = GRAVITY;
     j->isTop = 0;
+    j->sprite = al_load_bitmap("../media/Kira/jump/jumpSprites.png");
+    for(int i = 0; i < 12; i++){
+        j->xPicture[i] = i * 200;
+    }
+
+    j->actualPicture = 0;
     return j;
 }
 
 void playerDestroy(player* element){
     
-    // Libere a memória alocada para as imagens ao final do programa
-    for (int i = 0; i < 12; i++) {
-        al_destroy_bitmap(element->walking->walkForwardFrames[i]);
-        al_destroy_bitmap(element->walking->walkBackwardFrames[i]);
-    }
-    if (element->stop->picture) free(element->stop->picture);
+    //destroir bitmap stop
+    //destruir bitmap walking
+    //destruir bitmap jump
     free(element->stop);
     free(element->walking);
     joystickDestroy(element->control);

@@ -15,15 +15,17 @@
 typedef struct stateStop{
     unsigned char isStop;
     unsigned short frame;
-    ALLEGRO_BITMAP* picture;    
+    float xPicture[18];
+    unsigned char actualPicture;
+    ALLEGRO_BITMAP* sprite;
 } stateStop;
 
 typedef struct stateWalking{
     unsigned char isWalking;
     unsigned short frame;
-    ALLEGRO_BITMAP* picture;
-    ALLEGRO_BITMAP* walkForwardFrames[12];
-    ALLEGRO_BITMAP* walkBackwardFrames[12];
+    float xPicture[20];
+    unsigned char actualPicture;
+    ALLEGRO_BITMAP* sprite;
 } stateWalking;
 
 typedef struct stateJump{
@@ -32,9 +34,9 @@ typedef struct stateJump{
     unsigned char isTop;
     double velocityY;
     double accelerationY;
-    ALLEGRO_BITMAP* picture;
-    ALLEGRO_BITMAP* walkForwardFrames[6];
-    ALLEGRO_BITMAP* walkBackwardFrames[6];
+    float xPicture[12];
+    unsigned char actualPicture;
+    ALLEGRO_BITMAP* sprite;
 } stateJump;
 
 typedef struct player{

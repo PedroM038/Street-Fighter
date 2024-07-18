@@ -6,8 +6,8 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 
-#define XSCREEN 1280
-#define YSCREEN 720
+#define XSCREEN 1920
+#define YSCREEN 1080
 
 typedef struct map{
     ALLEGRO_BITMAP* background;

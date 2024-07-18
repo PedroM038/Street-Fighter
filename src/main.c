@@ -27,7 +27,7 @@ int main (void) {
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
     ALLEGRO_FONT* font = al_create_builtin_font();
-    ALLEGRO_DISPLAY* disp = al_create_display(1280, 720);
+    ALLEGRO_DISPLAY* disp = al_create_display(XSCREEN, YSCREEN);
 
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(disp));
@@ -39,10 +39,10 @@ int main (void) {
     battleMap (bMap, 1);
     */
    
-    player* player1 = playerInit(KIRA, 240, 260, 200, YSCREEN - 240, XSCREEN, YSCREEN); 
+    player* player1 = playerInit(KIRA, 40, 260, 200, YSCREEN - 320, XSCREEN, YSCREEN); 
     if (!player1) return 1;
     
-    player* player2 = playerInit(HANZO, 240, 260, XSCREEN - 200, YSCREEN - 240, XSCREEN, YSCREEN);
+    player* player2 = playerInit(HANZO, 40, 260, XSCREEN - 200, YSCREEN - 320, XSCREEN, YSCREEN);
     if (!player2) return 2;
 
     ALLEGRO_EVENT event;
@@ -150,19 +150,20 @@ int main (void) {
             else if (player1->fight->life <= 0) break;
             else if (player2->fight->life <= 0) break;
             
-            if (player1->stop->isStop) {
+            if (player1->stop->isStop || player1->jump->isTop) {
                 // Calcula a largura e a altura do bitmap do personagem
-                float player_bitmap_width = al_get_bitmap_width(player1->stop->picture);
-                float player_bitmap_height = al_get_bitmap_height(player1->stop->picture);
+                float player_bitmap_width = 200;
+                float player_bitmap_height = 159;
     
                 // Calcula a largura e a altura do retângulo do player 1
-                float player_rect_width = player1->base * 1.2;
-                float player_rect_height = player1->height * 1.2;
-    
+                float player_rect_width = player1->base * 14;
+                float player_rect_height = player1->height * 1.8;
+                unsigned char aPicture = player1->stop->actualPicture;
+
                 // Desenha o bitmap do personagem no retângulo do player 1
                 al_draw_scaled_bitmap(
-                    player1->stop->picture,
-                    0, 0,
+                    player1->stop->sprite,
+                    player1->stop->xPicture[aPicture], 0,
                     player_bitmap_width, player_bitmap_height,
                     player1->x - player_rect_width /2, player1->y - player_rect_height/2,
                     player_rect_width, player_rect_height,
@@ -171,17 +172,18 @@ int main (void) {
             }
             if (player1->walking->isWalking && !player1->jump->isJump && !player1->squat) {
                 // Calcula a largura e a altura do bitmap do personagem
-                float player_bitmap_width = al_get_bitmap_width(player1->walking->picture);
-                float player_bitmap_height = al_get_bitmap_height(player1->walking->picture);
+                float player_bitmap_width = 200;
+                float player_bitmap_height = 159;
     
                 // Calcula a largura e a altura do retângulo do player 1
-                float player_rect_width = player1->base * 1.2;
-                float player_rect_height = player1->height * 1.2;
+                float player_rect_width = player1->base * 14;
+                float player_rect_height = player1->height * 1.8;
+                unsigned char aPicture = player1->walking->actualPicture;
     
                 // Desenha o bitmap do personagem no retângulo do player 1
                 al_draw_scaled_bitmap(
-                    player1->walking->picture,
-                    0, 0,
+                    player1->walking->sprite,
+                    player1->walking->xPicture[aPicture], 0,
                     player_bitmap_width, player_bitmap_height,
                     player1->x - player_rect_width / 2, player1->y - player_rect_height/2,
                     player_rect_width, player_rect_height,
@@ -189,19 +191,20 @@ int main (void) {
                 );
             }
 
-            if (player1->jump->isJump) {
+            if (player1->jump->isJump && !player1->jump->isTop) {
                 // Calcula a largura e a altura do bitmap do personagem
-                float player_bitmap_width = al_get_bitmap_width(player1->walking->picture);
-                float player_bitmap_height = al_get_bitmap_height(player1->walking->picture);
-    
+                float player_bitmap_width = 200;
+                float player_bitmap_height = 159;
+
                 // Calcula a largura e a altura do retângulo do player 1
-                float player_rect_width = player1->base * 1.2;
-                float player_rect_height = player1->height * 1.2;
+                float player_rect_width = player1->base * 14;
+                float player_rect_height = player1->height * 1.8;
+                unsigned char aPicture = player1->jump->actualPicture;
     
                 // Desenha o bitmap do personagem no retângulo do player 1
                 al_draw_scaled_bitmap(
-                    player1->jump->picture,
-                    0, 0,
+                    player1->jump->sprite,
+                    player1->walking->xPicture[aPicture], 0,
                     player_bitmap_width, player_bitmap_height,
                     player1->x - player_rect_width / 2, player1->y - player_rect_height/2,
                     player_rect_width, player_rect_height,
