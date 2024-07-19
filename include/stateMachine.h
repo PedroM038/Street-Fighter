@@ -19,5 +19,6 @@ void updateKick(player* attacker, player* target);
 unsigned char collision(player* p1, player* p2);
 void updateJump(player* playerJump, player* other);
 void updatePosition(player* player1, player* player2);
+void updateSquat(player* player1, player* player2);
 
 #endif

@@ -39,32 +39,33 @@ void updateJumpFrame(player* p) {
     unsigned short maxFrame = 54;
     unsigned short interval = 8;
     
-    if(p->hero == KIRA && p->control->right){
+    if(p->hero == KIRA && p->walkForward){
 
-        if(p->jump->frame % maxFrame >= maxFrame - interval*1)
-            p->jump->actualPicture = 3;
-        else if (p->jump->frame % maxFrame >= maxFrame - interval*2)
-            p->jump->actualPicture = 4;
-        else if (p->jump->frame % maxFrame >= maxFrame - interval*3)
-            p->jump->actualPicture = 4;
-        else if (p->jump->frame % maxFrame >= maxFrame - interval*4)
-            p->jump->actualPicture = 4;
-        else if (p->jump->frame % maxFrame >= maxFrame - interval*5)
-            p->jump->actualPicture = 3;
-        else if (p->jump->frame % maxFrame >= maxFrame - interval*6)
-            p->jump->actualPicture = 3;
+        if(p->control->right || (!p->control->right && !p->control->left)){
 
-        p->jump->frame += 1;
-        if (p->jump->frame >= maxFrame) p->jump->frame = 0;
+            if(p->jump->frame % maxFrame >= maxFrame - interval*1)
+                p->jump->actualPicture = 3;
+            else if (p->jump->frame % maxFrame >= maxFrame - interval*2)
+                p->jump->actualPicture = 4;
+            else if (p->jump->frame % maxFrame >= maxFrame - interval*3)
+                p->jump->actualPicture = 3;
+            else if (p->jump->frame % maxFrame >= maxFrame - interval*4)
+                p->jump->actualPicture = 4;
+            else if (p->jump->frame % maxFrame >= maxFrame - interval*5)
+                p->jump->actualPicture = 3;
+            else if (p->jump->frame % maxFrame >= maxFrame - interval*6)
+                p->jump->actualPicture = 3;
 
-    } else if (p->hero == KIRA && p->control->left) {
-
+            p->jump->frame += 1;
+            if (p->jump->frame >= maxFrame) p->jump->frame = 0;
+        }
+        else{
             if(p->jump->frame % maxFrame >= maxFrame - interval*1)
                 p->jump->actualPicture = 9;
             else if (p->jump->frame % maxFrame >= maxFrame - interval*2)
                 p->jump->actualPicture = 10;
             else if (p->jump->frame % maxFrame >= maxFrame - interval*3)
-                p->jump->actualPicture = 10;
+                p->jump->actualPicture = 9;
             else if (p->jump->frame % maxFrame >= maxFrame - interval*4)
                 p->jump->actualPicture = 10;
             else if (p->jump->frame % maxFrame >= maxFrame - interval*5)
@@ -74,25 +75,44 @@ void updateJumpFrame(player* p) {
 
             p->jump->frame += 1;
             if (p->jump->frame >= maxFrame) p->jump->frame = 0;
-    }
-    else {
+        }
 
-        if(p->jump->frame % maxFrame >= maxFrame - interval*1)
-            p->jump->actualPicture = 3;
-        else if (p->jump->frame % maxFrame >= maxFrame - interval*2)
-            p->jump->actualPicture = 4;
-        else if (p->jump->frame % maxFrame >= maxFrame - interval*3)
-            p->jump->actualPicture = 4;
-        else if (p->jump->frame % maxFrame >= maxFrame - interval*4)
-            p->jump->actualPicture = 4;
-        else if (p->jump->frame % maxFrame >= maxFrame - interval*5)
-            p->jump->actualPicture = 3;
-        else if (p->jump->frame % maxFrame >= maxFrame - interval*6)
-            p->jump->actualPicture = 3;
+    } else if (p->hero == KIRA && p->walkBackward) {
+            if(p->control->left || (!p->control->right && !p->control->left)){
 
-        p->jump->frame += 1;
-        if (p->jump->frame >= maxFrame) p->jump->frame = 0;
+                if(p->jump->frame % maxFrame >= maxFrame - interval*1)
+                    p->jump->actualPicture = 9;
+                else if (p->jump->frame % maxFrame >= maxFrame - interval*2)
+                    p->jump->actualPicture = 10;
+                else if (p->jump->frame % maxFrame >= maxFrame - interval*3)
+                    p->jump->actualPicture = 9;
+                else if (p->jump->frame % maxFrame >= maxFrame - interval*4)
+                    p->jump->actualPicture = 10;
+                else if (p->jump->frame % maxFrame >= maxFrame - interval*5)
+                    p->jump->actualPicture = 9;
+                else if (p->jump->frame % maxFrame >= maxFrame - interval*6)
+                    p->jump->actualPicture = 9;
 
+                p->jump->frame += 1;
+                if (p->jump->frame >= maxFrame) p->jump->frame = 0;
+            }
+            else {
+                if(p->jump->frame % maxFrame >= maxFrame - interval*1)
+                    p->jump->actualPicture = 3;
+                else if (p->jump->frame % maxFrame >= maxFrame - interval*2)
+                    p->jump->actualPicture = 4;
+                else if (p->jump->frame % maxFrame >= maxFrame - interval*3)
+                    p->jump->actualPicture = 3;
+                else if (p->jump->frame % maxFrame >= maxFrame - interval*4)
+                    p->jump->actualPicture = 4;
+                else if (p->jump->frame % maxFrame >= maxFrame - interval*5)
+                    p->jump->actualPicture = 3;
+                else if (p->jump->frame % maxFrame >= maxFrame - interval*6)
+                    p->jump->actualPicture = 3;
+
+                p->jump->frame += 1;
+                if (p->jump->frame >= maxFrame) p->jump->frame = 0;
+            }
     }
 }
 
@@ -124,6 +144,22 @@ void updateJump(player* playerJump, player* other){
             playerJump->jump->frame = 0;
         }
     }
+}
+
+void updateFrameSquat(player* p){
+    if (p->walkForward && p->hero == KIRA)
+        p->squat->actualPicture = 0;
+    else if (p->walkBackward && p->hero == KIRA)
+        p->squat->actualPicture = 1;
+}
+
+void updateSquat(player* s, player* player2){
+    if (s->control->down && !s->control->left && !s->control->right){
+        s->squat->isSquat = 1;
+        updateFrameSquat (s);
+    } else {
+        s->squat->isSquat = 0;
+    } 
 }
 
 void updateFrameStop(player* p){
@@ -210,7 +246,7 @@ void updateFrameStop(player* p){
 }
 
 void updateStop(player* p){
-    if (!p->control->right && !p->control->left && !p->jump->isJump && !p->squat){
+    if (!p->control->right && !p->control->left && !p->jump->isJump && !p->squat->isSquat){
         p->stop->isStop = 1;
         updateFrameStop(p);
        
@@ -306,7 +342,7 @@ void updatePosition(player* player1, player* player2) {
             player1->y = prevY;
         }
         player1->walking->isWalking = 1;
-        if (!player1->jump->isJump && !player1->squat && player1->hero == KIRA)
+        if (!player1->jump->isJump && !player1->squat->isSquat && player1->hero == KIRA)
                 updateWalkingFrame(player1);
     } else if (player1->control->right) {
         playerMove(player1, 1, 1, XSCREEN, YSCREEN);
@@ -315,7 +351,7 @@ void updatePosition(player* player1, player* player2) {
             player1->y = prevY;
         }
         player1->walking->isWalking = 1;
-        if (!player1->jump->isJump && !player1->squat && player1->hero == KIRA)
+        if (!player1->jump->isJump && !player1->squat->isSquat && player1->hero == KIRA)
             updateWalkingFrame(player1);
     } else {
         player1->walking->isWalking = 0;
@@ -325,6 +361,7 @@ void updatePosition(player* player1, player* player2) {
     // Atualizar outros estados do Player 1
     updateStop(player1);
     updateJump(player1, player2);
+    updateSquat(player1, player2);
     updatePunch(player1, player2);
     updateKick(player1, player2);
 
@@ -349,6 +386,7 @@ void updatePosition(player* player1, player* player2) {
     // Atualizar outros estados do Player 2
     updateStop(player2);
     updateJump(player2, player1);
+    updateSquat(player2, player1);
     updatePunch(player2, player1);
     updateKick(player2, player1);
 }

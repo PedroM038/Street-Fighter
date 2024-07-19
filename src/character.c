@@ -20,6 +20,7 @@ player* playerInit(unsigned char character, unsigned short base, unsigned short 
     newPlayer->stop = stopInit();
     newPlayer->walking = walkingInit();
     newPlayer->jump = jumpInit();
+    newPlayer->squat = squatInit();
     return newPlayer;
 }
 
@@ -70,6 +71,10 @@ stateJump* jumpInit(){
     j->accelerationY = GRAVITY;
     j->isTop = 0;
     j->sprite = al_load_bitmap("../media/Kira/jump/jumpSprites.png");
+     if (!j->sprite){
+        fprintf(stderr, "Não foi possível carregar o sprite jumping\n");
+        exit(EXIT_FAILURE);
+    }
     for(int i = 0; i < 12; i++){
         j->xPicture[i] = i * 200;
     }
@@ -78,11 +83,26 @@ stateJump* jumpInit(){
     return j;
 }
 
+stateSquat* squatInit(){
+    stateSquat* s = malloc(sizeof(stateSquat));
+    s->isSquat = 0;
+    s->xPicture[0] = 0;
+    s->xPicture[1] = 200;
+    s->actualPicture = 0;
+    s->sprite = al_load_bitmap("../media/Kira/squat/squatSprites.png");
+    if (!s->sprite){
+        fprintf(stderr, "Não foi possível carregar o sprite squat\n");
+        exit(EXIT_FAILURE);
+    }
+    return s;
+}
+
 void playerDestroy(player* element){
     
     //destroir bitmap stop
     //destruir bitmap walking
     //destruir bitmap jump
+    //destruir bitmap squat
     free(element->stop);
     free(element->walking);
     joystickDestroy(element->control);

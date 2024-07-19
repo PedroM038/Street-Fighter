@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #define STEP 8
-#define GRAVITY 2
+#define GRAVITY 1.5
 #define HITPUNCH 10
 #define HITKICK 10
 
