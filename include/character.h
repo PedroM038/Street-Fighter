@@ -65,10 +65,10 @@ typedef struct player{
     stateSquat* squat;
 } player;
 
-stateStop* stopInit();
-stateWalking* walkingInit();
-stateJump* jumpInit();
-stateSquat* squatInit();
+stateStop* stopInit(unsigned char hero);
+stateWalking* walkingInit(unsigned char hero);
+stateJump* jumpInit(unsigned char hero);
+stateSquat* squatInit(unsigned char hero);
 
 player* playerInit(unsigned char character, unsigned short base, unsigned short height, unsigned short x, 
     unsigned short y, unsigned short maxX, unsigned short maxY);
