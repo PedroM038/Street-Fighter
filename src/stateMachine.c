@@ -771,6 +771,8 @@ void updateJump(player* playerJump, player* other){
         if (collision(playerJump, other)) {
             playerJump->y -= playerJump->jump->velocityY;
             playerJump->jump->velocityY = 0; 
+            playerMove(playerJump, STEP, 0, XSCREEN, YSCREEN);
+            playerMove(other, STEP, 1, XSCREEN, YSCREEN);
             playerJump->jump->isTop = 1;
         }
         else {
