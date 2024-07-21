@@ -35,18 +35,59 @@ int main (void) {
 
     // Carregar imagem de fundo
 
-    /*map* bMap = mapInit();
+    map* bMap = mapInit();
     battleMap (bMap, 1);
-    */
+    
    
-    player* player1 = playerInit(KIRA, 40, 260, 200, YSCREEN - 320, XSCREEN, YSCREEN); 
+    player* player1 = playerInit(HANZO, 40, 260, 200, YSCREEN - 320, XSCREEN, YSCREEN); 
     if (!player1) return 1;
     
-    player* player2 = playerInit(HANZO, 40, 260, XSCREEN - 200, YSCREEN - 320, XSCREEN, YSCREEN);
+    player* player2 = playerInit(KIRA, 40, 260, XSCREEN - 200, YSCREEN - 320, XSCREEN, YSCREEN);
     if (!player2) return 2;
 
     ALLEGRO_EVENT event;
     al_start_timer(timer);
+
+
+    float player1_rect_width;
+    float player1_rect_height;
+    float player1_bitmap_width;
+    float player1_bitmap_height;
+
+    float player2_rect_width;
+    float player2_rect_height;
+    float player2_bitmap_width;
+    float player2_bitmap_height;
+            
+    if (player1->hero == KIRA){
+        player1_bitmap_width = 200;
+        player1_bitmap_height = 159;
+    
+        player1_rect_width = player1->base * 14;
+        player1_rect_height = player1->height * 1.8;
+    } 
+    else if (player1->hero == HANZO){
+        player1_bitmap_width = 210;
+        player1_bitmap_height = 180;
+    
+        player1_rect_width = player1->base * 13;
+        player1_rect_height = player1->height * 1.95;
+    }
+
+    if (player2->hero == KIRA){
+        player2_bitmap_width = 200;
+        player2_bitmap_height = 159;
+    
+        player2_rect_width = player2->base * 14;
+        player2_rect_height = player2->height * 1.8;
+    } 
+    else if (player2->hero == HANZO){
+        player2_bitmap_width = 210;
+        player2_bitmap_height = 180;
+    
+        player2_rect_width = player2->base * 13;
+        player2_rect_height = player2->height * 1.95;
+    }
 
     while(1){
         al_wait_for_event(queue, &event);
@@ -55,7 +96,7 @@ int main (void) {
             updatePosition(player1, player2);
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
-        /*al_draw_scaled_bitmap(
+        al_draw_scaled_bitmap(
             bMap->background,
             0, 0,
             al_get_bitmap_width(bMap->background),
@@ -64,7 +105,7 @@ int main (void) {
             XSCREEN,
             YSCREEN,
             0
-        );*/
+        );
 
             /*if (player1->squat->isSquat && player2->squat->isSquat && !player1->jump->isJump && !player2->jump->isJump) {
                 al_draw_filled_rectangle(player1->x - player1->base/2, player1->y, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
@@ -149,105 +190,76 @@ int main (void) {
             if (player1->fight->life <= 0 && player2->fight->life <= 0) break;
             else if (player1->fight->life <= 0) break;
             else if (player2->fight->life <= 0) break;
-            
+
             if (player1->stop->isStop || player1->jump->isTop) {
-            
-                float player_bitmap_width = 200;
-                float player_bitmap_height = 159;
-    
-                float player_rect_width = player1->base * 14;
-                float player_rect_height = player1->height * 1.8;
+                
                 unsigned char aPicture = player1->stop->actualPicture;
 
                 al_draw_scaled_bitmap(
                     player1->stop->sprite,
                     player1->stop->xPicture[aPicture], 0,
-                    player_bitmap_width, player_bitmap_height,
-                    player1->x - player_rect_width /2, player1->y - player_rect_height/2,
-                    player_rect_width, player_rect_height,
+                    player1_bitmap_width, player1_bitmap_height,
+                    player1->x - player1_rect_width /2, player1->y - player1_rect_height/2,
+                    player1_rect_width, player1_rect_height,
                     0
                 );
             }
 
             if (player2->stop->isStop || player2->jump->isTop) {
-            
-                float player_bitmap_width = 210;
-                float player_bitmap_height = 180;
-    
-                float player_rect_width = player2->base * 13;
-                float player_rect_height = player2->height * 1.95;
+
                 unsigned char aPicture = player2->stop->actualPicture;
 
                 al_draw_scaled_bitmap(
                     player2->stop->sprite,
                     player2->stop->xPicture[aPicture], 0,
-                    player_bitmap_width, player_bitmap_height,
-                    player2->x - player_rect_width /2, player2->y - player_rect_height/2,
-                    player_rect_width, player_rect_height,
+                    player2_bitmap_width, player2_bitmap_height,
+                    player2->x - player2_rect_width /2, player2->y - player2_rect_height/2,
+                    player2_rect_width, player2_rect_height,
                     0
                 );
             }
 
             if (player1->walking->isWalking && !player1->jump->isJump && !player1->squat->isSquat) {
-                // Calcula a largura e a altura do bitmap do personagem
-                float player_bitmap_width = 200;
-                float player_bitmap_height = 159;
-    
-                // Calcula a largura e a altura do retângulo do player 1
-                float player_rect_width = player1->base * 14;
-                float player_rect_height = player1->height * 1.8;
+        
                 unsigned char aPicture = player1->walking->actualPicture;
     
                 // Desenha o bitmap do personagem no retângulo do player 1
                 al_draw_scaled_bitmap(
                     player1->walking->sprite,
                     player1->walking->xPicture[aPicture], 0,
-                    player_bitmap_width, player_bitmap_height,
-                    player1->x - player_rect_width / 2, player1->y - player_rect_height/2,
-                    player_rect_width, player_rect_height,
+                    player1_bitmap_width, player1_bitmap_height,
+                    player1->x - player1_rect_width / 2, player1->y - player1_rect_height/2,
+                    player1_rect_width, player1_rect_height,
                     0
                 );
             }
 
             if (player2->walking->isWalking && !player2->jump->isJump && !player2->squat->isSquat) {
-                // Calcula a largura e a altura do bitmap do personagem
-                float player_bitmap_width = 210;
-                float player_bitmap_height = 180;
-    
-                // Calcula a largura e a altura do retângulo do player 1
-                float player_rect_width = player2->base * 13;
-                float player_rect_height = player2->height * 1.95;
+
                 unsigned char aPicture = player2->walking->actualPicture;
     
                 // Desenha o bitmap do personagem no retângulo do player 1
                 al_draw_scaled_bitmap(
                     player2->walking->sprite,
                     player2->walking->xPicture[aPicture], 0,
-                    player_bitmap_width, player_bitmap_height,
-                    player2->x - player_rect_width / 2, player2->y - player_rect_height/2,
-                    player_rect_width, player_rect_height,
+                    player2_bitmap_width, player2_bitmap_height,
+                    player2->x - player2_rect_width / 2, player2->y - player2_rect_height/2,
+                    player2_rect_width, player2_rect_height,
                     0
                 );
             }
 
             if (player1->jump->isJump && !player1->jump->isTop) {
                 if (!player1->fight->punch && !player1->fight->kick){
-                    // Calcula a largura e a altura do bitmap do personagem
-                    float player_bitmap_width = 200;
-                    float player_bitmap_height = 159;
-
-                    // Calcula a largura e a altura do retângulo do player 1
-                    float player_rect_width = player1->base * 14;
-                    float player_rect_height = player1->height * 1.8;
                     unsigned char aPicture = player1->jump->actualPicture;
         
                     // Desenha o bitmap do personagem no retângulo do player 1
                     al_draw_scaled_bitmap(
                         player1->jump->sprite,
                         player1->walking->xPicture[aPicture], 0,
-                        player_bitmap_width, player_bitmap_height,
-                        player1->x - player_rect_width / 2, player1->y - player_rect_height/2,
-                        player_rect_width, player_rect_height,
+                        player1_bitmap_width, player1_bitmap_height,
+                        player1->x - player1_rect_width / 2, player1->y - player1_rect_height/2,
+                        player1_rect_width, player1_rect_height,
                         0
                     );
                 }
@@ -255,22 +267,15 @@ int main (void) {
 
             if (player2->jump->isJump && !player2->jump->isTop) {
                 if (!player2->fight->punch && !player2->fight->kick){
-                    // Calcula a largura e a altura do bitmap do personagem
-                    float player_bitmap_width = 210;
-                    float player_bitmap_height = 180;
-
-                    // Calcula a largura e a altura do retângulo do player 1
-                    float player_rect_width = player2->base * 13;
-                    float player_rect_height = player2->height * 1.95;
                     unsigned char aPicture = player2->jump->actualPicture;
         
                     // Desenha o bitmap do personagem no retângulo do player 1
                     al_draw_scaled_bitmap(
                         player2->jump->sprite,
                         player2->walking->xPicture[aPicture], 0,
-                        player_bitmap_width, player_bitmap_height,
-                        player2->x - player_rect_width / 2, player2->y - player_rect_height/2,
-                        player_rect_width, player_rect_height,
+                        player2_bitmap_width, player2_bitmap_height,
+                        player2->x - player2_rect_width / 2, player2->y - player2_rect_height/2,
+                        player2_rect_width, player2_rect_height,
                         0
                     );
                 }
@@ -278,22 +283,15 @@ int main (void) {
 
             if (player1->squat->isSquat && !player1->jump->isTop) {
                 if (!player1->fight->punch && !player1->fight->kick){
-                    // Calcula a largura e a altura do bitmap do personagem
-                    float player_bitmap_width = 200;
-                    float player_bitmap_height = 159;
-
-                    // Calcula a largura e a altura do retângulo do player 1
-                    float player_rect_width = player1->base * 14;
-                    float player_rect_height = player1->height * 1.8;
                     unsigned char aPicture = player1->squat->actualPicture;
         
                     // Desenha o bitmap do personagem no retângulo do player 1
                     al_draw_scaled_bitmap(
                         player1->squat->sprite,
                         player1->squat->xPicture[aPicture], 0,
-                        player_bitmap_width, player_bitmap_height,
-                        player1->x - player_rect_width / 2, player1->y - player_rect_height/2,
-                        player_rect_width, player_rect_height,
+                        player1_bitmap_width, player1_bitmap_height,
+                        player1->x - player1_rect_width / 2, player1->y - player1_rect_height/2,
+                        player1_rect_width, player1_rect_height,
                         0
                     );
                 }
@@ -301,108 +299,73 @@ int main (void) {
 
             if (player2->squat->isSquat && !player2->jump->isTop) {
                 if (!player2->fight->punch && !player2->fight->kick){
-                    // Calcula a largura e a altura do bitmap do personagem
-                    float player_bitmap_width = 210;
-                    float player_bitmap_height = 180;
-
-                    // Calcula a largura e a altura do retângulo do player 1
-                    float player_rect_width = player2->base * 13;
-                    float player_rect_height = player2->height * 1.95;
                     unsigned char aPicture = player2->squat->actualPicture;
         
                     // Desenha o bitmap do personagem no retângulo do player 1
                     al_draw_scaled_bitmap(
                         player2->squat->sprite,
                         player2->squat->xPicture[aPicture], 0,
-                        player_bitmap_width, player_bitmap_height,
-                        player2->x - player_rect_width / 2, player2->y - player_rect_height/2,
-                        player_rect_width, player_rect_height,
+                        player2_bitmap_width, player2_bitmap_height,
+                        player2->x - player2_rect_width / 2, player2->y - player2_rect_height/2,
+                        player2_rect_width, player2_rect_height,
                         0
                     );
                 }
             }
 
             if (player1->fight->punch && !player1->fight->kick) {
-                // Calcula a largura e a altura do bitmap do personagem
-                float player_bitmap_width = 200;
-                float player_bitmap_height = 159;
-
-                // Calcula a largura e a altura do retângulo do player 1
-                float player_rect_width = player1->base * 14;
-                float player_rect_height = player1->height * 1.8;
                 unsigned char aPicture = player1->fight->actualPicturePunch;
     
                 // Desenha o bitmap do personagem no retângulo do player 1
                 al_draw_scaled_bitmap(
                     player1->fight->spritePunch,
                     player1->fight->xPicturePunch[aPicture], 0,
-                    player_bitmap_width, player_bitmap_height,
-                    player1->x - player_rect_width / 2, player1->y - player_rect_height/2,
-                    player_rect_width, player_rect_height,
+                    player1_bitmap_width, player1_bitmap_height,
+                    player1->x - player1_rect_width / 2, player1->y - player1_rect_height/2,
+                    player1_rect_width, player1_rect_height,
                     0
                 );
             }
 
             if (player2->fight->punch && !player2->fight->kick) {
-                // Calcula a largura e a altura do bitmap do personagem
-                float player_bitmap_width = 210;
-                float player_bitmap_height = 180;
-
-                // Calcula a largura e a altura do retângulo do player 1
-                float player_rect_width = player2->base * 13;
-                float player_rect_height = player2->height * 1.95;
                 unsigned char aPicture = player2->fight->actualPicturePunch;
     
                 // Desenha o bitmap do personagem no retângulo do player 1
                 al_draw_scaled_bitmap(
                     player2->fight->spritePunch,
                     player2->fight->xPicturePunch[aPicture], 0,
-                    player_bitmap_width, player_bitmap_height,
-                    player2->x - player_rect_width / 2, player2->y - player_rect_height/2,
-                    player_rect_width, player_rect_height,
+                    player2_bitmap_width, player2_bitmap_height,
+                    player2->x - player2_rect_width / 2, player2->y - player2_rect_height/2,
+                    player2_rect_width, player2_rect_height,
                     0
                 );
             }
 
 
             if (player1->fight->kick && !player1->fight->punch) {
-                // Calcula a largura e a altura do bitmap do personagem
-                float player_bitmap_width = 200;
-                float player_bitmap_height = 159;
-
-                // Calcula a largura e a altura do retângulo do player 1
-                float player_rect_width = player1->base * 14;
-                float player_rect_height = player1->height * 1.8;
                 unsigned char aPicture = player1->fight->actualPictureKick;
     
                 // Desenha o bitmap do personagem no retângulo do player 1
                 al_draw_scaled_bitmap(
                     player1->fight->spriteKick,
                     player1->fight->xPictureKick[aPicture], 0,
-                    player_bitmap_width, player_bitmap_height,
-                    player1->x - player_rect_width / 2, player1->y - player_rect_height/2,
-                    player_rect_width, player_rect_height,
+                    player1_bitmap_width, player1_bitmap_height,
+                    player1->x - player1_rect_width / 2, player1->y - player1_rect_height/2,
+                    player1_rect_width, player1_rect_height,
                     0
                 );
             }
 
             if (player2->fight->kick && !player2->fight->punch) {
-                // Calcula a largura e a altura do bitmap do personagem
-                float player_bitmap_width = 210;
-                float player_bitmap_height = 180;
-
-                // Calcula a largura e a altura do retângulo do player 1
-                float player_rect_width = player1->base * 13;
-                float player_rect_height = player1->height * 1.95;
                 unsigned char aPicture = player2->fight->actualPictureKick;
     
                 // Desenha o bitmap do personagem no retângulo do player 1
                 al_draw_scaled_bitmap(
                     player2->fight->spriteKick,
                     player2->fight->xPictureKick[aPicture], 0,
-                    player_bitmap_width, player_bitmap_height,
-                    player2->x - player_rect_width / 2, player2->y - player_rect_height/2,
-                    player_rect_width, player_rect_height,
+                    player2_bitmap_width, player2_bitmap_height,
+                    player2->x - player2_rect_width / 2, player2->y - player2_rect_height/2,
+                    player2_rect_width, player2_rect_height,
                     0
                 );
             }
@@ -432,7 +395,7 @@ int main (void) {
         else if (event.type == 42) break;
     }
 
-    //al_destroy_bitmap(bMap->background);
+    al_destroy_bitmap(bMap->background);
     //free(bMap);
     al_destroy_font(font);
     al_destroy_timer(timer);

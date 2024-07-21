@@ -2,7 +2,7 @@
 
 void battleMap(map* m, unsigned char choice) {
     if (choice == 1) {
-        m->background = al_load_bitmap("../media/fundo1.jpg");
+        m->background = al_load_bitmap("../media/Background/FuPark.jpg");
         if (!m->background) {
             fprintf(stderr, "Falha ao carregar imagem de fundo.\n");
             exit(EXIT_FAILURE);
