@@ -1,5 +1,3 @@
-//mover o player quando estiver em cima do outro
-//se ligar no tamanho dos vetores dos sprites
 #ifndef __STATEMACHINE__
 #define __STATEMACHINE__
 
