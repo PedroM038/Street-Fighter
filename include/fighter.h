@@ -7,9 +7,9 @@
 #include <allegro5/allegro_image.h>
 
 #define STEP 9
-#define GRAVITY 1.5
-#define HITPUNCH 10
-#define HITKICK 10
+#define GRAVITY 1.8
+#define HITPUNCH 50
+#define HITKICK 100
 
 typedef struct attack{
     unsigned short punch;
@@ -21,7 +21,7 @@ typedef struct attack{
     unsigned short cooldown;
     unsigned short hit;
     unsigned char collision;
-    unsigned char life;
+    //unsigned char life;
     unsigned char actualPicturePunch;
     float xPicturePunch[20];
     ALLEGRO_BITMAP* spritePunch;

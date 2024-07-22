@@ -615,6 +615,14 @@ void updateFrameKick(player* p){
     }
 }
 
+void updateHealth(player* p){
+    if (p->healthStatus->life > LIFE / 2) p->healthStatus->color = al_map_rgb(0, 255, 0);
+    else if (p->healthStatus->life > LIFE / 4 && p->healthStatus->life <= LIFE / 2) p->healthStatus->color = al_map_rgb(255,255,0);
+    else p->healthStatus->color = al_map_rgb(255,0,0); 
+
+    p->healthStatus->xEnd = p->healthStatus->xInit + p->healthStatus->life;
+}
+
 void updatePosition(player* player1, player* player2) {
     int prevX, prevY;
     unsigned short maxFrame = 96;
@@ -665,6 +673,7 @@ void updatePosition(player* player1, player* player2) {
     updateSquat(player1, player2);
     updateKick(player1, player2);
     updatePunch(player1, player2);
+    updateHealth(player1);
 
     // Atualizar posição e animação do Player 2
     prevX = player2->x;
@@ -699,6 +708,7 @@ void updatePosition(player* player1, player* player2) {
     updateSquat(player2, player1);
     updateKick(player2, player1);
     updatePunch(player2, player1);
+    updateHealth(player2);
 }
 
 unsigned char punchCollision(player* attacker, player* target){
@@ -817,7 +827,7 @@ void updatePunch(player* attacker, player* target){
         attacker->fight->kick = 0;
         if (punchCollision(attacker, target)) {
             attacker->fight->collision = 1;
-            attacker->fight->life -= HITPUNCH;
+            target->healthStatus->life -= HITPUNCH;
         }
         updateFramePunch(attacker);
         attacker->fight->frame++;
@@ -838,7 +848,7 @@ void updateKick(player* attacker, player* target){
         attacker->fight->punch = 0;
         if (kickCollision(attacker, target)) {
             attacker->fight->collision = 1;
-            attacker->fight->life -= HITKICK;
+            target->healthStatus->life -= HITKICK;
         }
         updateFrameKick(attacker);
         attacker->fight->frame++;

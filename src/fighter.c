@@ -9,7 +9,7 @@ attack* fightInit(unsigned char hero){
     p->kick = 0;
     p->cooldown = 0;
     p->collision = 0;
-    p->life = 100;
+    //p->life = 100;
     if (hero == KIRA){
         p->spritePunch = al_load_bitmap("../media/Kira/basicAttack/basicAttack.png");
         if (!p->spritePunch){

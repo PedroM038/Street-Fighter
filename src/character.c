@@ -2,7 +2,7 @@
 #include <allegro5/allegro_image.h>
 
 player* playerInit(unsigned char character, unsigned short base, unsigned short height, unsigned short x, 
-    unsigned short y, unsigned short maxX, unsigned short maxY){
+    unsigned short y, unsigned short maxX, unsigned short maxY, unsigned char p){
     
     if ((x - base/2 < 0) || (x + base/2 > maxX) || (y - height/2 < 0) || (y + height/2 > maxY)) return NULL;
 
@@ -21,6 +21,7 @@ player* playerInit(unsigned char character, unsigned short base, unsigned short 
     newPlayer->walking = walkingInit(character);
     newPlayer->jump = jumpInit(character);
     newPlayer->squat = squatInit(character);
+    newPlayer->healthStatus = healthInit(character, p);
     return newPlayer;
 }
 
@@ -155,6 +156,7 @@ void playerDestroy(player* element){
     //destruir bitmap walking
     //destruir bitmap jump
     //destruir bitmap squat
+    //destruir struct health
     free(element->stop);
     free(element->walking);
     joystickDestroy(element->control);

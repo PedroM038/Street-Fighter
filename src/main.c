@@ -39,10 +39,10 @@ int main (void) {
     battleMap (bMap, 1);
     
    
-    player* player1 = playerInit(HANZO, 40, 260, 200, YSCREEN - 320, XSCREEN, YSCREEN); 
+    player* player1 = playerInit(HANZO, 40, 260, 200, YSCREEN - 320, XSCREEN, YSCREEN, 1); 
     if (!player1) return 1;
     
-    player* player2 = playerInit(KIRA, 40, 260, XSCREEN - 200, YSCREEN - 320, XSCREEN, YSCREEN);
+    player* player2 = playerInit(KIRA, 40, 260, XSCREEN - 200, YSCREEN - 320, XSCREEN, YSCREEN, 2);
     if (!player2) return 2;
 
     ALLEGRO_EVENT event;
@@ -96,16 +96,19 @@ int main (void) {
             updatePosition(player1, player2);
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
-        al_draw_scaled_bitmap(
-            bMap->background,
-            0, 0,
-            al_get_bitmap_width(bMap->background),
-            al_get_bitmap_height(bMap->background),
-            0,0,
-            XSCREEN,
-            YSCREEN,
-            0
-        );
+            al_draw_scaled_bitmap(
+                bMap->background,
+                0, 0,
+                al_get_bitmap_width(bMap->background),
+                al_get_bitmap_height(bMap->background),
+                0,0,
+                XSCREEN,
+                YSCREEN,
+                0
+            );
+
+            //unsigned short punchReach = (player1->base / 2) + 220;
+            //unsigned short kickReach = (player1->base / 2) + 220;
 
             /*if (player1->squat->isSquat && player2->squat->isSquat && !player1->jump->isJump && !player2->jump->isJump) {
                 al_draw_filled_rectangle(player1->x - player1->base/2, player1->y, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
@@ -123,8 +126,7 @@ int main (void) {
                 al_draw_filled_rectangle(player1->x - player1->base/2, player1->y - player1->height/2, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
 			    al_draw_filled_rectangle(player2->x - player2->base/2, player2->y - player2->height/2, player2->x + player2->base/2, player2->y + player2->height/2, al_map_rgb(0, 0, 255));
             }*/
-            unsigned short punchReach = (player1->base / 2) + 220;
-            unsigned short kickReach = (player1->base / 2) + 220;
+            
             /*
             // Player 1 punch walkBackward
             if (player1->fight->punch && player1->walkBackward) {
@@ -183,13 +185,22 @@ int main (void) {
                 unsigned short kickX = player2->x - player2->base / 2;
                 al_draw_filled_rectangle(kickX, player2->y, kickX - kickReach, player2->y + player2->height, al_map_rgb(255, 255, 255));
             }*/
+
+            //Vida dos player 1
+            al_draw_filled_rectangle(player1->healthStatus->xInit, player1->healthStatus->yInit, 
+                player1->healthStatus->xEnd, player1->healthStatus->yEnd, player1->healthStatus->color);
             
+
+            al_draw_filled_rectangle(player2->healthStatus->xInit, player2->healthStatus->yInit, 
+                player2->healthStatus->xEnd, player2->healthStatus->yEnd, player2->healthStatus->color);
+
+
             if (player1->fight->collision) al_draw_text(font, al_map_rgb(255,0,0), XSCREEN/2 + 75, YSCREEN/2 - 20, 0, "PUNCH PLAYER 1 !");
             else if (player2->fight->collision) al_draw_text(font, al_map_rgb(0,0,255), XSCREEN/2 - 75, YSCREEN/2 - 20, 0, "PUNCH PLAYER 2 !");
 
-            if (player1->fight->life <= 0 && player2->fight->life <= 0) break;
-            else if (player1->fight->life <= 0) break;
-            else if (player2->fight->life <= 0) break;
+            if (player1->healthStatus->life <= 0 && player2->healthStatus->life <= 0) break;
+            else if (player1->healthStatus->life <= 0) break;
+            else if (player2->healthStatus->life <= 0) break;
 
             if (player1->stop->isStop || player1->jump->isTop) {
                 
