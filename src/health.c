@@ -6,24 +6,32 @@ healthPlayer* healthInit(unsigned char hero, unsigned char player){
     h->life = LIFE;
     h->color = al_map_rgb(0, 255, 0);
     
-    h->yInit = 100;
-    h->yEnd = h->yInit + 30;
+    h->yInit = 150;
+    h->yEnd = h->yInit + 45;
 
     if (player == 1) {
-        h->xInit = 200;
+        h->xInit = 100;
         h->xEnd = h->xInit + h->life;
     }
     else {
-        h->xInit = XSCREEN - h->life - 200;
-        h->xEnd = h->xInit + h->life;
+        h->xInit = XSCREEN - 100;
+        h->xEnd = h->xInit - h->life;
     }
 
-    /*if (hero == KIRA) h->picturePlayer = al_load_bitmap("../media/Kira/picture/healthPicture.png");
-    else if (hero == HANZO) h->picturePlayer = al_load_bitmap("../media/Hanzo/picture/healthPicture.png");
+    if (hero == 1 && player == 1) h->picturePlayer = al_load_bitmap("../media/Kira/pictureFrame/pictureLifeP1.png");
+    
+    else if (hero == 1 && player == 2) h->picturePlayer = al_load_bitmap("../media/Kira/pictureFrame/pictureLifeP2.png");
+    
+    else if (hero == 2 && player == 1) h->picturePlayer = al_load_bitmap("../media/Hanzo/pictureFrame/pictureLifeP1.png");
+    
+    else if (hero == 2 && player == 2) h->picturePlayer = al_load_bitmap("../media/Hanzo/pictureFrame/pictureLifeP2.png");
+    
     if (!h->picturePlayer){
         fprintf(stderr, "Não foi possível carregar o sprite health\n");
         exit(EXIT_FAILURE); 
-    }*/
+    }
+
+    return h;
 }
 
 void healthDestroy(healthPlayer* h);

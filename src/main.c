@@ -39,10 +39,10 @@ int main (void) {
     battleMap (bMap, 1);
     
    
-    player* player1 = playerInit(HANZO, 40, 260, 200, YSCREEN - 320, XSCREEN, YSCREEN, 1); 
+    player* player1 = playerInit(KIRA, 40, 260, 200, YSCREEN - 320, XSCREEN, YSCREEN, 1); 
     if (!player1) return 1;
     
-    player* player2 = playerInit(KIRA, 40, 260, XSCREEN - 200, YSCREEN - 320, XSCREEN, YSCREEN, 2);
+    player* player2 = playerInit(HANZO, 40, 260, XSCREEN - 200, YSCREEN - 320, XSCREEN, YSCREEN, 2);
     if (!player2) return 2;
 
     ALLEGRO_EVENT event;
@@ -187,13 +187,16 @@ int main (void) {
             }*/
 
             //Vida dos player 1
+           
             al_draw_filled_rectangle(player1->healthStatus->xInit, player1->healthStatus->yInit, 
                 player1->healthStatus->xEnd, player1->healthStatus->yEnd, player1->healthStatus->color);
-            
+
+            al_draw_bitmap(player1->healthStatus->picturePlayer, 100, 0, 0); 
 
             al_draw_filled_rectangle(player2->healthStatus->xInit, player2->healthStatus->yInit, 
                 player2->healthStatus->xEnd, player2->healthStatus->yEnd, player2->healthStatus->color);
-
+            
+            al_draw_bitmap(player2->healthStatus->picturePlayer, XSCREEN- 817, 0, 0); 
 
             if (player1->fight->collision) al_draw_text(font, al_map_rgb(255,0,0), XSCREEN/2 + 75, YSCREEN/2 - 20, 0, "PUNCH PLAYER 1 !");
             else if (player2->fight->collision) al_draw_text(font, al_map_rgb(0,0,255), XSCREEN/2 - 75, YSCREEN/2 - 20, 0, "PUNCH PLAYER 2 !");

@@ -6,7 +6,7 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_image.h>
 
-#define STEP 9
+#define STEP 8
 #define GRAVITY 1.8
 #define HITPUNCH 50
 #define HITKICK 100
