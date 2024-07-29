@@ -14,7 +14,8 @@ player* playerInit(unsigned char character, unsigned short base, unsigned short 
     newPlayer->yInit = y;
     newPlayer->x = x;
     newPlayer->y = y;
-    newPlayer->squat = 0;
+    newPlayer->wins = 0;
+    newPlayer->cooldown = 0;
     newPlayer->control = joystickCreate();
     newPlayer->fight = fightInit(character);
     newPlayer->stop = stopInit(character);
@@ -22,7 +23,50 @@ player* playerInit(unsigned char character, unsigned short base, unsigned short 
     newPlayer->jump = jumpInit(character);
     newPlayer->squat = squatInit(character);
     newPlayer->healthStatus = healthInit(character, p);
+    newPlayer->dead = deadInit(character);
     return newPlayer;
+}
+
+void reInitp1(player* p){
+    p->x = 200;
+    p->y = YSCREEN - 350;
+    p->healthStatus->life = LIFE;
+}
+
+void reInitp2(player* p){
+    p->x = XSCREEN - 200;
+    p->y = YSCREEN - 350;
+    p->healthStatus->life = LIFE;
+}
+
+stateDead* deadInit(unsigned char hero){
+    stateDead* d = malloc(sizeof(stateDead));
+    d->frame = 0;
+    d->isDead = 0;
+    d->cooldown = 180;
+    if (hero == KIRA){
+        for (int i = 0; i < 10; i++){
+            d->xPicture[i] = i * 200;
+        }
+        d->actualPicture = 0;
+        d->sprite = al_load_bitmap("../media/Kira/dead/deadSprites.png");
+        if (!d->sprite){
+            fprintf(stderr, "Não foi possível carregar o sprite dead\n");
+            exit(EXIT_FAILURE);
+        }
+    }
+    else if (hero == HANZO){
+        for (int i = 0; i < 10; i++){
+            d->xPicture[i] = i * 210;
+        }
+        d->actualPicture = 0;
+        d->sprite = al_load_bitmap("../media/Hanzo/dead/deadSprites.png");
+        if (!d->sprite){
+            fprintf(stderr, "Não foi possível carregar o sprite dead\n");
+            exit(EXIT_FAILURE);
+        }
+    }
+    return d;
 }
 
 stateStop* stopInit(unsigned char hero){
@@ -152,6 +196,7 @@ stateSquat* squatInit(unsigned char hero){
 
 void playerDestroy(player* element){
     
+    //destruit bitmap dead
     //destroir bitmap stop
     //destruir bitmap walking
     //destruir bitmap jump

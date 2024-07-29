@@ -21,7 +21,6 @@ typedef struct attack{
     unsigned short cooldown;
     unsigned short hit;
     unsigned char collision;
-    //unsigned char life;
     unsigned char actualPicturePunch;
     float xPicturePunch[20];
     ALLEGRO_BITMAP* spritePunch;

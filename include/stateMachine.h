@@ -21,4 +21,5 @@ void updateJump(player* playerJump, player* other);
 void updatePosition(player* player1, player* player2);
 void updateSquat(player* player1, player* player2);
 void updateStop(player* p);
+void updateDead(player* p1);
 #endif

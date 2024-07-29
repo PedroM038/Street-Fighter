@@ -21,7 +21,7 @@ int main (void) {
     }
     al_init_primitives_addon();
     al_install_keyboard();
-    al_init_image_addon();  // Inicializa o add-on de imagens
+    al_init_image_addon(); 
 
 
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
@@ -39,10 +39,10 @@ int main (void) {
     battleMap (bMap, 1);
     
    
-    player* player1 = playerInit(KIRA, 40, 260, 200, YSCREEN - 320, XSCREEN, YSCREEN, 1); 
+    player* player1 = playerInit(HANZO, 40, 260, 200, YSCREEN - 350, XSCREEN, YSCREEN - 10, 1); 
     if (!player1) return 1;
     
-    player* player2 = playerInit(HANZO, 40, 260, XSCREEN - 200, YSCREEN - 320, XSCREEN, YSCREEN, 2);
+    player* player2 = playerInit(KIRA, 40, 260, XSCREEN - 200, YSCREEN - 350, XSCREEN, YSCREEN - 10, 2);
     if (!player2) return 2;
 
     ALLEGRO_EVENT event;
@@ -64,7 +64,7 @@ int main (void) {
         player1_bitmap_height = 159;
     
         player1_rect_width = player1->base * 14;
-        player1_rect_height = player1->height * 1.8;
+        player1_rect_height = player1->height * 1.85;
     } 
     else if (player1->hero == HANZO){
         player1_bitmap_width = 210;
@@ -79,7 +79,7 @@ int main (void) {
         player2_bitmap_height = 159;
     
         player2_rect_width = player2->base * 14;
-        player2_rect_height = player2->height * 1.8;
+        player2_rect_height = player2->height * 1.85;
     } 
     else if (player2->hero == HANZO){
         player2_bitmap_width = 210;
@@ -89,7 +89,7 @@ int main (void) {
         player2_rect_height = player2->height * 1.95;
     }
 
-    while(1){
+    while(player1->wins < 2 && player2->wins < 2){
         al_wait_for_event(queue, &event);
 
         if (event.type == 30){
@@ -105,7 +105,7 @@ int main (void) {
                 XSCREEN,
                 YSCREEN,
                 0
-            );
+        );
 
             //unsigned short punchReach = (player1->base / 2) + 220;
             //unsigned short kickReach = (player1->base / 2) + 220;
@@ -197,13 +197,6 @@ int main (void) {
                 player2->healthStatus->xEnd, player2->healthStatus->yEnd, player2->healthStatus->color);
             
             al_draw_bitmap(player2->healthStatus->picturePlayer, XSCREEN- 817, 0, 0); 
-
-            if (player1->fight->collision) al_draw_text(font, al_map_rgb(255,0,0), XSCREEN/2 + 75, YSCREEN/2 - 20, 0, "PUNCH PLAYER 1 !");
-            else if (player2->fight->collision) al_draw_text(font, al_map_rgb(0,0,255), XSCREEN/2 - 75, YSCREEN/2 - 20, 0, "PUNCH PLAYER 2 !");
-
-            if (player1->healthStatus->life <= 0 && player2->healthStatus->life <= 0) break;
-            else if (player1->healthStatus->life <= 0) break;
-            else if (player2->healthStatus->life <= 0) break;
 
             if (player1->stop->isStop || player1->jump->isTop) {
                 
@@ -384,6 +377,60 @@ int main (void) {
                 );
             }
 
+            if(player1->dead->isDead){
+                
+                unsigned char aPicture = player1->dead->actualPicture;
+    
+                // Desenha o bitmap do personagem no retângulo do player 1
+                al_draw_scaled_bitmap(
+                    player1->dead->sprite,
+                    player1->dead->xPicture[aPicture], 0,
+                    player1_bitmap_width, player1_bitmap_height,
+                    player1->x - player1_rect_width / 2, player1->y - player1_rect_height/2,
+                    player1_rect_width, player1_rect_height,
+                    0
+                );
+
+                if (player1->cooldown > 120){
+                    player1->cooldown = 0;
+                    player2->wins ++;
+                    reInitp1(player1);
+                    reInitp2(player2);
+                    //proxRound();
+                    continue;
+                }
+                else{
+                    player1->cooldown ++;
+                }
+            }
+
+            if(player2->dead->isDead){
+                
+                unsigned char aPicture = player2->dead->actualPicture;
+    
+                // Desenha o bitmap do personagem no retângulo do player 1
+                al_draw_scaled_bitmap(
+                    player2->dead->sprite,
+                    player2->dead->xPicture[aPicture], 0,
+                    player2_bitmap_width, player2_bitmap_height,
+                    player2->x - player2_rect_width / 2, player2->y - player2_rect_height/2,
+                    player2_rect_width, player2_rect_height,
+                    0
+                );
+
+                if (player2->cooldown > 120){
+                    player2->cooldown = 0;
+                    player1->wins ++;
+                    reInitp1(player1);
+                    reInitp2(player2);
+                    //proxRound();
+                    continue;
+                }
+                else{
+                    player2->cooldown ++;
+                }
+            }
+
             al_flip_display();
         }
 
@@ -394,8 +441,8 @@ int main (void) {
 
             if (event.keyboard.keycode == 23) joystickUp(player1->control);
             
-            if (event.keyboard.keycode == ALLEGRO_KEY_Q && player1->fight->cooldown == 0 && !player1->fight->kick) player1->fight->punch = 1;
-            else if (event.keyboard.keycode == ALLEGRO_KEY_E && player1->fight->cooldown == 0 && !player1->fight->punch) player1->fight->kick = 1;
+            if (event.keyboard.keycode == ALLEGRO_KEY_Q && player1->fight->cooldown == 0 && !player1->fight->kick && !player1->dead->isDead) player1->fight->punch = 1;
+            else if (event.keyboard.keycode == ALLEGRO_KEY_E && player1->fight->cooldown == 0 && !player1->fight->punch && !player1->dead->isDead) player1->fight->kick = 1;
             
             if (event.keyboard.keycode == 82) joystickLeft(player2->control);
             else if (event.keyboard.keycode == 83) joystickRight(player2->control);
@@ -403,8 +450,8 @@ int main (void) {
         
             if (event.keyboard.keycode == 84) joystickUp(player2->control);
             
-            if (event.keyboard.keycode == ALLEGRO_KEY_PAD_0 && player2->fight->cooldown == 0 && !player2->fight->kick) player2->fight->punch = 1;
-            else if (event.keyboard.keycode == ALLEGRO_KEY_PAD_1 && player2->fight->cooldown == 0 && !player2->fight->punch) player2->fight->kick = 1;
+            if (event.keyboard.keycode == ALLEGRO_KEY_PAD_0 && player2->fight->cooldown == 0 && !player2->fight->kick && !player2->dead->isDead) player2->fight->punch = 1;
+            else if (event.keyboard.keycode == ALLEGRO_KEY_PAD_1 && player2->fight->cooldown == 0 && !player2->fight->punch && !player2->dead->isDead) player2->fight->kick = 1;
         }
         else if (event.type == 42) break;
     }

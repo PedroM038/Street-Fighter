@@ -205,82 +205,30 @@ void updateFrameSquat(player* p){
 
 void updateFrameStop(player* p){
     if (p->walkForward && p->hero == KIRA) {
-        unsigned short maxFrame = 170;
+        unsigned short maxFrame = 40;
         unsigned short interval = 10;
-        if(p->stop->frame % maxFrame >= maxFrame - interval*1)
-            p->stop->actualPicture = 0;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*2)
-            p->stop->actualPicture = 4;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*3)
-            p->stop->actualPicture = 5;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*4)
-            p->stop->actualPicture = 6;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*5)
-            p->stop->actualPicture = 7;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*6)
-            p->stop->actualPicture = 8;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*7)
-            p->stop->actualPicture = 7;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*8)
-            p->stop->actualPicture = 6;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*9)
-            p->stop->actualPicture = 5;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*10)
-            p->stop->actualPicture = 4;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*11)
-            p->stop->actualPicture = 0;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*12)
-            p->stop->actualPicture = 1;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*13)
-            p->stop->actualPicture = 2;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*14)
+        if (p->stop->frame % maxFrame >= maxFrame - interval*1)
             p->stop->actualPicture = 3;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*15)
+        else if (p->stop->frame % maxFrame >= maxFrame - interval*2)
             p->stop->actualPicture = 2;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*16)
+        else if (p->stop->frame % maxFrame >= maxFrame - interval*3)
             p->stop->actualPicture = 1;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*17)
+        else if (p->stop->frame % maxFrame >= maxFrame - interval*4)
             p->stop->actualPicture = 0;
             
         p->stop->frame += 1;
         if (p->stop->frame >= maxFrame) p->stop->frame = 0;
     }
     else if (p->walkBackward && p->hero == KIRA){
-        unsigned short maxFrame = 170;
+        unsigned short maxFrame = 40;
         unsigned short interval = 10;
         if(p->stop->frame % maxFrame >= maxFrame - interval*1)
-            p->stop->actualPicture = 9;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*2)
-            p->stop->actualPicture = 13;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*3)
-            p->stop->actualPicture = 14;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*4)
-            p->stop->actualPicture = 15;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*5)
-            p->stop->actualPicture = 16;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*6)
-            p->stop->actualPicture = 17;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*7)
-            p->stop->actualPicture = 16;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*8)
-            p->stop->actualPicture = 15;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*9)
-            p->stop->actualPicture = 14;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*10)
-            p->stop->actualPicture = 13;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*11)
-            p->stop->actualPicture = 9;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*12)
-            p->stop->actualPicture = 10;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*13)
-            p->stop->actualPicture = 11;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*14)
             p->stop->actualPicture = 12;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*15)
+        else if (p->stop->frame % maxFrame >= maxFrame - interval*2)
             p->stop->actualPicture = 11;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*16)
+        else if (p->stop->frame % maxFrame >= maxFrame - interval*3)
             p->stop->actualPicture = 10;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*17)
+        else if (p->stop->frame % maxFrame >= maxFrame - interval*4)
             p->stop->actualPicture = 9;
             
         p->stop->frame += 1;
@@ -615,6 +563,66 @@ void updateFrameKick(player* p){
     }
 }
 
+void updateFrameDead(player* p) {
+    if (p->hero == KIRA && p->walkForward){
+        unsigned short maxFrame = 60;
+        unsigned short interval = 12;
+        if(p->dead->frame >= maxFrame - interval*1)
+            p->dead->actualPicture = 4;
+        else if (p->dead->frame >= maxFrame - interval*2)
+            p->dead->actualPicture = 3;
+        else if (p->dead->frame >= maxFrame - interval*3)
+            p->dead->actualPicture = 2;
+        else if (p->dead->frame >= maxFrame - interval*4)
+            p->dead->actualPicture = 1;
+        else if (p->dead->frame >= maxFrame)
+            p->dead->actualPicture = 0;
+    }
+    else if (p->hero == KIRA && p->walkBackward){
+        unsigned short maxFrame = 60;
+        unsigned short interval = 12;
+        if(p->dead->frame >= maxFrame - interval*1)
+            p->dead->actualPicture = 9;
+        else if (p->dead->frame >= maxFrame - interval*2)
+            p->dead->actualPicture = 8;
+        else if (p->dead->frame >= maxFrame - interval*3)
+            p->dead->actualPicture = 7;
+        else if (p->dead->frame >= maxFrame - interval*4)
+            p->dead->actualPicture = 6;
+        else if (p->dead->frame >= maxFrame)
+            p->dead->actualPicture = 5;
+    }
+    else if (p->hero == HANZO && p->walkForward){
+        unsigned short maxFrame = 60;
+        unsigned short interval = 12;
+        if(p->dead->frame >= maxFrame - interval*1)
+            p->dead->actualPicture = 4;
+        else if (p->dead->frame >= maxFrame - interval*2)
+            p->dead->actualPicture = 3;
+        else if (p->dead->frame >= maxFrame - interval*3)
+            p->dead->actualPicture = 2;
+        else if (p->dead->frame >= maxFrame - interval*4)
+            p->dead->actualPicture = 1;
+        else if (p->dead->frame >= maxFrame)
+            p->dead->actualPicture = 0;
+    } 
+
+    else if (p->hero == HANZO && p->walkBackward){
+        unsigned short maxFrame = 60;
+        unsigned short interval = 12;
+        if(p->dead->frame >= maxFrame - interval*1)
+            p->dead->actualPicture = 9;
+        else if (p->dead->frame >= maxFrame - interval*2)
+            p->dead->actualPicture = 8;
+        else if (p->dead->frame >= maxFrame - interval*3)
+            p->dead->actualPicture = 7;
+        else if (p->dead->frame >= maxFrame - interval*4)
+            p->dead->actualPicture = 6;
+        else if (p->dead->frame >= maxFrame)
+            p->dead->actualPicture = 5;
+    } 
+}
+
 void updateHealth(player* p, unsigned char pl){
     if (p->healthStatus->life > LIFE / 2) p->healthStatus->color = al_map_rgb(0, 255, 0);
     else if (p->healthStatus->life > LIFE / 4 && p->healthStatus->life <= LIFE / 2) p->healthStatus->color = al_map_rgb(255,255,0);
@@ -622,11 +630,12 @@ void updateHealth(player* p, unsigned char pl){
 
     if (pl == 1) p->healthStatus->xEnd = p->healthStatus->xInit + p->healthStatus->life;
     else p->healthStatus->xEnd = p->healthStatus->xInit - p->healthStatus->life;
+
+    if (p->healthStatus->life < 0) p->healthStatus->life = 0;
 }
 
 void updatePosition(player* player1, player* player2) {
     int prevX, prevY;
-    unsigned short maxFrame = 96;
 
     // Determinar se os jogadores estão caminhando para frente ou para trás
     if (player1->x <= player2->x) {
@@ -641,10 +650,13 @@ void updatePosition(player* player1, player* player2) {
         player2->walkForward = 1;
     }
 
+    updateDead(player1);
+    updateDead(player2);
+
     // Atualizar posição e animação do Player 1
     prevX = player1->x;
     prevY = player1->y;
-    if (player1->control->left && !player1->fight->punch  && !player1->fight->kick && !player1->control->right) {
+    if (player1->control->left && !player1->fight->punch  && !player1->fight->kick && !player1->control->right && !player1->dead->isDead) {
         playerMove(player1, 1, 0, XSCREEN, YSCREEN);
         if (collision(player1, player2)) {
             player1->x = prevX;
@@ -654,7 +666,7 @@ void updatePosition(player* player1, player* player2) {
         if (!player1->jump->isJump && !player1->squat->isSquat)
                 updateWalkingFrame(player1);
 
-    } else if (player1->control->right && !player1->fight->punch && !player1->fight->kick && !player1->control->left) {
+    } else if (player1->control->right && !player1->fight->punch && !player1->fight->kick && !player1->control->left && !player1->dead->isDead) {
         playerMove(player1, 1, 1, XSCREEN, YSCREEN);
         if (collision(player1, player2)) {
             player1->x = prevX;
@@ -679,7 +691,7 @@ void updatePosition(player* player1, player* player2) {
     // Atualizar posição e animação do Player 2
     prevX = player2->x;
     prevY = player2->y;
-    if (player2->control->left && !player2->fight->punch && !player2->fight->kick && !player2->control->right) {
+    if (player2->control->left && !player2->fight->punch && !player2->fight->kick && !player2->control->right && !player2->dead->isDead) {
         playerMove(player2, 1, 0, XSCREEN, YSCREEN);
         if (collision(player2, player1)) {
             player2->x = prevX;
@@ -689,7 +701,7 @@ void updatePosition(player* player1, player* player2) {
         if (!player2->jump->isJump && !player2->squat->isSquat)
             updateWalkingFrame(player2);
 
-    } else if (player2->control->right && !player2->fight->punch && !player2->fight->kick && !player2->control->left) {
+    } else if (player2->control->right && !player2->fight->punch && !player2->fight->kick && !player2->control->left && !player2->dead->isDead) {
         playerMove(player2, 1, 1, XSCREEN, YSCREEN);
         if (collision(player2, player1)) {
             player2->x = prevX;
@@ -770,7 +782,7 @@ unsigned char kickCollision(player* attacker, player* target){
 
 void updateJump(player* playerJump, player* other){
     
-    if (playerJump->control->up && playerJump->jump->isJump == 0 && playerJump->y == playerJump->yInit) {
+    if (playerJump->control->up && playerJump->jump->isJump == 0 && playerJump->y == playerJump->yInit && !playerJump->dead->isDead) {
         playerJump->jump->isJump = 1;
         playerJump->jump->velocityY = -40;
     }
@@ -801,7 +813,7 @@ void updateJump(player* playerJump, player* other){
 }
 
 void updateSquat(player* s, player* player2){
-    if (s->control->down && !s->control->left && !s->control->right && !s->jump->isJump){
+    if (s->control->down && !s->control->left && !s->control->right && !s->jump->isJump && !s->dead->isDead){
         s->squat->isSquat = 1;
         updateFrameSquat (s);
     } else {
@@ -811,7 +823,7 @@ void updateSquat(player* s, player* player2){
 
 void updateStop(player* p){
     if (((!p->control->right && !p->control->left) || (p->control->right && p->control->left)) && !p->jump->isJump && !p->squat->isSquat && !p->fight->punch
-        && !p->fight->kick){
+        && !p->fight->kick && !p->dead->isDead){
         p->stop->isStop = 1;
         updateFrameStop(p);
        
@@ -824,11 +836,13 @@ void updateStop(player* p){
 
 void updatePunch(player* attacker, player* target){
 
-     if (attacker->fight->punch) {
+     if (attacker->fight->punch && !attacker->dead->isDead) {
         attacker->fight->kick = 0;
         if (punchCollision(attacker, target)) {
             attacker->fight->collision = 1;
             target->healthStatus->life -= HITPUNCH;
+            if (target->walkBackward) playerMove(target, 2*STEP, 1, XSCREEN, YSCREEN);
+            else if (target->walkForward) playerMove(target, 2*STEP, 0, XSCREEN, YSCREEN);
         }
         updateFramePunch(attacker);
         attacker->fight->frame++;
@@ -845,11 +859,13 @@ void updatePunch(player* attacker, player* target){
 }
 
 void updateKick(player* attacker, player* target){
-    if (attacker->fight->kick) {
+    if (attacker->fight->kick && !attacker->dead->isDead) {
         attacker->fight->punch = 0;
         if (kickCollision(attacker, target)) {
             attacker->fight->collision = 1;
             target->healthStatus->life -= HITKICK;
+            if (target->walkBackward) playerMove(target, 2*STEP, 1, XSCREEN, YSCREEN);
+            else if (target->walkForward) playerMove(target, 2*STEP, 0, XSCREEN, YSCREEN);
         }
         updateFrameKick(attacker);
         attacker->fight->frame++;
@@ -861,4 +877,15 @@ void updateKick(player* attacker, player* target){
             attacker->fight->cooldown = attacker->fight->totalCooldown;
         }
     } else if (attacker->fight->cooldown > 0) attacker->fight->cooldown --;
+}
+
+void updateDead(player* p1){
+    if (p1->healthStatus->life <= 0 && p1->dead->cooldown > 0){
+        p1->dead->isDead = 1;
+        updateFrameDead(p1);
+        p1->dead->frame ++;
+    }
+    else {
+        p1->dead->isDead = 0;
+    }
 }

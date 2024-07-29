@@ -13,6 +13,16 @@
 #define KIRA 1
 #define HANZO 2
 
+typedef struct stateDead{
+    unsigned char flag;
+    unsigned short cooldown;
+    unsigned char isDead;
+    unsigned short frame;
+    float xPicture[20];
+    unsigned char actualPicture;
+    ALLEGRO_BITMAP* sprite;
+} stateDead;
+
 typedef struct stateStop{
     unsigned char isStop;
     unsigned short frame;
@@ -55,9 +65,10 @@ typedef struct player{
     unsigned short yInit;   
     unsigned short x;       //center X point
     unsigned short y;       //center Y point
-    //unsigned short squat;   
     unsigned char walkForward;
     unsigned char walkBackward;
+    unsigned char wins;
+    unsigned short cooldown;
     healthPlayer* healthStatus;
     attack* fight;
     joystick* control;
@@ -65,8 +76,10 @@ typedef struct player{
     stateWalking* walking;
     stateJump* jump;
     stateSquat* squat;
+    stateDead* dead;
 } player;
 
+stateDead* deadInit(unsigned char hero);
 stateStop* stopInit(unsigned char hero);
 stateWalking* walkingInit(unsigned char hero);
 stateJump* jumpInit(unsigned char hero);
@@ -75,6 +88,8 @@ stateSquat* squatInit(unsigned char hero);
 player* playerInit(unsigned char character, unsigned short base, unsigned short height, unsigned short x, 
     unsigned short y, unsigned short maxX, unsigned short maxY, unsigned char p);
     
+void reInitp1 (player* p1);
+void reInitp2 (player* p2);
 void playerDestroy(player* element);
 
 #endif
