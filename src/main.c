@@ -199,12 +199,21 @@ int main (void) {
            
             al_draw_filled_rectangle(player1->healthStatus->xInit, player1->healthStatus->yInit, 
                 player1->healthStatus->xEnd, player1->healthStatus->yEnd, player1->healthStatus->color);
+            
+            al_draw_filled_rectangle(player1->staminaStatus->xInit, player1->staminaStatus->yInit,
+            player1->staminaStatus->xEnd, player1->staminaStatus->yEnd, al_map_rgb(255,255,255));
+
+            al_draw_filled_rectangle(player1->staminaStatus->xInit, player1->staminaStatus->yInit,
+            player1->staminaStatus->xEnd, player1->staminaStatus->yEnd, al_map_rgb(255,255,255));
 
             al_draw_bitmap(player1->healthStatus->picturePlayer, 100, 0, 0); 
 
             al_draw_filled_rectangle(player2->healthStatus->xInit, player2->healthStatus->yInit, 
                 player2->healthStatus->xEnd, player2->healthStatus->yEnd, player2->healthStatus->color);
             
+            al_draw_filled_rectangle(player2->staminaStatus->xInit, player2->staminaStatus->yInit,
+            player2->staminaStatus->xEnd, player2->staminaStatus->yEnd, al_map_rgb(255,255,255));
+
             al_draw_bitmap(player2->healthStatus->picturePlayer, XSCREEN- 817, 0, 0); 
 
             if (player1->stop->isStop || player1->jump->isTop && !player1->dead->isDead) {
@@ -513,8 +522,11 @@ int main (void) {
 
             if (event.keyboard.keycode == 23) joystickUp(player1->control);
             
-            if (event.keyboard.keycode == ALLEGRO_KEY_Q && player1->fight->cooldown == 0 && !player1->fight->kick && !player1->dead->isDead) player1->fight->punch = 1;
-            else if (event.keyboard.keycode == ALLEGRO_KEY_E && player1->fight->cooldown == 0 && !player1->fight->punch && !player1->dead->isDead) player1->fight->kick = 1;
+            if (event.keyboard.keycode == ALLEGRO_KEY_Q && player1->fight->cooldown == 0 && !player1->fight->kick 
+                && !player1->dead->isDead && player1->staminaStatus->stamina > 100) player1->fight->punch = 1;
+
+            else if (event.keyboard.keycode == ALLEGRO_KEY_E && player1->fight->cooldown == 0 && 
+            !player1->fight->punch && !player1->dead->isDead && player1->staminaStatus->stamina > 150) player1->fight->kick = 1;
             
             if (event.keyboard.keycode == 82) joystickLeft(player2->control);
             else if (event.keyboard.keycode == 83) joystickRight(player2->control);
@@ -522,8 +534,10 @@ int main (void) {
         
             if (event.keyboard.keycode == 84) joystickUp(player2->control);
             
-            if (event.keyboard.keycode == ALLEGRO_KEY_PAD_0 && player2->fight->cooldown == 0 && !player2->fight->kick && !player2->dead->isDead) player2->fight->punch = 1;
-            else if (event.keyboard.keycode == ALLEGRO_KEY_PAD_1 && player2->fight->cooldown == 0 && !player2->fight->punch && !player2->dead->isDead) player2->fight->kick = 1;
+            if (event.keyboard.keycode == ALLEGRO_KEY_PAD_0 && player2->fight->cooldown == 0 && !player2->fight->kick 
+                && !player2->dead->isDead && player2->staminaStatus->stamina > 100) player2->fight->punch = 1;
+            else if (event.keyboard.keycode == ALLEGRO_KEY_PAD_1 && player2->fight->cooldown == 0 && 
+                !player2->fight->punch && !player2->dead->isDead && player2->staminaStatus->stamina > 150) player2->fight->kick = 1;
         }
         else if (event.type == 42) break;
     }

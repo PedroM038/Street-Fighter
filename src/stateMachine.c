@@ -634,6 +634,22 @@ void updateHealth(player* p, unsigned char pl){
     if (p->healthStatus->life < 0) p->healthStatus->life = 0;
 }
 
+void updateStamina(player* p, unsigned char pl){
+    if (p->staminaStatus->stamina < 0) p->staminaStatus->stamina = 0;
+    
+    if (pl == 1) p->staminaStatus->xEnd = p->staminaStatus->xInit + p->staminaStatus->stamina;
+    else p->staminaStatus->xEnd = p->staminaStatus->xInit - p->staminaStatus->stamina;
+
+      
+    p->staminaStatus->stamina++;
+
+    if (pl == 1 && p->staminaStatus->stamina + p->staminaStatus->xInit > STAMINA + 110)
+        p->staminaStatus->stamina = 110 + STAMINA - p->staminaStatus->xInit;
+
+    if (pl == 2 && p->staminaStatus->xInit - p->staminaStatus->stamina < p->staminaStatus->xInit - STAMINA)
+        p->staminaStatus->stamina = STAMINA;
+}
+
 void updatePosition(player* player1, player* player2) {
     int prevX, prevY;
 
@@ -687,6 +703,7 @@ void updatePosition(player* player1, player* player2) {
     updateKick(player1, player2);
     updatePunch(player1, player2);
     updateHealth(player1, 1);
+    updateStamina(player1, 1);
 
     // Atualizar posição e animação do Player 2
     prevX = player2->x;
@@ -722,6 +739,7 @@ void updatePosition(player* player1, player* player2) {
     updateKick(player2, player1);
     updatePunch(player2, player1);
     updateHealth(player2, 2);
+    updateStamina(player2, 2);
 }
 
 unsigned char punchCollision(player* attacker, player* target){
@@ -784,6 +802,7 @@ void updateJump(player* playerJump, player* other){
     
     if (playerJump->control->up && playerJump->jump->isJump == 0 && playerJump->y == playerJump->yInit && !playerJump->dead->isDead) {
         playerJump->jump->isJump = 1;
+        playerJump->staminaStatus->stamina -= 30;
         playerJump->jump->velocityY = -40;
     }
 
@@ -835,9 +854,9 @@ void updateStop(player* p){
 
 
 void updatePunch(player* attacker, player* target){
-
      if (attacker->fight->punch && !attacker->dead->isDead) {
         attacker->fight->kick = 0;
+        attacker->staminaStatus->stamina -= 4;
         if (punchCollision(attacker, target)) {
             attacker->fight->collision = 1;
             target->healthStatus->life -= HITPUNCH;
@@ -861,6 +880,7 @@ void updatePunch(player* attacker, player* target){
 void updateKick(player* attacker, player* target){
     if (attacker->fight->kick && !attacker->dead->isDead) {
         attacker->fight->punch = 0;
+        attacker->staminaStatus->stamina -= 4;
         if (kickCollision(attacker, target)) {
             attacker->fight->collision = 1;
             target->healthStatus->life -= HITKICK;

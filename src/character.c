@@ -16,6 +16,7 @@ player* playerInit(unsigned char character, unsigned short base, unsigned short 
     newPlayer->y = y;
     newPlayer->wins = 0;
     newPlayer->cooldown = 0;
+    newPlayer->staminaStatus = staminaCreate(p);
     newPlayer->control = joystickCreate();
     newPlayer->fight = fightInit(character);
     newPlayer->stop = stopInit(character);
@@ -190,6 +191,23 @@ stateSquat* squatInit(unsigned char hero){
             fprintf(stderr, "Não foi possível carregar o sprite squat hanzo\n");
             exit(EXIT_FAILURE);
         }
+    }
+    return s;
+}
+
+staminaPlayer* staminaCreate(unsigned char player){
+    staminaPlayer* s = malloc(sizeof(staminaPlayer));
+    s->stamina = STAMINA;
+    s->yInit = 210;
+    s->yEnd = s->yInit + 45;
+
+    if (player == 1) {
+        s->xInit = 110;
+        s->xEnd = (s->xInit + s->stamina);
+    }
+    else {
+        s->xInit = XSCREEN - 110;
+        s->xEnd = (s->xInit - s->stamina);
     }
     return s;
 }

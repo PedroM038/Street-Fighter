@@ -69,6 +69,7 @@ typedef struct player{
     unsigned char walkBackward;
     unsigned char wins;
     unsigned short cooldown;
+    staminaPlayer* staminaStatus;
     healthPlayer* healthStatus;
     attack* fight;
     joystick* control;
@@ -84,6 +85,7 @@ stateStop* stopInit(unsigned char hero);
 stateWalking* walkingInit(unsigned char hero);
 stateJump* jumpInit(unsigned char hero);
 stateSquat* squatInit(unsigned char hero);
+staminaPlayer* staminaCreate(unsigned char player);
 
 player* playerInit(unsigned char character, unsigned short base, unsigned short height, unsigned short x, 
     unsigned short y, unsigned short maxX, unsigned short maxY, unsigned char p);

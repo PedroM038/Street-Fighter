@@ -10,6 +10,15 @@
 #define GRAVITY 1.8
 #define HITPUNCH 50
 #define HITKICK 100
+#define STAMINA 400
+
+typedef struct staminaPlayer{
+    short stamina;
+    unsigned short xEnd;
+    unsigned short yEnd;
+    unsigned short yInit;
+    unsigned short xInit; 
+} staminaPlayer;
 
 typedef struct attack{
     unsigned short punch;
