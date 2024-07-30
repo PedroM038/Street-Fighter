@@ -1,4 +1,4 @@
-parametrosCompilacao = -g -I/usr/include/x86_64-linux-gnu -lallegro_main -lallegro_font -lallegro_primitives -lallegro_image -lallegro -lm
+parametrosCompilacao = -g -I/usr/include/x86_64-linux-gnu -lallegro_main -lallegro_font -lallegro_ttf -lallegro_primitives -lallegro_image -lallegro -lm
 
 all: shadowCombat
 

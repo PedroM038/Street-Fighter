@@ -6,6 +6,7 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_ttf.h>
 
 #include "../include/fighter.h"
 #include "../include/screen.h"
@@ -21,12 +22,14 @@ int main (void) {
     }
     al_init_primitives_addon();
     al_install_keyboard();
-    al_init_image_addon(); 
-
+    al_init_image_addon();
+    al_init_font_addon();
+    al_init_ttf_addon();
 
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
-    ALLEGRO_FONT* font = al_create_builtin_font();
+    ALLEGRO_FONT* font = al_load_ttf_font("../media/Fonts/punk.ttf", 30, 0);
+    ALLEGRO_FONT* round = al_load_ttf_font("../media/Fonts/punk.ttf", 40, 0);
     ALLEGRO_DISPLAY* disp = al_create_display(XSCREEN, YSCREEN);
 
     al_register_event_source(queue, al_get_keyboard_event_source());
@@ -58,7 +61,11 @@ int main (void) {
     float player2_rect_height;
     float player2_bitmap_width;
     float player2_bitmap_height;
-            
+
+    unsigned short roundTimer = 60;
+    unsigned short timerControl = 1;
+    unsigned char actualRound = 1;
+
     if (player1->hero == KIRA){
         player1_bitmap_width = 200;
         player1_bitmap_height = 159;
@@ -89,7 +96,7 @@ int main (void) {
         player2_rect_height = player2->height * 1.95;
     }
 
-    while(player1->wins < 2 && player2->wins < 2){
+    while(player1->wins < 2 && player2->wins < 2 && actualRound <= 3){
         al_wait_for_event(queue, &event);
 
         if (event.type == 30){
@@ -105,7 +112,9 @@ int main (void) {
                 XSCREEN,
                 YSCREEN,
                 0
-        );
+            );
+
+            timerControl++;
 
             //unsigned short punchReach = (player1->base / 2) + 220;
             //unsigned short kickReach = (player1->base / 2) + 220;
@@ -198,7 +207,7 @@ int main (void) {
             
             al_draw_bitmap(player2->healthStatus->picturePlayer, XSCREEN- 817, 0, 0); 
 
-            if (player1->stop->isStop || player1->jump->isTop) {
+            if (player1->stop->isStop || player1->jump->isTop && !player1->dead->isDead) {
                 
                 unsigned char aPicture = player1->stop->actualPicture;
 
@@ -212,7 +221,7 @@ int main (void) {
                 );
             }
 
-            if (player2->stop->isStop || player2->jump->isTop) {
+            if (player2->stop->isStop || player2->jump->isTop && !player2->dead->isDead) {
 
                 unsigned char aPicture = player2->stop->actualPicture;
 
@@ -226,7 +235,7 @@ int main (void) {
                 );
             }
 
-            if (player1->walking->isWalking && !player1->jump->isJump && !player1->squat->isSquat) {
+            if (player1->walking->isWalking && !player1->jump->isJump && !player1->squat->isSquat && !player1->dead->isDead) {
         
                 unsigned char aPicture = player1->walking->actualPicture;
     
@@ -241,7 +250,7 @@ int main (void) {
                 );
             }
 
-            if (player2->walking->isWalking && !player2->jump->isJump && !player2->squat->isSquat) {
+            if (player2->walking->isWalking && !player2->jump->isJump && !player2->squat->isSquat && !player2->dead->isDead) {
 
                 unsigned char aPicture = player2->walking->actualPicture;
     
@@ -256,7 +265,7 @@ int main (void) {
                 );
             }
 
-            if (player1->jump->isJump && !player1->jump->isTop) {
+            if (player1->jump->isJump && !player1->jump->isTop && !player1->dead->isDead) {
                 if (!player1->fight->punch && !player1->fight->kick){
                     unsigned char aPicture = player1->jump->actualPicture;
         
@@ -272,7 +281,7 @@ int main (void) {
                 }
             }
 
-            if (player2->jump->isJump && !player2->jump->isTop) {
+            if (player2->jump->isJump && !player2->jump->isTop && !player2->dead->isDead) {
                 if (!player2->fight->punch && !player2->fight->kick){
                     unsigned char aPicture = player2->jump->actualPicture;
         
@@ -288,7 +297,7 @@ int main (void) {
                 }
             }
 
-            if (player1->squat->isSquat && !player1->jump->isTop) {
+            if (player1->squat->isSquat && !player1->jump->isTop && !player1->dead->isDead) {
                 if (!player1->fight->punch && !player1->fight->kick){
                     unsigned char aPicture = player1->squat->actualPicture;
         
@@ -304,7 +313,7 @@ int main (void) {
                 }
             }
 
-            if (player2->squat->isSquat && !player2->jump->isTop) {
+            if (player2->squat->isSquat && !player2->jump->isTop && !player2->dead->isDead) {
                 if (!player2->fight->punch && !player2->fight->kick){
                     unsigned char aPicture = player2->squat->actualPicture;
         
@@ -320,7 +329,7 @@ int main (void) {
                 }
             }
 
-            if (player1->fight->punch && !player1->fight->kick) {
+            if (player1->fight->punch && !player1->fight->kick && !player1->dead->isDead) {
                 unsigned char aPicture = player1->fight->actualPicturePunch;
     
                 // Desenha o bitmap do personagem no retângulo do player 1
@@ -334,7 +343,7 @@ int main (void) {
                 );
             }
 
-            if (player2->fight->punch && !player2->fight->kick) {
+            if (player2->fight->punch && !player2->fight->kick && !player2->dead->isDead) {
                 unsigned char aPicture = player2->fight->actualPicturePunch;
     
                 // Desenha o bitmap do personagem no retângulo do player 1
@@ -349,7 +358,7 @@ int main (void) {
             }
 
 
-            if (player1->fight->kick && !player1->fight->punch) {
+            if (player1->fight->kick && !player1->fight->punch && !player1->dead->isDead) {
                 unsigned char aPicture = player1->fight->actualPictureKick;
     
                 // Desenha o bitmap do personagem no retângulo do player 1
@@ -363,7 +372,7 @@ int main (void) {
                 );
             }
 
-            if (player2->fight->kick && !player2->fight->punch) {
+            if (player2->fight->kick && !player2->fight->punch && !player2->dead->isDead) {
                 unsigned char aPicture = player2->fight->actualPictureKick;
     
                 // Desenha o bitmap do personagem no retângulo do player 1
@@ -377,7 +386,50 @@ int main (void) {
                 );
             }
 
-            if(player1->dead->isDead){
+            if(player1->dead->isDead && player2->dead->isDead){
+
+                unsigned char aPicture = player1->dead->actualPicture;
+    
+                // Desenha o bitmap do personagem no retângulo do player 1
+                al_draw_scaled_bitmap(
+                    player1->dead->sprite,
+                    player1->dead->xPicture[aPicture], 0,
+                    player1_bitmap_width, player1_bitmap_height,
+                    player1->x - player1_rect_width / 2, player1->y - player1_rect_height/2,
+                    player1_rect_width, player1_rect_height,
+                    0
+                );
+                
+                aPicture = player2->dead->actualPicture;
+    
+                // Desenha o bitmap do personagem no retângulo do player 1
+                al_draw_scaled_bitmap(
+                    player2->dead->sprite,
+                    player2->dead->xPicture[aPicture], 0,
+                    player2_bitmap_width, player2_bitmap_height,
+                    player2->x - player2_rect_width / 2, player2->y - player2_rect_height/2,
+                    player2_rect_width, player2_rect_height,
+                    0
+                );
+
+                if (player1->cooldown > 120 || player2->cooldown > 120){
+                    player1->cooldown = 0;
+                    player2->cooldown = 0;
+                    player1->wins ++;
+                    player2->wins ++;
+                    reInitp1(player1);
+                    reInitp2(player2);
+                    roundTimer = 60;
+                    actualRound ++;
+                    //proxRound();
+                    continue;
+                }
+                else{
+                    player1->cooldown ++;
+                    player2->cooldown ++;
+                }
+            }
+            else if(player1->dead->isDead){
                 
                 unsigned char aPicture = player1->dead->actualPicture;
     
@@ -396,6 +448,8 @@ int main (void) {
                     player2->wins ++;
                     reInitp1(player1);
                     reInitp2(player2);
+                    roundTimer = 60;
+                    actualRound ++;
                     //proxRound();
                     continue;
                 }
@@ -403,8 +457,7 @@ int main (void) {
                     player1->cooldown ++;
                 }
             }
-
-            if(player2->dead->isDead){
+            else if(player2->dead->isDead){
                 
                 unsigned char aPicture = player2->dead->actualPicture;
     
@@ -423,6 +476,8 @@ int main (void) {
                     player1->wins ++;
                     reInitp1(player1);
                     reInitp2(player2);
+                    roundTimer = 60;
+                    actualRound ++;
                     //proxRound();
                     continue;
                 }
@@ -431,6 +486,23 @@ int main (void) {
                 }
             }
 
+            if (timerControl > 59) {
+                timerControl = 1;
+                roundTimer --;
+            }
+
+            if (roundTimer == 0){
+                //timerOver
+                reInitp1(player1);
+                reInitp2(player2);
+                //proxRound
+                roundTimer = 60;
+                actualRound ++;
+                continue;
+            }
+
+            al_draw_textf(round, al_map_rgb(255, 255, 255), XSCREEN / 2, 100, ALLEGRO_ALIGN_CENTRE, "Round %d", actualRound);
+            al_draw_textf(font, al_map_rgb(255, 255, 255), XSCREEN / 2, 170, ALLEGRO_ALIGN_CENTRE, "%d", roundTimer);
             al_flip_display();
         }
 
