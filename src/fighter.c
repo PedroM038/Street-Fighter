@@ -59,8 +59,3 @@ attack* fightInit(unsigned char hero){
     }
     return p;
 }
-
-void fightDestroy(attack* a){
-    //destroir a parada da fight init
-    free(a);
-}

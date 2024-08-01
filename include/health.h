@@ -20,6 +20,5 @@ typedef struct healthPlayer{
 } healthPlayer;
 
 healthPlayer* healthInit(unsigned char hero, unsigned char player);
-void healthDestroy(healthPlayer* h);
 
 #endif

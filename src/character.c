@@ -32,12 +32,20 @@ void reInitp1(player* p){
     p->x = 200;
     p->y = YSCREEN - 350;
     p->healthStatus->life = LIFE;
+    p->staminaStatus->stamina = STAMINA;
 }
 
 void reInitp2(player* p){
     p->x = XSCREEN - 200;
     p->y = YSCREEN - 350;
     p->healthStatus->life = LIFE;
+    p->staminaStatus->stamina = STAMINA;
+}
+
+void deadDestroy(player* p){
+    if (!p->dead) return;
+    al_destroy_bitmap(p->dead->sprite);
+    free (p->dead);
 }
 
 stateDead* deadInit(unsigned char hero){
@@ -68,6 +76,12 @@ stateDead* deadInit(unsigned char hero){
         }
     }
     return d;
+}
+
+void stopDestroy (player* p){
+    if (!p->stop) return;
+    al_destroy_bitmap(p->stop->sprite);
+    free(p->stop);
 }
 
 stateStop* stopInit(unsigned char hero){
@@ -101,6 +115,12 @@ stateStop* stopInit(unsigned char hero){
     return a;
 }
 
+void walkingDestroy(player* p){
+    if (!p->walking) return;
+    al_destroy_bitmap (p->walking->sprite);
+    free (p->walking);
+}
+
 stateWalking* walkingInit(unsigned char hero){
     stateWalking* w = malloc(sizeof(stateWalking));
     w->frame = 0;
@@ -129,6 +149,12 @@ stateWalking* walkingInit(unsigned char hero){
     }
 
     return w;
+}
+
+void jumpDestroy(player* p){
+    if (!p->jump) return;
+    al_destroy_bitmap (p->jump->sprite);
+    free (p->jump);
 }
 
 stateJump* jumpInit(unsigned char hero){
@@ -169,6 +195,12 @@ stateJump* jumpInit(unsigned char hero){
     return j;
 }
 
+void squatDestroy(player* p){
+    if (!p->squat) return;
+    al_destroy_bitmap (p->squat->sprite);
+    free(p->squat);
+}
+
 stateSquat* squatInit(unsigned char hero){
     stateSquat* s = malloc(sizeof(stateSquat));
     s->isSquat = 0;
@@ -195,6 +227,11 @@ stateSquat* squatInit(unsigned char hero){
     return s;
 }
 
+void staminaDestroy(player* p){
+    if (!p->staminaStatus) return;
+    free (p->staminaStatus);
+}
+
 staminaPlayer* staminaCreate(unsigned char player){
     staminaPlayer* s = malloc(sizeof(staminaPlayer));
     s->stamina = STAMINA;
@@ -212,17 +249,29 @@ staminaPlayer* staminaCreate(unsigned char player){
     return s;
 }
 
+void healthDestroy(player* p){
+    if (!p->healthStatus) return;
+    al_destroy_bitmap (p->healthStatus->picturePlayer);
+    free (p->healthStatus);
+}
+
+void fightDestroy(player* p){
+    if (!p->fight) return;
+    al_destroy_bitmap(p->fight->spritePunch);
+    al_destroy_bitmap(p->fight->spriteKick);
+    free(p->fight);
+}
+
 void playerDestroy(player* element){
     
-    //destruit bitmap dead
-    //destroir bitmap stop
-    //destruir bitmap walking
-    //destruir bitmap jump
-    //destruir bitmap squat
-    //destruir struct health
-    free(element->stop);
-    free(element->walking);
+    staminaDestroy(element);
+    deadDestroy(element);
+    jumpDestroy(element);
+    squatDestroy(element);
+    healthDestroy(element);
+    stopDestroy(element);
+    walkingDestroy(element);
     joystickDestroy(element->control);
-    fightDestroy(element->fight);
+    fightDestroy(element);
     free(element);
 }

@@ -39,6 +39,5 @@ typedef struct attack{
 } attack;
 
 attack* fightInit(unsigned char hero);
-void fightDestroy(attack* player);
 
 #endif

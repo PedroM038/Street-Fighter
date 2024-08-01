@@ -641,7 +641,7 @@ void updateStamina(player* p, unsigned char pl){
     else p->staminaStatus->xEnd = p->staminaStatus->xInit - p->staminaStatus->stamina;
 
       
-    p->staminaStatus->stamina++;
+    p->staminaStatus->stamina += 2;
 
     if (pl == 1 && p->staminaStatus->stamina + p->staminaStatus->xInit > STAMINA + 110)
         p->staminaStatus->stamina = 110 + STAMINA - p->staminaStatus->xInit;
