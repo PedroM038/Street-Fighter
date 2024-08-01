@@ -1,5 +1,20 @@
 #include "../include/screen.h"
 
+void destroyCharacterMenu(menu* m){
+    if (!m->multiplayer) return;
+    al_destroy_bitmap(m->multiplayer->hanzoPicture);
+    al_destroy_bitmap(m->multiplayer->kiraPicture);
+    al_destroy_font(m->multiplayer->characterName);
+    al_destroy_font(m->multiplayer->playerNumber);
+}
+
+void destroyMapMenu(menu* m){
+    if (!m->mapMenu) return;
+    al_destroy_bitmap(m->mapMenu->mapPicture1);
+    al_destroy_bitmap(m->mapMenu->mapPicture2);
+    al_destroy_font(m->mapMenu->mapName);
+}
+
 void destroyMenu(menu* m){
     if (!m) return;
     al_destroy_bitmap (m->menuBackground);
@@ -7,7 +22,10 @@ void destroyMenu(menu* m){
     al_destroy_font (m->fontMultiplayer);
     al_destroy_font (m->fontExit);
     free (m->gameChoice);
-    //destroyMultiplayer();
+    destroyCharacterMenu(m);
+    free(m->multiplayer);
+    destroyMapMenu(m);
+    free(m->mapMenu);
     //destroySelectMap();
     free (m);
 }
@@ -22,6 +40,18 @@ selectCharacter* characterInit(){
     s->playerNumber = al_load_ttf_font("../media/Fonts/punk.ttf", 50, 0);
     return s;
 }
+
+
+selectMap* selectMapInit(){
+    selectMap* m = malloc(sizeof(selectMap));
+    m->actualChoice = 1;
+    m->inMenuMap = 1;
+    m->mapName = al_load_ttf_font("../media/Fonts/punk.ttf", 40, 0);
+    m->mapPicture1 = al_load_bitmap("../media/Background/FutureParkPicture.jpg"); 
+    m->mapPicture2 = al_load_bitmap("../media/Background/SunMountainPicture.jpg");
+    return m;
+}
+
 menu* menuInit(){
     menu* m = malloc(sizeof(menu));
     if (!m){
@@ -33,9 +63,13 @@ menu* menuInit(){
     m->fontMultiplayer = al_load_ttf_font("../media/Fonts/punk.ttf", 30, 0);
     m->fontExit = al_load_ttf_font("../media/Fonts/punk.ttf", 30, 0);
     m->gameChoice = malloc(sizeof(choice));
+    m->gameChoice->mapChoice = 0;
+    m->gameChoice->p1Choice = 0;
+    m->gameChoice->p2Choice = 0;
     m->actualChoice = 1;
     m->inMenuMain = 1;
     m->multiplayer = characterInit();
+    m->mapMenu = selectMapInit();
     return m;
 }
 
@@ -58,5 +92,5 @@ void battleMap(map* m, unsigned char choice) {
 
 map* mapInit(){
     map* m = malloc(sizeof(map));
-    m->choiceMap = 0;
+    return m;
 }

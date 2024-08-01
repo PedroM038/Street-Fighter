@@ -21,7 +21,11 @@ typedef struct choice{
 }choice;
 
 typedef struct selectMap{
-
+    unsigned char actualChoice;
+    unsigned char inMenuMap;
+    ALLEGRO_FONT* mapName;
+    ALLEGRO_BITMAP* mapPicture1;
+    ALLEGRO_BITMAP* mapPicture2;
 }selectMap;
 
 typedef struct selectCharacter{
@@ -41,7 +45,7 @@ typedef struct menu{
     unsigned char actualChoice;
     unsigned char inMenuMain;
     selectCharacter* multiplayer;
-    selectMap* map;
+    selectMap* mapMenu;
     choice* gameChoice;
 }menu;
 
@@ -56,3 +60,19 @@ void battleMap(map* m, unsigned char choice);
 map* mapInit();
 
 #endif
+
+/*
+al_draw_textf(round, al_map_rgb(255, 255, 255), XSCREEN / 2, YSCREEN/2, ALLEGRO_ALIGN_CENTRE, "PLAYER 1 WIN");
+al_rest(2.0);
+*/
+/*
+                        if (isVictory == 1){
+                            al_draw_textf(round, al_map_rgb(255, 255, 255), XSCREEN / 2, YSCREEN/2, ALLEGRO_ALIGN_CENTRE, "PLAYER 1 WIN");
+                        }
+                        else if (isVictory == 2){
+                            al_draw_textf(round, al_map_rgb(255, 255, 255), XSCREEN / 2, YSCREEN/2, ALLEGRO_ALIGN_CENTRE, "PLAYER 2 WIN");
+                        }
+                        else if (isVictory == 1){
+                            al_draw_textf(round, al_map_rgb(255, 255, 255), XSCREEN / 2, YSCREEN/2, ALLEGRO_ALIGN_CENTRE, "A TIE");
+                        }
+*/

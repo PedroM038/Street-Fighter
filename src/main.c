@@ -15,12 +15,231 @@
 #include "../include/health.h"
 #include "../include/joystick.h"
 
-void characterMenu(menu* m, ALLEGRO_DISPLAY* disp){
+void drawVictory(unsigned char isVictory, ALLEGRO_DISPLAY* disp, ALLEGRO_FONT* round){
+    if (!isVictory) return;
+    else{
+        ALLEGRO_EVENT_QUEUE* menuMapQueue = al_create_event_queue();
+        ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
+        ALLEGRO_EVENT event;
 
+        al_register_event_source(menuMapQueue, al_get_keyboard_event_source());
+        al_register_event_source(menuMapQueue, al_get_display_event_source(disp));
+        al_register_event_source(menuMapQueue, al_get_timer_event_source(timer));
+
+        unsigned char exitDV = 0;
+
+        al_start_timer(timer);
+        while (!exitDV){
+            al_wait_for_event(menuMapQueue, &event);
+            switch (event.type) {
+                case ALLEGRO_EVENT_TIMER:
+                    al_clear_to_color(al_map_rgb(0, 0, 0));
+
+                    if (isVictory == 1) {
+                        al_draw_text(round, al_map_rgb(255, 255, 0), 950, 540, ALLEGRO_ALIGN_CENTRE, "PLAYER 1 VICTORY");
+
+                    } else if (isVictory == 2) {
+                        al_draw_text(round, al_map_rgb(255, 255, 0), 950, 540, ALLEGRO_ALIGN_CENTRE, "PLAYER 2 VICTORY");
+                    } else if (isVictory == 3){
+                        al_draw_text(round, al_map_rgb(255, 255, 0), 950, 540, ALLEGRO_ALIGN_CENTRE, "A TIE");
+                    }
+
+                    al_flip_display();
+                    break;
+
+                case ALLEGRO_EVENT_KEY_DOWN:
+                    switch (event.keyboard.keycode) {
+                        case ALLEGRO_KEY_ENTER:
+                            exitDV = 1;
+                            break;
+                    }
+                    break;
+                case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                    exit(EXIT_SUCCESS);
+            }
+        }
+    }
+}
+
+unsigned char updateVictory(player* player1, player* player2, unsigned char nRounds){
+    if (player1->wins == 2){ //player1 venceu
+        return 1;
+    }
+    else if (player2->wins == 2){ //player2 venceu
+        return 2;
+    }
+    else if (nRounds > 3 && player1->wins < 2 && player2->wins < 2){ //empate
+        return 3;
+    }
+    return 0;
+}
+
+void mapMenuChoice(menu* m, ALLEGRO_DISPLAY* disp){
+    
+    unsigned char controlChoice = 0;
+    ALLEGRO_EVENT_QUEUE* menuMapQueue = al_create_event_queue();
+    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
+    ALLEGRO_EVENT event;
+
+    al_register_event_source(menuMapQueue, al_get_keyboard_event_source());
+    al_register_event_source(menuMapQueue, al_get_display_event_source(disp));
+    al_register_event_source(menuMapQueue, al_get_timer_event_source(timer));
+
+    al_start_timer(timer);
+     while (m->mapMenu->inMenuMap && controlChoice < 1) {
+        al_wait_for_event(menuMapQueue, &event);
+
+        switch (event.type) {
+            case ALLEGRO_EVENT_TIMER:
+                al_clear_to_color(al_map_rgb(0, 0, 0));
+                al_draw_scaled_bitmap(
+                    m->menuBackground,
+                    0, 0,
+                    al_get_bitmap_width(m->menuBackground),
+                    al_get_bitmap_height(m->menuBackground),
+                    0, 0,
+                    XSCREEN, YSCREEN, 0
+                );
+
+                al_draw_text(m->gameTitle, al_map_rgb(255, 255, 255), XSCREEN / 2, 100, ALLEGRO_ALIGN_CENTRE, "SHADOW COMBAT");
+
+                if (m->mapMenu->actualChoice == 1) {
+                    al_draw_bitmap(m->mapMenu->mapPicture1, 750, 350, 0);
+                    al_draw_text(m->mapMenu->mapName, al_map_rgb(255, 255, 0), 950, 800, ALLEGRO_ALIGN_CENTRE, "Future Park");
+
+                } else if (m->mapMenu->actualChoice == 2) {
+                    al_draw_bitmap(m->mapMenu->mapPicture2, 750, 350, 0);
+                    al_draw_text(m->mapMenu->mapName, al_map_rgb(255, 255, 0), 950, 800, ALLEGRO_ALIGN_CENTRE, "Sun Mountain");
+                }
+                al_flip_display();
+                break;
+
+            case ALLEGRO_EVENT_KEY_DOWN:
+                switch (event.keyboard.keycode) {
+                    case ALLEGRO_KEY_LEFT:
+                    case ALLEGRO_KEY_RIGHT:
+                        m->mapMenu->actualChoice = (m->mapMenu->actualChoice % 2) + 1;
+                        break;
+                    case ALLEGRO_KEY_ENTER:
+                        if (m->mapMenu->actualChoice == 1){
+                            if(controlChoice == 0){
+                                m->gameChoice->mapChoice = 1;
+                                controlChoice ++;
+                                m->mapMenu->inMenuMap = 0;
+                            }
+                        }
+                        else if (m->mapMenu->actualChoice == 2){
+                            if(controlChoice == 0){
+                                m->gameChoice->mapChoice = 2;
+                                controlChoice ++;
+                                m->mapMenu->inMenuMap = 0;
+                            }
+                        }
+                        break;
+                }
+                break;
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                exit(EXIT_SUCCESS);
+        }
+    }
+}
+
+void characterMenu(menu* m, ALLEGRO_DISPLAY* disp){
+    
+    unsigned char controlChoice = 0;
+    ALLEGRO_EVENT_QUEUE* menuCharacterQueue = al_create_event_queue();
+    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
+    ALLEGRO_EVENT event;
+
+    al_register_event_source(menuCharacterQueue, al_get_keyboard_event_source());
+    al_register_event_source(menuCharacterQueue, al_get_display_event_source(disp));
+    al_register_event_source(menuCharacterQueue, al_get_timer_event_source(timer));
+
+    al_start_timer(timer);
+     while (m->multiplayer->inMenuCharacter && controlChoice < 2) {
+        al_wait_for_event(menuCharacterQueue, &event);
+
+        switch (event.type) {
+            case ALLEGRO_EVENT_TIMER:
+                al_clear_to_color(al_map_rgb(0, 0, 0));
+                al_draw_scaled_bitmap(
+                    m->menuBackground,
+                    0, 0,
+                    al_get_bitmap_width(m->menuBackground),
+                    al_get_bitmap_height(m->menuBackground),
+                    0, 0,
+                    XSCREEN, YSCREEN, 0
+                );
+
+                al_draw_text(m->gameTitle, al_map_rgb(255, 255, 255), XSCREEN / 2, 100, ALLEGRO_ALIGN_CENTRE, "SHADOW COMBAT");
+                if (controlChoice == 0) {
+                    al_draw_text(m->multiplayer->playerNumber, al_map_rgb(0, 255, 0), 950, 300, ALLEGRO_ALIGN_CENTRE, "PLAYER 1"); 
+                }
+                else {
+                     al_draw_text(m->multiplayer->playerNumber, al_map_rgb(255, 0, 0), 950, 300, ALLEGRO_ALIGN_CENTRE, "PLAYER 2");
+                }
+                if (m->multiplayer->actualChoice == KIRA) {
+                    al_draw_text(m->multiplayer->characterName, al_map_rgb(255, 255, 0), 950, 850, ALLEGRO_ALIGN_CENTRE, "KIRA");
+                    al_draw_scaled_bitmap(m->multiplayer->kiraPicture,
+                        0, 0,
+                        200, 180,
+                        750, 350,
+                        400, 500,
+                        0
+                    );
+                } else if (m->multiplayer->actualChoice == HANZO) {
+                    al_draw_text(m->multiplayer->characterName, al_map_rgb(255, 255, 0), 950, 850, ALLEGRO_ALIGN_CENTRE, "HANZO");
+                    al_draw_scaled_bitmap(m->multiplayer->hanzoPicture,
+                        0, 0,
+                        200, 180,
+                        750, 350,
+                        400, 460,
+                        0
+                    );
+                }
+                al_flip_display();
+                break;
+
+            case ALLEGRO_EVENT_KEY_DOWN:
+                switch (event.keyboard.keycode) {
+                    case ALLEGRO_KEY_LEFT:
+                    case ALLEGRO_KEY_RIGHT:
+                        m->multiplayer->actualChoice = (m->multiplayer->actualChoice % 2) + 1;
+                        break;
+                    case ALLEGRO_KEY_ENTER:
+                        if (m->multiplayer->actualChoice == KIRA){
+                            if(controlChoice == 0){
+                                m->gameChoice->p1Choice = KIRA;
+                                controlChoice ++;
+                            }
+                            else if (controlChoice == 1){
+                                m->gameChoice->p2Choice = KIRA;
+                                controlChoice ++;
+                                m->multiplayer->inMenuCharacter = 0;
+                            }
+                        }
+                        if (m->multiplayer->actualChoice == HANZO){
+                            if(controlChoice == 0){
+                                m->gameChoice->p1Choice = HANZO;
+                                controlChoice ++;
+                            }
+                            else if (controlChoice == 1){
+                                m->gameChoice->p2Choice = HANZO;
+                                controlChoice ++;
+                                m->multiplayer->inMenuCharacter = 0;
+                            }
+                        }
+                        break;
+                }
+                break;
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                exit(EXIT_SUCCESS);
+        }
+    }
 }
 
 //retornar uma struct choice
-void mainMenu(ALLEGRO_DISPLAY* disp) {
+void mainMenu(ALLEGRO_DISPLAY* disp, unsigned char* p1, unsigned char* p2, unsigned char* mapChoice) {
     menu* m = menuInit();
     ALLEGRO_EVENT_QUEUE* menuQueue = al_create_event_queue();
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
@@ -71,6 +290,7 @@ void mainMenu(ALLEGRO_DISPLAY* disp) {
                         }
                         else if (m->actualChoice == MULTIPLAYER){
                             characterMenu(m, disp);
+                            mapMenuChoice(m, disp);
                             m->inMenuMain = 0; //para teste
                         }
                         break;
@@ -82,6 +302,10 @@ void mainMenu(ALLEGRO_DISPLAY* disp) {
                 exit(EXIT_SUCCESS);
         }
     }
+
+    *p1 = m->gameChoice->p1Choice;
+    *p2 = m->gameChoice->p2Choice;
+    *mapChoice = m->gameChoice->mapChoice;
 
     destroyMenu(m);
     al_destroy_event_queue(menuQueue);
@@ -100,15 +324,18 @@ int main (void) {
     al_init_font_addon();
     al_init_ttf_addon();
     ALLEGRO_DISPLAY* disp = al_create_display(XSCREEN, YSCREEN);
-    
+
     while (1){
 
         ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
         ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
         ALLEGRO_FONT* font = al_load_ttf_font("../media/Fonts/punk.ttf", 30, 0);
         ALLEGRO_FONT* round = al_load_ttf_font("../media/Fonts/punk.ttf", 40, 0);
+        unsigned char p1Choice;
+        unsigned char p2Choice;
+        unsigned char mapChoice;
         
-        mainMenu(disp);
+        mainMenu(disp, &p1Choice, &p2Choice, &mapChoice);
         
         al_register_event_source(queue, al_get_display_event_source(disp));
         al_register_event_source(queue, al_get_keyboard_event_source());
@@ -117,13 +344,13 @@ int main (void) {
         // Carregar imagem de fundo
 
         map* bMap = mapInit();
-        battleMap (bMap, 2);
+        battleMap (bMap, mapChoice);
         
     
-        player* player1 = playerInit(HANZO, 40, 260, 200, YSCREEN - 350, XSCREEN, YSCREEN - 10, 1); 
+        player* player1 = playerInit(p1Choice, 40, 260, 200, YSCREEN - 350, XSCREEN, YSCREEN - 10, 1); 
         if (!player1) return 1;
         
-        player* player2 = playerInit(KIRA, 40, 260, XSCREEN - 200, YSCREEN - 350, XSCREEN, YSCREEN - 10, 2);
+        player* player2 = playerInit(p2Choice, 40, 260, XSCREEN - 200, YSCREEN - 350, XSCREEN, YSCREEN - 10, 2);
         if (!player2) return 2;
 
         ALLEGRO_EVENT event;
@@ -193,87 +420,6 @@ int main (void) {
                 );
 
                 timerControl++;
-
-                //unsigned short punchReach = (player1->base / 2) + 220;
-                //unsigned short kickReach = (player1->base / 2) + 220;
-
-                /*if (player1->squat->isSquat && player2->squat->isSquat && !player1->jump->isJump && !player2->jump->isJump) {
-                    al_draw_filled_rectangle(player1->x - player1->base/2, player1->y, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
-                    al_draw_filled_rectangle(player2->x - player2->base/2, player2->y, player2->x + player2->base/2, player2->y + player2->height/2, al_map_rgb(0, 0, 255));
-                }
-                else if (player1->squat->isSquat && !player1->jump->isJump) {
-                    al_draw_filled_rectangle(player1->x - player1->base/2, player1->y, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
-                    al_draw_filled_rectangle(player2->x - player2->base/2, player2->y - player2->height/2, player2->x + player2->base/2, player2->y + player2->height/2, al_map_rgb(0, 0, 255));                
-                }
-                else if (player2->squat->isSquat && !player2->jump->isJump) {
-                    al_draw_filled_rectangle(player1->x - player1->base/2, player1->y - player1->height/2, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
-                    al_draw_filled_rectangle(player2->x - player2->base/2, player2->y, player2->x + player2->base/2, player2->y + player2->height/2, al_map_rgb(0, 0, 255));
-                }
-                else {
-                    al_draw_filled_rectangle(player1->x - player1->base/2, player1->y - player1->height/2, player1->x + player1->base/2, player1->y + player1->height/2, al_map_rgb(255, 0, 0));
-                    al_draw_filled_rectangle(player2->x - player2->base/2, player2->y - player2->height/2, player2->x + player2->base/2, player2->y + player2->height/2, al_map_rgb(0, 0, 255));
-                }*/
-                
-                /*
-                // Player 1 punch walkBackward
-                if (player1->fight->punch && player1->walkBackward) {
-                    if (!player1->squat->isSquat) {
-                    unsigned short punchX = player1->x - player1->base / 2;
-                    al_draw_filled_rectangle(punchX, player1->y - player1->height/2, punchX - punchReach, player1->y, al_map_rgb(255, 255, 255));
-                    } else {
-                    unsigned short punchX = player1->x - player1->base / 2;
-                    al_draw_filled_rectangle(punchX, player1->y + player1->height/2, punchX - punchReach, player1->y, al_map_rgb(255, 255, 255));    
-                    }
-                //Player 1 punch walkForward
-                } else if (player1->fight->punch && player1->walkForward) {
-                    if (!player1->squat->isSquat) {
-                    unsigned short punchX = player1->x + player1->base / 2;
-                    al_draw_filled_rectangle(punchX, player1->y - player1->height/2, punchX + punchReach, player1->y, al_map_rgb(255, 255, 255));
-                    } else {
-                    unsigned short punchX = player1->x + player1->base / 2;
-                    al_draw_filled_rectangle(punchX, player1->y + player1->height/2, punchX + punchReach, player1->y, al_map_rgb(255, 255, 255));    
-                    }
-                }
-
-                // Player 1 kick
-                if (player1->fight->kick && player1->walkForward) {
-                    unsigned short kickX = player1->x + player1->base / 2;
-                    al_draw_filled_rectangle(kickX, player1->y, kickX + kickReach, player1->y + player1->height / 2, al_map_rgb(255, 255, 255));
-                } else if (player1->fight->kick && player1->walkBackward) {
-                    unsigned short kickX = player1->x - player1->base / 2;
-                    al_draw_filled_rectangle(kickX, player1->y, kickX - kickReach, player1->y + player1->height / 2, al_map_rgb(255, 255, 255));
-                }
-
-                // Player 2 punch walkBackward
-                if (player2->fight->punch && player2->walkBackward) {
-                    if (!player2->squat->isSquat) {
-                    unsigned short punchX = player2->x - player2->base / 2;
-                    al_draw_filled_rectangle(punchX, player2->y - player2->height/2, punchX - punchReach, player2->y, al_map_rgb(255, 255, 255));
-                    } else {
-                    unsigned short punchX = player2->x - player2->base / 2;
-                    al_draw_filled_rectangle(punchX, player2->y + player2->height/2, punchX - punchReach, player2->y, al_map_rgb(255, 255, 255));    
-                    }
-                //Player 1 punch walkForward
-                } else if (player2->fight->punch && player2->walkForward) {
-                    if (!player2->squat->isSquat) {
-                    unsigned short punchX = player2->x + player2->base / 2;
-                    al_draw_filled_rectangle(punchX, player2->y - player2->height/2, punchX + punchReach, player2->y, al_map_rgb(255, 255, 255));
-                    } else {
-                    unsigned short punchX = player2->x + player2->base / 2;
-                    al_draw_filled_rectangle(punchX, player2->y + player2->height/2, punchX + punchReach, player2->y, al_map_rgb(255, 255, 255));    
-                    }
-                }
-
-                // Player 2 kick
-                if (player2->fight->kick && player2->walkForward) {
-                    unsigned short kickX = player2->x + player2->base / 2;
-                    al_draw_filled_rectangle(kickX, player2->y, kickX + kickReach, player2->y + player2->height, al_map_rgb(255, 255, 255));
-                } else if (player2->fight->kick && player2->walkBackward) {
-                    unsigned short kickX = player2->x - player2->base / 2;
-                    al_draw_filled_rectangle(kickX, player2->y, kickX - kickReach, player2->y + player2->height, al_map_rgb(255, 255, 255));
-                }*/
-
-                //Vida dos player 1
             
                 al_draw_filled_rectangle(player1->healthStatus->xInit, player1->healthStatus->yInit, 
                     player1->healthStatus->xEnd, player1->healthStatus->yEnd, player1->healthStatus->color);
@@ -508,7 +654,8 @@ int main (void) {
                         reInitp2(player2);
                         roundTimer = 60;
                         actualRound ++;
-                        //proxRound();
+                        unsigned char isVictory = updateVictory(player1, player2, actualRound);
+                        drawVictory(isVictory, disp, round);
                         continue;
                     }
                     else{
@@ -537,7 +684,8 @@ int main (void) {
                         reInitp2(player2);
                         roundTimer = 60;
                         actualRound ++;
-                        //proxRound();
+                        unsigned char isVictory = updateVictory(player1, player2, actualRound);
+                        drawVictory(isVictory, disp, round);
                         continue;
                     }
                     else{
@@ -565,7 +713,8 @@ int main (void) {
                         reInitp2(player2);
                         roundTimer = 60;
                         actualRound ++;
-                        //proxRound();
+                        unsigned char isVictory = updateVictory(player1, player2, actualRound);
+                        drawVictory(isVictory, disp, round);
                         continue;
                     }
                     else{
@@ -579,12 +728,14 @@ int main (void) {
                 }
 
                 if (roundTimer == 0){
-                    //timerOver
+
                     reInitp1(player1);
                     reInitp2(player2);
-                    //proxRound
                     roundTimer = 60;
                     actualRound ++;
+
+                    unsigned char isVictory = updateVictory(player1, player2, actualRound);
+                    drawVictory(isVictory, disp, round);
                     continue;
                 }
 
@@ -619,11 +770,10 @@ int main (void) {
             }
             else if (event.type == 42) return 1;
         }
-
         playerDestroy(player1);
         playerDestroy(player2);
         al_destroy_bitmap(bMap->background);
-        //free(bMap);
+        free (bMap);
         al_destroy_font(round);
         al_destroy_font(font);
         al_destroy_timer(timer);

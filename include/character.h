@@ -12,6 +12,8 @@
 
 #define KIRA 1
 #define HANZO 2
+#define AIKO 3
+#define YUNA 4
 
 typedef struct stateDead{
     unsigned char flag;
