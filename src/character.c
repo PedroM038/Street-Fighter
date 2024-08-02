@@ -66,7 +66,7 @@ special* specialInit (unsigned char hero){
         for (int i = 0; i < 34; i++){
             s->xPicture[i] = i*269;
         }
-        s->sprite = al_load_bitmap("../media/Aiko/special/specialSprite.png");
+        s->sprite = al_load_bitmap("media/Aiko/special/specialSprite.png");
         if (!s->sprite){
             fprintf (stderr, "não foi possível carregar o sprite de especial da Aiko");
             exit (EXIT_FAILURE);
@@ -77,7 +77,7 @@ special* specialInit (unsigned char hero){
         for (int i = 0; i < 52; i++){
             s->xPicture[i] = i*220;
         }
-        s->sprite = al_load_bitmap("../media/Kira/special/specialSprite.png");
+        s->sprite = al_load_bitmap("media/Kira/special/specialSprite.png");
         if (!s->sprite){
             fprintf (stderr, "não foi possível carregar o sprite de especial da Kira");
             exit (EXIT_FAILURE);
@@ -102,7 +102,7 @@ stateDead* deadInit(unsigned char hero){
             d->xPicture[i] = i * 200;
         }
         d->actualPicture = 0;
-        d->sprite = al_load_bitmap("../media/Kira/dead/deadSprites.png");
+        d->sprite = al_load_bitmap("media/Kira/dead/deadSprites.png");
         if (!d->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite dead\n");
             exit(EXIT_FAILURE);
@@ -113,7 +113,7 @@ stateDead* deadInit(unsigned char hero){
             d->xPicture[i] = i * 210;
         }
         d->actualPicture = 0;
-        d->sprite = al_load_bitmap("../media/Hanzo/dead/deadSprites.png");
+        d->sprite = al_load_bitmap("media/Hanzo/dead/deadSprites.png");
         if (!d->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite dead\n");
             exit(EXIT_FAILURE);
@@ -124,7 +124,7 @@ stateDead* deadInit(unsigned char hero){
             d->xPicture[i] = i * 269;
         }
         d->actualPicture = 0;
-        d->sprite = al_load_bitmap("../media/Aiko/dead/deadSprites.png");
+        d->sprite = al_load_bitmap("media/Aiko/dead/deadSprites.png");
         if (!d->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite dead\n");
             exit(EXIT_FAILURE);
@@ -135,7 +135,7 @@ stateDead* deadInit(unsigned char hero){
             d->xPicture[i] = i * 333;
         }
         d->actualPicture = 0;
-        d->sprite = al_load_bitmap("../media/Yuna/dead/deadSprites.png");
+        d->sprite = al_load_bitmap("media/Yuna/dead/deadSprites.png");
         if (!d->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite dead\n");
             exit(EXIT_FAILURE);
@@ -160,7 +160,7 @@ stateStop* stopInit(unsigned char hero){
             a->xPicture[i] = i * 200;
         }
         a->actualPicture = 0;
-        a->sprite = al_load_bitmap("../media/Kira/stop/stopSprites.png");
+        a->sprite = al_load_bitmap("media/Kira/stop/stopSprites.png");
         if (!a->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite stop\n");
             exit(EXIT_FAILURE);
@@ -172,7 +172,7 @@ stateStop* stopInit(unsigned char hero){
             a->xPicture[i] = i * 210;
         }
         a->actualPicture = 0;
-        a->sprite = al_load_bitmap("../media/Hanzo/stop/stopSprites.png");
+        a->sprite = al_load_bitmap("media/Hanzo/stop/stopSprites.png");
         if (!a->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite stop\n");
             exit(EXIT_FAILURE);
@@ -184,7 +184,7 @@ stateStop* stopInit(unsigned char hero){
             a->xPicture[i] = i * 269;
         }
         a->actualPicture = 0;
-        a->sprite = al_load_bitmap("../media/Aiko/stop/stopSprites.png");
+        a->sprite = al_load_bitmap("media/Aiko/stop/stopSprites.png");
         if (!a->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite stop\n");
             exit(EXIT_FAILURE);
@@ -196,7 +196,7 @@ stateStop* stopInit(unsigned char hero){
             a->xPicture[i] = i * 333;
         }
         a->actualPicture = 0;
-        a->sprite = al_load_bitmap("../media/Yuna/stop/stopSprites.png");
+        a->sprite = al_load_bitmap("media/Yuna/stop/stopSprites.png");
         if (!a->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite stop do hanzo\n");
             exit(EXIT_FAILURE);
@@ -220,7 +220,7 @@ stateWalking* walkingInit(unsigned char hero){
             w->xPicture[i] = i * 200;
         }
         w->actualPicture = 0;
-        w->sprite = al_load_bitmap("../media/Kira/walking/walkingSprites.png");
+        w->sprite = al_load_bitmap("media/Kira/walking/walkingSprites.png");
         if (!w->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite walking\n");
             exit(EXIT_FAILURE);
@@ -231,7 +231,7 @@ stateWalking* walkingInit(unsigned char hero){
             w->xPicture[i] = i * 210;
         }
         w->actualPicture = 0;
-        w->sprite = al_load_bitmap("../media/Hanzo/walking/walkingSprites.png");
+        w->sprite = al_load_bitmap("media/Hanzo/walking/walkingSprites.png");
         if (!w->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite walking hanzo\n");
             exit(EXIT_FAILURE);
@@ -242,7 +242,7 @@ stateWalking* walkingInit(unsigned char hero){
             w->xPicture[i] = i * 269;
         }
         w->actualPicture = 0;
-        w->sprite = al_load_bitmap("../media/Aiko/walking/walkingSprites.png");
+        w->sprite = al_load_bitmap("media/Aiko/walking/walkingSprites.png");
         if (!w->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite walking\n");
             exit(EXIT_FAILURE);
@@ -253,7 +253,7 @@ stateWalking* walkingInit(unsigned char hero){
             w->xPicture[i] = i * 333;
         }
         w->actualPicture = 0;
-        w->sprite = al_load_bitmap("../media/Yuna/walking/walkingSprites.png");
+        w->sprite = al_load_bitmap("media/Yuna/walking/walkingSprites.png");
         if (!w->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite walking\n");
             exit(EXIT_FAILURE);
@@ -279,7 +279,7 @@ stateJump* jumpInit(unsigned char hero){
     j->isTop = 0;
     
     if (hero == KIRA){
-        j->sprite = al_load_bitmap("../media/Kira/jump/jumpSprites.png");
+        j->sprite = al_load_bitmap("media/Kira/jump/jumpSprites.png");
         if (!j->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite jumping\n");
             exit(EXIT_FAILURE);
@@ -292,7 +292,7 @@ stateJump* jumpInit(unsigned char hero){
     }
 
     else if (hero == HANZO){
-        j->sprite = al_load_bitmap("../media/Hanzo/jump/jumpSprites.png");
+        j->sprite = al_load_bitmap("media/Hanzo/jump/jumpSprites.png");
         if (!j->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite jumping Hanzo\n");
             exit(EXIT_FAILURE);
@@ -305,7 +305,7 @@ stateJump* jumpInit(unsigned char hero){
     }
 
     else if (hero == AIKO){
-        j->sprite = al_load_bitmap("../media/Aiko/jump/jumpSprites.png");
+        j->sprite = al_load_bitmap("media/Aiko/jump/jumpSprites.png");
         if (!j->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite jumping\n");
             exit(EXIT_FAILURE);
@@ -318,7 +318,7 @@ stateJump* jumpInit(unsigned char hero){
     }
 
     else if (hero == YUNA){
-        j->sprite = al_load_bitmap("../media/Yuna/jump/jumpSprites.png");
+        j->sprite = al_load_bitmap("media/Yuna/jump/jumpSprites.png");
         if (!j->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite jumping\n");
             exit(EXIT_FAILURE);
@@ -346,7 +346,7 @@ stateSquat* squatInit(unsigned char hero){
         s->xPicture[0] = 0;
         s->xPicture[1] = 200;
         s->actualPicture = 0;
-        s->sprite = al_load_bitmap("../media/Kira/squat/squatSprites.png");
+        s->sprite = al_load_bitmap("media/Kira/squat/squatSprites.png");
         if (!s->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite squat\n");
             exit(EXIT_FAILURE);
@@ -356,7 +356,7 @@ stateSquat* squatInit(unsigned char hero){
         s->xPicture[0] = 0;
         s->xPicture[1] = 210;
         s->actualPicture = 0;
-        s->sprite = al_load_bitmap("../media/Hanzo/squat/squatSprites.png");
+        s->sprite = al_load_bitmap("media/Hanzo/squat/squatSprites.png");
         if (!s->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite squat hanzo\n");
             exit(EXIT_FAILURE);
@@ -366,7 +366,7 @@ stateSquat* squatInit(unsigned char hero){
         s->xPicture[0] = 0;
         s->xPicture[1] = 269;
         s->actualPicture = 0;
-        s->sprite = al_load_bitmap("../media/Aiko/squat/squatSprites.png");
+        s->sprite = al_load_bitmap("media/Aiko/squat/squatSprites.png");
         if (!s->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite squat\n");
             exit(EXIT_FAILURE);
@@ -376,7 +376,7 @@ stateSquat* squatInit(unsigned char hero){
         s->xPicture[0] = 0;
         s->xPicture[1] = 333;
         s->actualPicture = 0;
-        s->sprite = al_load_bitmap("../media/Yuna/squat/squatSprites.png");
+        s->sprite = al_load_bitmap("media/Yuna/squat/squatSprites.png");
         if (!s->sprite){
             fprintf(stderr, "Não foi possível carregar o sprite squat\n");
             exit(EXIT_FAILURE);

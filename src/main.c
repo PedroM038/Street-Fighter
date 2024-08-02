@@ -385,8 +385,8 @@ int main (void) {
 
         ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
         ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
-        ALLEGRO_FONT* font = al_load_ttf_font("../media/Fonts/punk.ttf", 30, 0);
-        ALLEGRO_FONT* round = al_load_ttf_font("../media/Fonts/punk.ttf", 40, 0);
+        ALLEGRO_FONT* font = al_load_ttf_font("media/Fonts/punk.ttf", 30, 0);
+        ALLEGRO_FONT* round = al_load_ttf_font("media/Fonts/punk.ttf", 40, 0);
         unsigned char p1Choice;
         unsigned char p2Choice;
         unsigned char mapChoice;

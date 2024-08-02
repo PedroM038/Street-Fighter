@@ -10,7 +10,7 @@ attack* fightInit(unsigned char hero){
     p->cooldown = 0;
     p->collision = 0;
     if (hero == KIRA){
-        p->spritePunch = al_load_bitmap("../media/Kira/basicAttack/basicAttack.png");
+        p->spritePunch = al_load_bitmap("media/Kira/basicAttack/basicAttack.png");
         if (!p->spritePunch){
             fprintf(stderr, "Não foi possível carregar o sprite basicAttack\n");
             exit(EXIT_FAILURE);
@@ -20,7 +20,7 @@ attack* fightInit(unsigned char hero){
         }
         p->actualPicturePunch = 0;
 
-        p->spriteKick = al_load_bitmap("../media/Kira/kick/kickSprites.png");
+        p->spriteKick = al_load_bitmap("media/Kira/kick/kickSprites.png");
         if (!p->spriteKick){
             fprintf(stderr, "Não foi possível carregar o sprite kick\n");
             exit(EXIT_FAILURE);
@@ -34,7 +34,7 @@ attack* fightInit(unsigned char hero){
         p->totalKick = 49;
     }
     else if (hero == HANZO){
-        p->spritePunch = al_load_bitmap("../media/Hanzo/basicAttack/basicAttackSprites.png");
+        p->spritePunch = al_load_bitmap("media/Hanzo/basicAttack/basicAttackSprites.png");
         if (!p->spritePunch){
             fprintf(stderr, "Não foi possível carregar o sprite basicAttack hanzo\n");
             exit(EXIT_FAILURE);
@@ -45,7 +45,7 @@ attack* fightInit(unsigned char hero){
         p->actualPicturePunch = 0;
         p->totalFrame = 60;
 
-        p->spriteKick = al_load_bitmap("../media/Hanzo/kick/kickSprites.png");
+        p->spriteKick = al_load_bitmap("media/Hanzo/kick/kickSprites.png");
         if (!p->spriteKick){
             fprintf(stderr, "Não foi possível carregar o sprite kick hanzo\n");
             exit(EXIT_FAILURE);
@@ -58,7 +58,7 @@ attack* fightInit(unsigned char hero){
         p->totalKick = 65;
     }
     else if (hero == AIKO){
-        p->spritePunch = al_load_bitmap("../media/Aiko/basicAttack/basicAttackSprites.png");
+        p->spritePunch = al_load_bitmap("media/Aiko/basicAttack/basicAttackSprites.png");
         if (!p->spritePunch){
             fprintf(stderr, "Não foi possível carregar o sprite basicAttack\n");
             exit(EXIT_FAILURE);
@@ -69,7 +69,7 @@ attack* fightInit(unsigned char hero){
         p->actualPicturePunch = 0;
         p->totalFrame = 60;
 
-        p->spriteKick = al_load_bitmap("../media/Aiko/kick/kickSprites.png");
+        p->spriteKick = al_load_bitmap("media/Aiko/kick/kickSprites.png");
         if (!p->spriteKick){
             fprintf(stderr, "Não foi possível carregar o sprite kick\n");
             exit(EXIT_FAILURE);
@@ -82,7 +82,7 @@ attack* fightInit(unsigned char hero){
         p->totalKick = 30;
     }
     else if (hero == YUNA){
-        p->spritePunch = al_load_bitmap("../media/Yuna/basicAttack/basicAttackSprites.png");
+        p->spritePunch = al_load_bitmap("media/Yuna/basicAttack/basicAttackSprites.png");
         if (!p->spritePunch){
             fprintf(stderr, "Não foi possível carregar o sprite basicAttack\n");
             exit(EXIT_FAILURE);
@@ -93,7 +93,7 @@ attack* fightInit(unsigned char hero){
         p->actualPicturePunch = 0;
         p->totalFrame = 49;
 
-        p->spriteKick = al_load_bitmap("../media/Yuna/kick/kickSprites.png");
+        p->spriteKick = al_load_bitmap("media/Yuna/kick/kickSprites.png");
         if (!p->spriteKick){
             fprintf(stderr, "Não foi possível carregar o sprite kick\n");
             exit(EXIT_FAILURE);

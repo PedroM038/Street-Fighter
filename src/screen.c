@@ -35,12 +35,12 @@ selectCharacter* characterInit(){
     selectCharacter* s = malloc (sizeof(selectCharacter));
     s->actualChoice = 1;
     s->inMenuCharacter = 1;
-    s->characterName = al_load_ttf_font("../media/Fonts/punk.ttf", 40, 0);
-    s->kiraPicture = al_load_bitmap("../media/Background/KiraPicture.png");
-    s->hanzoPicture = al_load_bitmap("../media/Background/HanzoPicture.png");
-    s->aikoPicture = al_load_bitmap("../media/Background/AikoPicture.png");
-    s->yunaPicture = al_load_bitmap("../media/Background/YunaPicture.png");
-    s->playerNumber = al_load_ttf_font("../media/Fonts/punk.ttf", 50, 0);
+    s->characterName = al_load_ttf_font("media/Fonts/punk.ttf", 40, 0);
+    s->kiraPicture = al_load_bitmap("media/Background/KiraPicture.png");
+    s->hanzoPicture = al_load_bitmap("media/Background/HanzoPicture.png");
+    s->aikoPicture = al_load_bitmap("media/Background/AikoPicture.png");
+    s->yunaPicture = al_load_bitmap("media/Background/YunaPicture.png");
+    s->playerNumber = al_load_ttf_font("media/Fonts/punk.ttf", 50, 0);
     return s;
 }
 
@@ -49,9 +49,9 @@ selectMap* selectMapInit(){
     selectMap* m = malloc(sizeof(selectMap));
     m->actualChoice = 1;
     m->inMenuMap = 1;
-    m->mapName = al_load_ttf_font("../media/Fonts/punk.ttf", 40, 0);
-    m->mapPicture1 = al_load_bitmap("../media/Background/FutureParkPicture.jpg"); 
-    m->mapPicture2 = al_load_bitmap("../media/Background/SunMountainPicture.jpg");
+    m->mapName = al_load_ttf_font("media/Fonts/punk.ttf", 40, 0);
+    m->mapPicture1 = al_load_bitmap("media/Background/FutureParkPicture.jpg"); 
+    m->mapPicture2 = al_load_bitmap("media/Background/SunMountainPicture.jpg");
     return m;
 }
 
@@ -61,10 +61,10 @@ menu* menuInit(){
         printf ("não foi possível alocar o Menu");
         exit(EXIT_FAILURE);
     }
-    m->menuBackground = al_load_bitmap("../media/Background/menu.jpg");
-    m->gameTitle = al_load_ttf_font("../media/Fonts/punk.ttf", 80, 0);
-    m->fontMultiplayer = al_load_ttf_font("../media/Fonts/punk.ttf", 30, 0);
-    m->fontExit = al_load_ttf_font("../media/Fonts/punk.ttf", 30, 0);
+    m->menuBackground = al_load_bitmap("media/Background/menu.jpg");
+    m->gameTitle = al_load_ttf_font("media/Fonts/punk.ttf", 80, 0);
+    m->fontMultiplayer = al_load_ttf_font("media/Fonts/punk.ttf", 30, 0);
+    m->fontExit = al_load_ttf_font("media/Fonts/punk.ttf", 30, 0);
     m->gameChoice = malloc(sizeof(choice));
     m->gameChoice->mapChoice = 0;
     m->gameChoice->p1Choice = 0;
@@ -78,14 +78,14 @@ menu* menuInit(){
 
 void battleMap(map* m, unsigned char choice) {
     if (choice == 1) {
-        m->background = al_load_bitmap("../media/Background/FuturePark.jpg");
+        m->background = al_load_bitmap("media/Background/FuturePark.jpg");
         if (!m->background) {
             fprintf(stderr, "Falha ao carregar imagem de fundo.\n");
             exit(EXIT_FAILURE);
         }
     }
     else if (choice == 2){
-        m->background = al_load_bitmap("../media/Background/SunMountain.jpg");
+        m->background = al_load_bitmap("media/Background/SunMountain.jpg");
         if (!m->background) {
             fprintf(stderr, "Falha ao carregar imagem de fundo.\n");
             exit(EXIT_FAILURE);
