@@ -520,65 +520,76 @@ int main (void) {
 
                 al_draw_bitmap(player2->healthStatus->picturePlayer, XSCREEN- 817, 0, 0); 
 
-                if (player1->stop->isStop || player1->jump->isTop && !player1->dead->isDead) {
-                    
-                    unsigned char aPicture = player1->stop->actualPicture;
-
-                    al_draw_scaled_bitmap(
-                        player1->stop->sprite,
-                        player1->stop->xPicture[aPicture], 0,
-                        player1_bitmap_width, player1_bitmap_height,
-                        player1->x - player1_rect_width /2, player1->y - player1_rect_height/2,
-                        player1_rect_width, player1_rect_height,
-                        0
-                    );
+                unsigned char flagSpecialP1 = 0;
+                if (((player1->hero == KIRA) || (player1->hero == AIKO)) && player1->specialAttack->inSpecial){
+                    flagSpecialP1 = 1;
                 }
 
-                if (player2->stop->isStop || player2->jump->isTop && !player2->dead->isDead) {
-
-                    unsigned char aPicture = player2->stop->actualPicture;
-
-                    al_draw_scaled_bitmap(
-                        player2->stop->sprite,
-                        player2->stop->xPicture[aPicture], 0,
-                        player2_bitmap_width, player2_bitmap_height,
-                        player2->x - player2_rect_width /2, player2->y - player2_rect_height/2,
-                        player2_rect_width, player2_rect_height,
-                        0
-                    );
+                unsigned char flagSpecialP2 = 0;
+                if (((player2->hero == KIRA) || (player2->hero == AIKO)) && player2->specialAttack->inSpecial){
+                    flagSpecialP2 = 1;
                 }
 
-                if (player1->walking->isWalking && !player1->jump->isJump && !player1->squat->isSquat && !player1->dead->isDead) {
+                if (player1->stop->isStop || player1->jump->isTop && !player1->dead->isDead && !flagSpecialP1) {
+
+                        unsigned char aPicture = player1->stop->actualPicture;
+
+                        al_draw_scaled_bitmap(
+                            player1->stop->sprite,
+                            player1->stop->xPicture[aPicture], 0,
+                            player1_bitmap_width, player1_bitmap_height,
+                            player1->x - player1_rect_width /2, player1->y - player1_rect_height/2,
+                            player1_rect_width, player1_rect_height,
+                            0
+                        );
+                }
+
+                if (player2->stop->isStop || player2->jump->isTop && !player2->dead->isDead && !flagSpecialP2) {
+
+                        unsigned char aPicture = player2->stop->actualPicture;
+
+                        al_draw_scaled_bitmap(
+                            player2->stop->sprite,
+                            player2->stop->xPicture[aPicture], 0,
+                            player2_bitmap_width, player2_bitmap_height,
+                            player2->x - player2_rect_width /2, player2->y - player2_rect_height/2,
+                            player2_rect_width, player2_rect_height,
+                            0
+                        );
+                }
+
+                if (player1->walking->isWalking && !player1->jump->isJump && !player1->squat->isSquat && !player1->dead->isDead
+                && !flagSpecialP1) {
             
-                    unsigned char aPicture = player1->walking->actualPicture;
-        
-                    // Desenha o bitmap do personagem no retângulo do player 1
-                    al_draw_scaled_bitmap(
-                        player1->walking->sprite,
-                        player1->walking->xPicture[aPicture], 0,
-                        player1_bitmap_width, player1_bitmap_height,
-                        player1->x - player1_rect_width / 2, player1->y - player1_rect_height/2,
-                        player1_rect_width, player1_rect_height,
-                        0
-                    );
+                        unsigned char aPicture = player1->walking->actualPicture;
+            
+                        // Desenha o bitmap do personagem no retângulo do player 1
+                        al_draw_scaled_bitmap(
+                            player1->walking->sprite,
+                            player1->walking->xPicture[aPicture], 0,
+                            player1_bitmap_width, player1_bitmap_height,
+                            player1->x - player1_rect_width / 2, player1->y - player1_rect_height/2,
+                            player1_rect_width, player1_rect_height,
+                            0
+                        );
                 }
 
-                if (player2->walking->isWalking && !player2->jump->isJump && !player2->squat->isSquat && !player2->dead->isDead) {
-
-                    unsigned char aPicture = player2->walking->actualPicture;
-        
-                    // Desenha o bitmap do personagem no retângulo do player 1
-                    al_draw_scaled_bitmap(
-                        player2->walking->sprite,
-                        player2->walking->xPicture[aPicture], 0,
-                        player2_bitmap_width, player2_bitmap_height,
-                        player2->x - player2_rect_width / 2, player2->y - player2_rect_height/2,
-                        player2_rect_width, player2_rect_height,
-                        0
-                    );
+                if (player2->walking->isWalking && !player2->jump->isJump && !player2->squat->isSquat && !player2->dead->isDead
+                    && !flagSpecialP2) {
+                        unsigned char aPicture = player2->walking->actualPicture;
+            
+                        // Desenha o bitmap do personagem no retângulo do player 1
+                        al_draw_scaled_bitmap(
+                            player2->walking->sprite,
+                            player2->walking->xPicture[aPicture], 0,
+                            player2_bitmap_width, player2_bitmap_height,
+                            player2->x - player2_rect_width / 2, player2->y - player2_rect_height/2,
+                            player2_rect_width, player2_rect_height,
+                            0
+                        );
                 }
 
-                if (player1->jump->isJump && !player1->jump->isTop && !player1->dead->isDead) {
+                if (player1->jump->isJump && !player1->jump->isTop && !player1->dead->isDead && !flagSpecialP1) {
                     if (!player1->fight->punch && !player1->fight->kick){
                         unsigned char aPicture = player1->jump->actualPicture;
             
@@ -594,7 +605,7 @@ int main (void) {
                     }
                 }
 
-                if (player2->jump->isJump && !player2->jump->isTop && !player2->dead->isDead) {
+                if (player2->jump->isJump && !player2->jump->isTop && !player2->dead->isDead && !flagSpecialP2) {
                     if (!player2->fight->punch && !player2->fight->kick){
                         unsigned char aPicture = player2->jump->actualPicture;
             
@@ -610,7 +621,7 @@ int main (void) {
                     }
                 }
 
-                if (player1->squat->isSquat && !player1->jump->isTop && !player1->dead->isDead) {
+                if (player1->squat->isSquat && !player1->jump->isTop && !player1->dead->isDead && !flagSpecialP1) {
                     if (!player1->fight->punch && !player1->fight->kick){
                         unsigned char aPicture = player1->squat->actualPicture;
             
@@ -626,7 +637,7 @@ int main (void) {
                     }
                 }
 
-                if (player2->squat->isSquat && !player2->jump->isTop && !player2->dead->isDead) {
+                if (player2->squat->isSquat && !player2->jump->isTop && !player2->dead->isDead && !flagSpecialP2) { 
                     if (!player2->fight->punch && !player2->fight->kick){
                         unsigned char aPicture = player2->squat->actualPicture;
             
@@ -643,41 +654,69 @@ int main (void) {
                 }
 
                 if (player1->fight->punch && !player1->fight->kick && !player1->dead->isDead) {
-                    unsigned char aPicture = player1->fight->actualPicturePunch;
-        
-                    // Desenha o bitmap do personagem no retângulo do player 1
-                    al_draw_scaled_bitmap(
-                        player1->fight->spritePunch,
-                        player1->fight->xPicturePunch[aPicture], 0,
-                        player1_bitmap_width, player1_bitmap_height,
-                        player1->x - player1_rect_width / 2, player1->y - player1_rect_height/2,
-                        player1_rect_width, player1_rect_height,
-                        0
-                    );
+                        unsigned char aPicture = player1->fight->actualPicturePunch;
+            
+                        // Desenha o bitmap do personagem no retângulo do player 1
+                        al_draw_scaled_bitmap(
+                            player1->fight->spritePunch,
+                            player1->fight->xPicturePunch[aPicture], 0,
+                            player1_bitmap_width, player1_bitmap_height,
+                            player1->x - player1_rect_width / 2, player1->y - player1_rect_height/2,
+                            player1_rect_width, player1_rect_height,
+                            0
+                        );
                 }
 
                 if (player2->fight->punch && !player2->fight->kick && !player2->dead->isDead) {
-                    unsigned char aPicture = player2->fight->actualPicturePunch;
-        
-                    // Desenha o bitmap do personagem no retângulo do player 1
-                    al_draw_scaled_bitmap(
-                        player2->fight->spritePunch,
-                        player2->fight->xPicturePunch[aPicture], 0,
-                        player2_bitmap_width, player2_bitmap_height,
-                        player2->x - player2_rect_width / 2, player2->y - player2_rect_height/2,
-                        player2_rect_width, player2_rect_height,
-                        0
-                    );
+                        unsigned char aPicture = player2->fight->actualPicturePunch;
+            
+                        // Desenha o bitmap do personagem no retângulo do player 1
+                        al_draw_scaled_bitmap(
+                            player2->fight->spritePunch,
+                            player2->fight->xPicturePunch[aPicture], 0,
+                            player2_bitmap_width, player2_bitmap_height,
+                            player2->x - player2_rect_width / 2, player2->y - player2_rect_height/2,
+                            player2_rect_width, player2_rect_height,
+                            0
+                        );
                 }
 
 
                 if (player1->fight->kick && !player1->fight->punch && !player1->dead->isDead) {
-                    unsigned char aPicture = player1->fight->actualPictureKick;
+                        unsigned char aPicture = player1->fight->actualPictureKick;
+            
+                        // Desenha o bitmap do personagem no retângulo do player 1
+                        al_draw_scaled_bitmap(
+                            player1->fight->spriteKick,
+                            player1->fight->xPictureKick[aPicture], 0,
+                            player1_bitmap_width, player1_bitmap_height,
+                            player1->x - player1_rect_width / 2, player1->y - player1_rect_height/2,
+                            player1_rect_width, player1_rect_height,
+                            0
+                        );
+                }
+
+                if (player2->fight->kick && !player2->fight->punch && !player2->dead->isDead) {
+                        unsigned char aPicture = player2->fight->actualPictureKick;
+            
+                        // Desenha o bitmap do personagem no retângulo do player 1
+                        al_draw_scaled_bitmap(
+                            player2->fight->spriteKick,
+                            player2->fight->xPictureKick[aPicture], 0,
+                            player2_bitmap_width, player2_bitmap_height,
+                            player2->x - player2_rect_width / 2, player2->y - player2_rect_height/2,
+                            player2_rect_width, player2_rect_height,
+                            0
+                        );
+                }
+                if ((player1->hero == KIRA || player1->hero == AIKO) && player1->specialAttack->inSpecial && 
+                !player1->fight->punch && !player1->dead->isDead && !player1->fight->kick) {
+                    unsigned char aPicture = player1->specialAttack->actualPicture;
         
                     // Desenha o bitmap do personagem no retângulo do player 1
                     al_draw_scaled_bitmap(
-                        player1->fight->spriteKick,
-                        player1->fight->xPictureKick[aPicture], 0,
+                        player1->specialAttack->sprite,
+                        player1->specialAttack->xPicture[aPicture], 0,
                         player1_bitmap_width, player1_bitmap_height,
                         player1->x - player1_rect_width / 2, player1->y - player1_rect_height/2,
                         player1_rect_width, player1_rect_height,
@@ -685,13 +724,15 @@ int main (void) {
                     );
                 }
 
-                if (player2->fight->kick && !player2->fight->punch && !player2->dead->isDead) {
-                    unsigned char aPicture = player2->fight->actualPictureKick;
+                if ((player2->hero == KIRA || player2->hero == AIKO) && player2->specialAttack->inSpecial && 
+                !player2->fight->punch && !player2->dead->isDead && !player2->fight->kick) {
+
+                    unsigned char aPicture = player2->specialAttack->actualPicture;
         
                     // Desenha o bitmap do personagem no retângulo do player 1
                     al_draw_scaled_bitmap(
-                        player2->fight->spriteKick,
-                        player2->fight->xPictureKick[aPicture], 0,
+                        player2->specialAttack->sprite,
+                        player2->specialAttack->xPicture[aPicture], 0,
                         player2_bitmap_width, player2_bitmap_height,
                         player2->x - player2_rect_width / 2, player2->y - player2_rect_height/2,
                         player2_rect_width, player2_rect_height,
@@ -825,6 +866,15 @@ int main (void) {
             }
 
             else if ((event.type == 10) || (event.type == 12)){
+                unsigned char flagSpecialP1 = 0;
+                if (((player1->hero == KIRA) || (player1->hero == AIKO)) && player1->specialAttack->inSpecial){
+                    flagSpecialP1 = 1;
+                }
+
+                unsigned char flagSpecialP2 = 0;
+                if (((player2->hero == KIRA) || (player2->hero == AIKO)) && player2->specialAttack->inSpecial){
+                    flagSpecialP2 = 1;
+                }
                 if (event.keyboard.keycode == 1) joystickLeft(player1->control);
                 else if (event.keyboard.keycode == 4) joystickRight(player1->control);
                 else if (event.keyboard.keycode == 19 && !player2->jump->isTop) joystickDown(player1->control);
@@ -832,10 +882,18 @@ int main (void) {
                 if (event.keyboard.keycode == 23) joystickUp(player1->control);
                 
                 if (event.keyboard.keycode == ALLEGRO_KEY_Q && player1->fight->cooldown == 0 && !player1->fight->kick 
-                    && !player1->dead->isDead && player1->staminaStatus->stamina > 100) player1->fight->punch = 1;
+                    && !player1->dead->isDead && player1->staminaStatus->stamina > 100 && !flagSpecialP1) 
+                    player1->fight->punch = 1;
 
                 else if (event.keyboard.keycode == ALLEGRO_KEY_E && player1->fight->cooldown == 0 && 
-                !player1->fight->punch && !player1->dead->isDead && player1->staminaStatus->stamina > 150) player1->fight->kick = 1;
+                !player1->fight->punch && !player1->dead->isDead && player1->staminaStatus->stamina > 150 && !flagSpecialP1) 
+                player1->fight->kick = 1;
+
+                else if (event.keyboard.keycode == ALLEGRO_KEY_R && (player1->hero == KIRA || player1->hero == AIKO)
+                    && player1->specialAttack->cooldown == 0 && 
+                    !player1->fight->punch && !player1->dead->isDead && player1->staminaStatus->stamina > 200 &&
+                    !player1->fight->kick && !player1->jump->isJump) 
+                        player1->specialAttack->flagActive = 1;
                 
                 if (event.keyboard.keycode == 82) joystickLeft(player2->control);
                 else if (event.keyboard.keycode == 83) joystickRight(player2->control);
@@ -844,9 +902,14 @@ int main (void) {
                 if (event.keyboard.keycode == 84) joystickUp(player2->control);
                 
                 if (event.keyboard.keycode == ALLEGRO_KEY_PAD_0 && player2->fight->cooldown == 0 && !player2->fight->kick 
-                    && !player2->dead->isDead && player2->staminaStatus->stamina > 100) player2->fight->punch = 1;
+                    && !player2->dead->isDead && player2->staminaStatus->stamina > 100 && !flagSpecialP2) player2->fight->punch = 1;
                 else if (event.keyboard.keycode == ALLEGRO_KEY_PAD_1 && player2->fight->cooldown == 0 && 
-                    !player2->fight->punch && !player2->dead->isDead && player2->staminaStatus->stamina > 150) player2->fight->kick = 1;
+                    !player2->fight->punch && !player2->dead->isDead && player2->staminaStatus->stamina > 150 && !flagSpecialP2) player2->fight->kick = 1;
+
+                else if (event.keyboard.keycode == ALLEGRO_KEY_PAD_2 && (player2->hero == KIRA || player2->hero == AIKO) &&
+                 player2->specialAttack->cooldown == 0 && !player2->fight->punch && !player2->dead->isDead && player2->staminaStatus->stamina > 200 &&
+                !player2->fight->kick && !player2->jump->isJump) 
+                        player2->specialAttack->flagActive = 1;
             }
             else if (event.type == 42) return 1;
         }
@@ -862,4 +925,4 @@ int main (void) {
     al_destroy_display(disp);
     return 0;
 }
-
+//melhorar lógica de round e arrumar código

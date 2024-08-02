@@ -80,8 +80,10 @@ typedef struct player{
     stateJump* jump;
     stateSquat* squat;
     stateDead* dead;
+    special* specialAttack;
 } player;
 
+special* specialInit(unsigned char hero);
 stateDead* deadInit(unsigned char hero);
 stateStop* stopInit(unsigned char hero);
 stateWalking* walkingInit(unsigned char hero);

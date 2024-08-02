@@ -22,4 +22,5 @@ void updatePosition(player* player1, player* player2);
 void updateSquat(player* player1, player* player2);
 void updateStop(player* p);
 void updateDead(player* p1);
+void updateSpecial(player* attacker, player* target);
 #endif

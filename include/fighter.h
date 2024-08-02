@@ -20,6 +20,18 @@ typedef struct staminaPlayer{
     unsigned short xInit; 
 } staminaPlayer;
 
+typedef struct special{
+    unsigned short inSpecial;
+    unsigned char flagActive;
+    unsigned short frame;
+    unsigned short maxFrame;
+    unsigned short cooldown;
+    unsigned short hit;
+    unsigned char actualPicture;
+    float xPicture[55];
+    ALLEGRO_BITMAP* sprite;
+}special;
+
 typedef struct attack{
     unsigned short punch;
     unsigned short kick;

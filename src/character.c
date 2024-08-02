@@ -25,6 +25,9 @@ player* playerInit(unsigned char character, unsigned short base, unsigned short 
     newPlayer->squat = squatInit(character);
     newPlayer->healthStatus = healthInit(character, p);
     newPlayer->dead = deadInit(character);
+    if (character == AIKO || character == KIRA){
+        newPlayer->specialAttack = specialInit(character);
+    }
     return newPlayer;
 }
 
@@ -40,6 +43,47 @@ void reInitp2(player* p){
     p->y = YSCREEN - 350;
     p->healthStatus->life = LIFE;
     p->staminaStatus->stamina = STAMINA;
+}
+
+void specialDestroy(player* p){
+    if (!p->specialAttack) return;
+    if (p->hero != KIRA || p->hero != AIKO) return;
+    al_destroy_bitmap(p->specialAttack->sprite);
+    free(p->specialAttack);
+}
+
+special* specialInit (unsigned char hero){
+    special* s = malloc(sizeof(special));
+    s->inSpecial = 0;
+    s->frame = 0;
+    s->cooldown = 0;
+    s->hit = 0;
+    s->actualPicture = 0;
+    s->flagActive = 0;
+    
+    if (hero == AIKO){
+        s->maxFrame = 102;
+        for (int i = 0; i < 34; i++){
+            s->xPicture[i] = i*269;
+        }
+        s->sprite = al_load_bitmap("../media/Aiko/special/specialSprite.png");
+        if (!s->sprite){
+            fprintf (stderr, "não foi possível carregar o sprite de especial da Aiko");
+            exit (EXIT_FAILURE);
+        }
+
+    } else if (hero == KIRA){
+        s->maxFrame = 156;
+        for (int i = 0; i < 52; i++){
+            s->xPicture[i] = i*220;
+        }
+        s->sprite = al_load_bitmap("../media/Kira/special/specialSprite.png");
+        if (!s->sprite){
+            fprintf (stderr, "não foi possível carregar o sprite de especial da Kira");
+            exit (EXIT_FAILURE);
+        }
+    }
+    return s;    
 }
 
 void deadDestroy(player* p){
@@ -387,5 +431,7 @@ void playerDestroy(player* element){
     walkingDestroy(element);
     joystickDestroy(element->control);
     fightDestroy(element);
+    if (element->hero == KIRA || element->hero == AIKO)
+        specialDestroy(element);
     free(element);
 }

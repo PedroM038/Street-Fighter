@@ -1136,6 +1136,198 @@ void updateFrameDead(player* p) {
     } 
 }
 
+void updateFrameSpecial(player* p){
+    if (p->hero == KIRA && p->walkForward){
+        unsigned short maxFrame = p->specialAttack->maxFrame;
+        unsigned short interval = 6;
+        if(p->specialAttack->frame % maxFrame >= maxFrame - interval*1)
+            p->specialAttack->actualPicture = 25;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*2)
+            p->specialAttack->actualPicture = 24;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*3)
+            p->specialAttack->actualPicture = 23;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*4)
+            p->specialAttack->actualPicture = 22;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*5)
+            p->specialAttack->actualPicture = 21;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*6)
+            p->specialAttack->actualPicture = 20;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*7)
+            p->specialAttack->actualPicture = 19;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*8)
+            p->specialAttack->actualPicture = 18;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*9)
+            p->specialAttack->actualPicture = 17;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*10)
+            p->specialAttack->actualPicture = 16;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*11)
+            p->specialAttack->actualPicture = 15;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*12)
+            p->specialAttack->actualPicture = 14;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*13)
+            p->specialAttack->actualPicture = 13;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*14)
+            p->specialAttack->actualPicture = 12;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*15)
+            p->specialAttack->actualPicture = 11;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*16)
+            p->specialAttack->actualPicture = 10;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*17)
+            p->specialAttack->actualPicture = 9;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*18)
+            p->specialAttack->actualPicture = 8;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*19)
+            p->specialAttack->actualPicture = 7;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*20)
+            p->specialAttack->actualPicture = 6;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*21)
+            p->specialAttack->actualPicture = 5;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*22)
+            p->specialAttack->actualPicture = 4;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*23)
+            p->specialAttack->actualPicture = 3;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*24)
+            p->specialAttack->actualPicture = 2;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*25)
+            p->specialAttack->actualPicture = 1;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*26)
+            p->specialAttack->actualPicture = 0;
+    }
+    else if (p->hero == KIRA && p->walkBackward){
+        unsigned short maxFrame = p->specialAttack->maxFrame;
+        unsigned short interval = 6;
+        if(p->specialAttack->frame % maxFrame >= maxFrame - interval*1)
+            p->specialAttack->actualPicture = 51;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*2)
+            p->specialAttack->actualPicture = 50;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*3)
+            p->specialAttack->actualPicture = 49;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*4)
+            p->specialAttack->actualPicture = 48;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*5)
+            p->specialAttack->actualPicture = 47;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*6)
+            p->specialAttack->actualPicture = 46;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*7)
+            p->specialAttack->actualPicture = 45;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*8)
+            p->specialAttack->actualPicture = 44;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*9)
+            p->specialAttack->actualPicture = 43;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*10)
+            p->specialAttack->actualPicture = 42;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*11)
+            p->specialAttack->actualPicture = 41;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*12)
+            p->specialAttack->actualPicture = 40;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*13)
+            p->specialAttack->actualPicture = 39;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*14)
+            p->specialAttack->actualPicture = 38;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*15)
+            p->specialAttack->actualPicture = 37;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*16)
+            p->specialAttack->actualPicture = 36;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*17)
+            p->specialAttack->actualPicture = 35;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*18)
+            p->specialAttack->actualPicture = 34;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*19)
+            p->specialAttack->actualPicture = 33;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*20)
+            p->specialAttack->actualPicture = 32;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*21)
+            p->specialAttack->actualPicture = 31;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*22)
+            p->specialAttack->actualPicture = 30;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*23)
+            p->specialAttack->actualPicture = 29;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*24)
+            p->specialAttack->actualPicture = 28;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*25)
+            p->specialAttack->actualPicture = 27;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*26)
+            p->specialAttack->actualPicture = 26;
+    }
+    
+    if (p->hero == AIKO && p->walkForward){
+        unsigned short maxFrame = p->specialAttack->maxFrame;
+        unsigned short interval = 6;
+        if(p->specialAttack->frame % maxFrame >= maxFrame - interval*1)
+            p->specialAttack->actualPicture = 16;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*2)
+            p->specialAttack->actualPicture = 15;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*3)
+            p->specialAttack->actualPicture = 14;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*4)
+            p->specialAttack->actualPicture = 13;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*5)
+            p->specialAttack->actualPicture = 12;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*6)
+            p->specialAttack->actualPicture = 11;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*7)
+            p->specialAttack->actualPicture = 10;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*8)
+            p->specialAttack->actualPicture = 9;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*9)
+            p->specialAttack->actualPicture = 8;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*10)
+            p->specialAttack->actualPicture = 7;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*11)
+            p->specialAttack->actualPicture = 6;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*12)
+            p->specialAttack->actualPicture = 5;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*13)
+            p->specialAttack->actualPicture = 4;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*14)
+            p->specialAttack->actualPicture = 3;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*15)
+            p->specialAttack->actualPicture = 2;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*16)
+            p->specialAttack->actualPicture = 1;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*17)
+            p->specialAttack->actualPicture = 0;
+    }
+    else if (p->hero == AIKO && p->walkBackward){
+        unsigned short maxFrame = p->specialAttack->maxFrame;
+        unsigned short interval = 6;
+        if(p->specialAttack->frame % maxFrame >= maxFrame - interval*1)
+            p->specialAttack->actualPicture = 33;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*2)
+            p->specialAttack->actualPicture = 32;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*3)
+            p->specialAttack->actualPicture = 31;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*4)
+            p->specialAttack->actualPicture = 30;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*5)
+            p->specialAttack->actualPicture = 29;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*6)
+            p->specialAttack->actualPicture = 28;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*7)
+            p->specialAttack->actualPicture = 27;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*8)
+            p->specialAttack->actualPicture = 26;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*9)
+            p->specialAttack->actualPicture = 25;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*10)
+            p->specialAttack->actualPicture = 24;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*11)
+            p->specialAttack->actualPicture = 23;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*12)
+            p->specialAttack->actualPicture = 22;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*13)
+            p->specialAttack->actualPicture = 21;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*14)
+            p->specialAttack->actualPicture = 20;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*15)
+            p->specialAttack->actualPicture = 19;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*16)
+            p->specialAttack->actualPicture = 18;
+        else if (p->specialAttack->frame % maxFrame >= maxFrame - interval*17)
+            p->specialAttack->actualPicture = 17;
+    }
+}
+
 void updateHealth(player* p, unsigned char pl){
     if (p->healthStatus->life > LIFE / 2) p->healthStatus->color = al_map_rgb(0, 255, 0);
     else if (p->healthStatus->life > LIFE / 4 && p->healthStatus->life <= LIFE / 2) p->healthStatus->color = al_map_rgb(255,255,0);
@@ -1215,6 +1407,7 @@ void updatePosition(player* player1, player* player2) {
     updateSquat(player1, player2);
     updateKick(player1, player2);
     updatePunch(player1, player2);
+    if (player1->hero == KIRA || player1->hero == AIKO) updateSpecial(player1, player2);
     updateHealth(player1, 1);
     updateStamina(player1, 1);
 
@@ -1251,6 +1444,7 @@ void updatePosition(player* player1, player* player2) {
     updateSquat(player2, player1);
     updateKick(player2, player1);
     updatePunch(player2, player1);
+    if (player2->hero == KIRA || player2->hero == AIKO) updateSpecial(player2, player1);
     updateHealth(player2, 2);
     updateStamina(player2, 2);
 }
@@ -1311,6 +1505,30 @@ unsigned char kickCollision(player* attacker, player* target){
     return 0;
 }
 
+unsigned char specialCollision(player* attacker, player* target){
+     
+    unsigned short punchReach = (attacker->base / 2) + 300;
+
+    if (attacker->specialAttack->inSpecial) {
+        if (attacker->walkForward &&
+            attacker->x + punchReach >= target->x - target->base / 2 &&
+            attacker->x <= target->x + target->base / 2 &&
+            attacker->y + attacker->height / 2 >= target->y - target->height / 2 &&
+            attacker->y - attacker->height / 2 <= target->y + target->height / 2) {
+            return 1;
+        }
+
+        if (attacker->walkBackward &&
+            attacker->x - punchReach <= target->x + target->base / 2 &&
+            attacker->x >= target->x - target->base / 2 &&
+            attacker->y + attacker->height / 2 >= target->y - target->height / 2 &&
+            attacker->y - attacker->height / 2 <= target->y + target->height / 2 ) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 void updateJump(player* playerJump, player* other){
     
     if (playerJump->control->up && playerJump->jump->isJump == 0 && playerJump->y == playerJump->yInit && !playerJump->dead->isDead) {
@@ -1356,18 +1574,57 @@ void updateSquat(player* s, player* player2){
 void updateStop(player* p){
     if (((!p->control->right && !p->control->left) || (p->control->right && p->control->left)) && !p->jump->isJump && !p->squat->isSquat && !p->fight->punch
         && !p->fight->kick && !p->dead->isDead){
-        p->stop->isStop = 1;
-        updateFrameStop(p);
-       
+        if ((p->hero == KIRA || p->hero == AIKO) && p->specialAttack->inSpecial){
+            p->stop->isStop = 0;
+            p->stop->frame = 0;
+        }
+        else {
+            p->stop->isStop = 1;
+            updateFrameStop(p);
+        }
     } else {
         p->stop->isStop = 0;
         p->stop->frame = 0;
     }
 }
 
+void updateSpecial(player* attacker, player* target){
+    if (attacker->specialAttack->flagActive && !attacker->dead->isDead && !attacker->fight->punch && !attacker->fight->kick
+        && !attacker->jump->isJump && attacker->specialAttack->cooldown == 0 && attacker->specialAttack->frame == 0
+        && !attacker->specialAttack->inSpecial) {
+        attacker->specialAttack->inSpecial = 1;
+    }
+    if (attacker->specialAttack->inSpecial && attacker->specialAttack->flagActive == 1){
+        attacker->specialAttack->flagActive = 0;
+        attacker->staminaStatus->stamina -= 200;
+        attacker->specialAttack->frame ++;
+    }
+    if (attacker->specialAttack->inSpecial && attacker->specialAttack->frame != 0){
+        if (specialCollision(attacker, target)) {
+            attacker->specialAttack->hit = 1;
+            target->healthStatus->life -= 4;
+            if (target->walkBackward) playerMove(target, 2*STEP, 1, XSCREEN, YSCREEN);
+            else if (target->walkForward) playerMove(target, 2*STEP, 0, XSCREEN, YSCREEN);
+        }
+
+        updateFrameSpecial(attacker);
+        attacker->specialAttack->frame++;
+        if (attacker->specialAttack->frame > attacker->specialAttack->maxFrame)
+            attacker->specialAttack->frame = 0;
+    }
+    if (attacker->specialAttack->frame == 0 && attacker->specialAttack->inSpecial) {
+        attacker->specialAttack->inSpecial = 0;
+        attacker->specialAttack->frame = 0;
+        attacker->specialAttack->hit = 0;
+        attacker->specialAttack->cooldown = 1800;
+    }
+    if (attacker->specialAttack->cooldown > 0){
+        attacker->specialAttack->cooldown --;
+    }
+}
 
 void updatePunch(player* attacker, player* target){
-     if (attacker->fight->punch && !attacker->dead->isDead) {
+    if (attacker->fight->punch && !attacker->dead->isDead) {
         attacker->fight->kick = 0;
         attacker->staminaStatus->stamina -= 4;
         if (punchCollision(attacker, target)) {
