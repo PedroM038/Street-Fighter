@@ -25,7 +25,15 @@ healthPlayer* healthInit(unsigned char hero, unsigned char player){
     else if (hero == 2 && player == 1) h->picturePlayer = al_load_bitmap("../media/Hanzo/pictureFrame/pictureLifeP1.png");
     
     else if (hero == 2 && player == 2) h->picturePlayer = al_load_bitmap("../media/Hanzo/pictureFrame/pictureLifeP2.png");
+
+    else if (hero == 3 && player == 1) h->picturePlayer = al_load_bitmap("../media/Aiko/pictureFrame/pictureLifeP1.png");
     
+    else if (hero == 3 && player == 2) h->picturePlayer = al_load_bitmap("../media/Aiko/pictureFrame/pictureLifeP2.png");
+
+    else if (hero == 4 && player == 1) h->picturePlayer = al_load_bitmap("../media/Yuna/pictureFrame/pictureLifeP1.png");
+    
+    else if (hero == 4 && player == 2) h->picturePlayer = al_load_bitmap("../media/Yuna/pictureFrame/pictureLifeP2.png");
+
     if (!h->picturePlayer){
         fprintf(stderr, "Não foi possível carregar o sprite health\n");
         exit(EXIT_FAILURE); 

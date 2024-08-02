@@ -4,6 +4,8 @@ void destroyCharacterMenu(menu* m){
     if (!m->multiplayer) return;
     al_destroy_bitmap(m->multiplayer->hanzoPicture);
     al_destroy_bitmap(m->multiplayer->kiraPicture);
+    al_destroy_bitmap(m->multiplayer->aikoPicture);
+    al_destroy_bitmap(m->multiplayer->yunaPicture);
     al_destroy_font(m->multiplayer->characterName);
     al_destroy_font(m->multiplayer->playerNumber);
 }
@@ -26,7 +28,6 @@ void destroyMenu(menu* m){
     free(m->multiplayer);
     destroyMapMenu(m);
     free(m->mapMenu);
-    //destroySelectMap();
     free (m);
 }
 
@@ -37,6 +38,8 @@ selectCharacter* characterInit(){
     s->characterName = al_load_ttf_font("../media/Fonts/punk.ttf", 40, 0);
     s->kiraPicture = al_load_bitmap("../media/Background/KiraPicture.png");
     s->hanzoPicture = al_load_bitmap("../media/Background/HanzoPicture.png");
+    s->aikoPicture = al_load_bitmap("../media/Background/AikoPicture.png");
+    s->yunaPicture = al_load_bitmap("../media/Background/YunaPicture.png");
     s->playerNumber = al_load_ttf_font("../media/Fonts/punk.ttf", 50, 0);
     return s;
 }

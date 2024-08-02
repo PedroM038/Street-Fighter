@@ -33,6 +33,8 @@ typedef struct selectCharacter{
     unsigned char inMenuCharacter;
     ALLEGRO_BITMAP* kiraPicture;
     ALLEGRO_BITMAP* hanzoPicture;
+    ALLEGRO_BITMAP* aikoPicture;
+    ALLEGRO_BITMAP* yunaPicture;
     ALLEGRO_FONT* characterName;
     ALLEGRO_FONT* playerNumber;
 }selectCharacter;

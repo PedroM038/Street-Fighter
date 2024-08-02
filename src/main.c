@@ -36,14 +36,15 @@ void drawVictory(unsigned char isVictory, ALLEGRO_DISPLAY* disp, ALLEGRO_FONT* r
                     al_clear_to_color(al_map_rgb(0, 0, 0));
 
                     if (isVictory == 1) {
-                        al_draw_text(round, al_map_rgb(255, 255, 0), 950, 540, ALLEGRO_ALIGN_CENTRE, "PLAYER 1 VICTORY");
+                        al_draw_text(round, al_map_rgb(255, 255, 0), 950, 400, ALLEGRO_ALIGN_CENTRE, "PLAYER 1 VICTORY");
 
                     } else if (isVictory == 2) {
-                        al_draw_text(round, al_map_rgb(255, 255, 0), 950, 540, ALLEGRO_ALIGN_CENTRE, "PLAYER 2 VICTORY");
+                        al_draw_text(round, al_map_rgb(255, 255, 0), 950, 400, ALLEGRO_ALIGN_CENTRE, "PLAYER 2 VICTORY");
                     } else if (isVictory == 3){
-                        al_draw_text(round, al_map_rgb(255, 255, 0), 950, 540, ALLEGRO_ALIGN_CENTRE, "A TIE");
+                        al_draw_text(round, al_map_rgb(255, 255, 0), 950, 400, ALLEGRO_ALIGN_CENTRE, "A TIE");
                     }
 
+                    al_draw_text(round, al_map_rgb(255, 255, 255), 950, 540, ALLEGRO_ALIGN_CENTRE, "PRESS ENTER");
                     al_flip_display();
                     break;
 
@@ -196,6 +197,24 @@ void characterMenu(menu* m, ALLEGRO_DISPLAY* disp){
                         400, 460,
                         0
                     );
+                } else if (m->multiplayer->actualChoice == AIKO) {
+                    al_draw_text(m->multiplayer->characterName, al_map_rgb(255, 255, 0), 950, 850, ALLEGRO_ALIGN_CENTRE, "AIKO");
+                    al_draw_scaled_bitmap(m->multiplayer->aikoPicture,
+                        0, 0,
+                        200, 180,
+                        750, 350,
+                        400, 460,
+                        0
+                    );
+                } else if (m->multiplayer->actualChoice == YUNA) {
+                    al_draw_text(m->multiplayer->characterName, al_map_rgb(255, 255, 0), 950, 850, ALLEGRO_ALIGN_CENTRE, "YUNA");
+                    al_draw_scaled_bitmap(m->multiplayer->yunaPicture,
+                        0, 0,
+                        200, 180,
+                        750, 350,
+                        400, 460,
+                        0
+                    );
                 }
                 al_flip_display();
                 break;
@@ -203,9 +222,19 @@ void characterMenu(menu* m, ALLEGRO_DISPLAY* disp){
             case ALLEGRO_EVENT_KEY_DOWN:
                 switch (event.keyboard.keycode) {
                     case ALLEGRO_KEY_LEFT:
+                        if (m->multiplayer->actualChoice == 1) {
+                            m->multiplayer->actualChoice = 4; // Vai para o último personagem
+                        } else {
+                            m->multiplayer->actualChoice--; // Vai para o personagem anterior
+                        }
+                    break;
                     case ALLEGRO_KEY_RIGHT:
-                        m->multiplayer->actualChoice = (m->multiplayer->actualChoice % 2) + 1;
-                        break;
+                        if (m->multiplayer->actualChoice == 4) {
+                            m->multiplayer->actualChoice = 1; // Volta para o primeiro personagem
+                        } else {
+                            m->multiplayer->actualChoice++; // Vai para o próximo personagem
+                        }
+                    break;
                     case ALLEGRO_KEY_ENTER:
                         if (m->multiplayer->actualChoice == KIRA){
                             if(controlChoice == 0){
@@ -225,6 +254,28 @@ void characterMenu(menu* m, ALLEGRO_DISPLAY* disp){
                             }
                             else if (controlChoice == 1){
                                 m->gameChoice->p2Choice = HANZO;
+                                controlChoice ++;
+                                m->multiplayer->inMenuCharacter = 0;
+                            }
+                        }
+                        if (m->multiplayer->actualChoice == AIKO){
+                            if(controlChoice == 0){
+                                m->gameChoice->p1Choice = AIKO;
+                                controlChoice ++;
+                            }
+                            else if (controlChoice == 1){
+                                m->gameChoice->p2Choice = AIKO;
+                                controlChoice ++;
+                                m->multiplayer->inMenuCharacter = 0;
+                            }
+                        }
+                        if (m->multiplayer->actualChoice == YUNA){
+                            if(controlChoice == 0){
+                                m->gameChoice->p1Choice = YUNA;
+                                controlChoice ++;
+                            }
+                            else if (controlChoice == 1){
+                                m->gameChoice->p2Choice = YUNA;
                                 controlChoice ++;
                                 m->multiplayer->inMenuCharacter = 0;
                             }
@@ -385,6 +436,21 @@ int main (void) {
             player1_rect_width = player1->base * 13;
             player1_rect_height = player1->height * 1.95;
         }
+        else if (player1->hero == AIKO){
+            player1_bitmap_width = 269;
+            player1_bitmap_height = 180;
+        
+            player1_rect_width = player1->base * 19;
+            player1_rect_height = player1->height * 2.3;
+        }
+        else if (player1->hero == YUNA){
+            player1_bitmap_width = 333;
+            player1_bitmap_height = 190;
+        
+            player1_rect_width = player1->base * 22;
+            player1_rect_height = player1->height * 1.88;
+        }
+
 
         if (player2->hero == KIRA){
             player2_bitmap_width = 200;
@@ -399,6 +465,20 @@ int main (void) {
         
             player2_rect_width = player2->base * 13;
             player2_rect_height = player2->height * 1.95;
+        }
+        else if (player2->hero == AIKO){
+            player2_bitmap_width = 269;
+            player2_bitmap_height = 180;
+        
+            player2_rect_width = player2->base * 19;
+            player2_rect_height = player2->height * 2.3;
+        }
+        else if (player2->hero == YUNA){
+            player2_bitmap_width = 333;
+            player2_bitmap_height = 190;
+        
+            player2_rect_width = player1->base * 22;
+            player2_rect_height = player1->height * 1.88;
         }
 
         while(player1->wins < 2 && player2->wins < 2 && actualRound <= 3){
