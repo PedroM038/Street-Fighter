@@ -63,14 +63,19 @@ void drawVictory(unsigned char isVictory, ALLEGRO_DISPLAY* disp, ALLEGRO_FONT* r
 }
 
 unsigned char updateVictory(player* player1, player* player2, unsigned char nRounds){
-    if (player1->wins == 2){ //player1 venceu
+    if (player1->wins == 2){
         return 1;
     }
-    else if (player2->wins == 2){ //player2 venceu
+    else if (player2->wins == 2){
         return 2;
     }
-    else if (nRounds > 3 && player1->wins < 2 && player2->wins < 2){ //empate
-        return 3;
+    else if (nRounds > 3){
+        if (player1->wins > player2->wins)
+            return 1;
+        else if (player2->wins > player1->wins)
+            return 2;
+        else
+            return 3;
     }
     return 0;
 }

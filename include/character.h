@@ -60,13 +60,13 @@ typedef struct stateSquat{
 }stateSquat;
 
 typedef struct player{
-    unsigned char hero;     //KIRA OR HANZO
-    unsigned short base;     //total base measurement
-    unsigned short height;   //total height meansurement
+    unsigned char hero;     
+    unsigned short base;    
+    unsigned short height;  
     unsigned short xInit;   
     unsigned short yInit;   
-    unsigned short x;       //center X point
-    unsigned short y;       //center Y point
+    unsigned short x;       
+    unsigned short y;       
     unsigned char walkForward;
     unsigned char walkBackward;
     unsigned char wins;

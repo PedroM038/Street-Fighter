@@ -39,7 +39,7 @@ void updateJumpFrame(player* p) {
     unsigned short maxFrame = 48;
     unsigned short interval = 8;
     
-    if(p->hero == KIRA && p->walkForward){
+    if(((p->hero == KIRA) || (p->hero == HANZO)) && p->walkForward){
 
         if(p->control->right || (!p->control->right && !p->control->left)){
 
@@ -77,83 +77,7 @@ void updateJumpFrame(player* p) {
             if (p->jump->frame >= maxFrame) p->jump->frame = 0;
         }
 
-    } else if (p->hero == KIRA && p->walkBackward) {
-            if(p->control->left || (!p->control->right && !p->control->left)){
-
-                if(p->jump->frame % maxFrame >= maxFrame - interval*1)
-                    p->jump->actualPicture = 11;
-                else if (p->jump->frame % maxFrame >= maxFrame - interval*2)
-                    p->jump->actualPicture = 10;
-                else if (p->jump->frame % maxFrame >= maxFrame - interval*3)
-                    p->jump->actualPicture = 9;
-                else if (p->jump->frame % maxFrame >= maxFrame - interval*4)
-                    p->jump->actualPicture = 8;
-                else if (p->jump->frame % maxFrame >= maxFrame - interval*5)
-                    p->jump->actualPicture = 7;
-                else if (p->jump->frame % maxFrame >= maxFrame - interval*6)
-                    p->jump->actualPicture = 6;
-
-                p->jump->frame += 1;
-                if (p->jump->frame >= maxFrame) p->jump->frame = 0;
-            }
-            else {
-                if(p->jump->frame % maxFrame >= maxFrame - interval*1)
-                    p->jump->actualPicture = 5;
-                else if (p->jump->frame % maxFrame >= maxFrame - interval*2)
-                    p->jump->actualPicture = 4;
-                else if (p->jump->frame % maxFrame >= maxFrame - interval*3)
-                    p->jump->actualPicture = 3;
-                else if (p->jump->frame % maxFrame >= maxFrame - interval*4)
-                    p->jump->actualPicture = 2;
-                else if (p->jump->frame % maxFrame >= maxFrame - interval*5)
-                    p->jump->actualPicture = 1;
-                else if (p->jump->frame % maxFrame >= maxFrame - interval*6)
-                    p->jump->actualPicture = 0;
-
-                p->jump->frame += 1;
-                if (p->jump->frame >= maxFrame) p->jump->frame = 0;
-            }
-    }
-    if(p->hero == HANZO && p->walkForward){
-
-        if(p->control->right || (!p->control->right && !p->control->left)){
-
-            if(p->jump->frame % maxFrame >= maxFrame - interval*1)
-                p->jump->actualPicture = 5;
-            else if (p->jump->frame % maxFrame >= maxFrame - interval*2)
-                p->jump->actualPicture = 4;
-            else if (p->jump->frame % maxFrame >= maxFrame - interval*3)
-                p->jump->actualPicture = 3;
-            else if (p->jump->frame % maxFrame >= maxFrame - interval*4)
-                p->jump->actualPicture = 2;
-            else if (p->jump->frame % maxFrame >= maxFrame - interval*5)
-                p->jump->actualPicture = 1;
-            else if (p->jump->frame % maxFrame >= maxFrame - interval*6)
-                p->jump->actualPicture = 0;
-
-            p->jump->frame += 1;
-            if (p->jump->frame >= maxFrame) p->jump->frame = 0;
-        }
-        else{
-
-            if(p->jump->frame % maxFrame >= maxFrame - interval*1)
-                p->jump->actualPicture = 11;
-            else if (p->jump->frame % maxFrame >= maxFrame - interval*2)
-                p->jump->actualPicture = 10;
-            else if (p->jump->frame % maxFrame >= maxFrame - interval*3)
-                p->jump->actualPicture = 9;
-            else if (p->jump->frame % maxFrame >= maxFrame - interval*4)
-                p->jump->actualPicture = 8;
-            else if (p->jump->frame % maxFrame >= maxFrame - interval*5)
-                p->jump->actualPicture = 7;
-            else if (p->jump->frame % maxFrame >= maxFrame - interval*6)
-                p->jump->actualPicture = 6;
-
-            p->jump->frame += 1;
-            if (p->jump->frame >= maxFrame) p->jump->frame = 0;
-        }
-
-    } else if (p->hero == HANZO && p->walkBackward) {
+    } else if (((p->hero == KIRA) || (p->hero == HANZO)) && p->walkBackward) {
             if(p->control->left || (!p->control->right && !p->control->left)){
 
                 if(p->jump->frame % maxFrame >= maxFrame - interval*1)
@@ -327,21 +251,9 @@ void updateJumpFrame(player* p) {
 }
 
 void updateFrameSquat(player* p){
-    if (p->walkForward && p->hero == KIRA)
+    if (p->walkForward)
         p->squat->actualPicture = 0;
-    else if (p->walkBackward && p->hero == KIRA)
-        p->squat->actualPicture = 1;
-    else if (p->walkForward && p->hero == HANZO)
-        p->squat->actualPicture = 0;
-    else if (p->walkBackward && p->hero == HANZO)
-        p->squat->actualPicture = 1;
-    else if (p->walkForward && p->hero == AIKO)
-        p->squat->actualPicture = 0;
-    else if (p->walkBackward && p->hero == AIKO)
-        p->squat->actualPicture = 1;
-    else if (p->walkForward && p->hero == YUNA)
-        p->squat->actualPicture = 0;
-    else if (p->walkBackward && p->hero == YUNA)
+    else if (p->walkBackward)
         p->squat->actualPicture = 1;
 }
 
@@ -376,7 +288,7 @@ void updateFrameStop(player* p){
         p->stop->frame += 1;
         if (p->stop->frame >= maxFrame) p->stop->frame = 0;
     }
-    else if (p->hero == HANZO && p->walkForward){
+    else if (((p->hero == HANZO) || (p->hero == YUNA)) && p->walkForward){
         unsigned short maxFrame = 48;
         unsigned short interval = 12;
         if(p->stop->frame % maxFrame >= maxFrame - interval*1)
@@ -392,7 +304,7 @@ void updateFrameStop(player* p){
         if (p->stop->frame >= maxFrame) p->stop->frame = 0;
     }
 
-    else if (p->hero == HANZO && p->walkBackward){
+    else if (((p->hero == HANZO) || (p->hero == YUNA)) && p->walkBackward){
         unsigned short maxFrame = 48;
         unsigned short interval = 12;
         if(p->stop->frame % maxFrame >= maxFrame - interval*1)
@@ -445,41 +357,11 @@ void updateFrameStop(player* p){
         p->stop->frame += 1;
         if (p->stop->frame >= maxFrame) p->stop->frame = 0;
     }
-    else if (p->hero == YUNA && p->walkForward){
-        unsigned short maxFrame = 48;
-        unsigned short interval = 12;
-        if(p->stop->frame % maxFrame >= maxFrame - interval*1)
-            p->stop->actualPicture = 3;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*2)
-            p->stop->actualPicture = 2;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*3)
-            p->stop->actualPicture = 1;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*4)
-            p->stop->actualPicture = 0;
-
-        p->stop->frame += 1;
-        if (p->stop->frame >= maxFrame) p->stop->frame = 0;
-    }
-    else if (p->hero == YUNA && p->walkBackward){
-        unsigned short maxFrame = 48;
-        unsigned short interval = 12;
-        if(p->stop->frame % maxFrame >= maxFrame - interval*1)
-            p->stop->actualPicture = 7;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*2)
-            p->stop->actualPicture = 6;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*3)
-            p->stop->actualPicture = 5;
-        else if (p->stop->frame % maxFrame >= maxFrame - interval*4)
-            p->stop->actualPicture = 4;
-
-        p->stop->frame += 1;
-        if (p->stop->frame >= maxFrame) p->stop->frame = 0;
-    }
 }
 
 // Função para atualizar o frame do jogador
 void updateWalkingFrame(player* p) {
-    if (p->control->right && p->hero == KIRA) {
+    if (p->control->right && ((p->hero == KIRA) || (p->hero == AIKO))) {
         unsigned short maxFrame = 70;
         unsigned short interval = 7;
         if(p->walking->frame % maxFrame >= maxFrame - interval*1)
@@ -507,7 +389,7 @@ void updateWalkingFrame(player* p) {
         if (p->walking->frame >= maxFrame) p->walking->frame = 0;
     }
 
-    else if (p->control->left && p->hero == KIRA){
+    else if (p->control->left && ((p->hero == KIRA) || (p->hero == AIKO))){
         unsigned short maxFrame = 70;
         unsigned short interval = 7;
         if(p->walking->frame % maxFrame >= maxFrame - interval*1)
@@ -582,61 +464,6 @@ void updateWalkingFrame(player* p) {
             p->walking->actualPicture = 7;
         else if (p->walking->frame % maxFrame >= maxFrame - interval*9)
             p->walking->actualPicture = 8;;
-
-        p->walking->frame += 1;
-        if (p->walking->frame >= maxFrame) p->walking->frame = 0;
-    }
-    else if (p->hero == AIKO && p->control->left ){
-        unsigned short maxFrame = 70;
-        unsigned short interval = 7;
-        if(p->walking->frame % maxFrame >= maxFrame - interval*1)
-            p->walking->actualPicture = 19;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*2)
-            p->walking->actualPicture = 18;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*3)
-            p->walking->actualPicture = 17;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*4)
-            p->walking->actualPicture = 16;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*5)
-            p->walking->actualPicture = 15;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*6)
-            p->walking->actualPicture = 14;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*7)
-            p->walking->actualPicture = 13;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*8)
-            p->walking->actualPicture = 12;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*9)
-            p->walking->actualPicture = 11;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*10)
-            p->walking->actualPicture = 10;
-
-        p->walking->frame += 1;
-        if (p->walking->frame >= maxFrame) p->walking->frame = 0;
-    }
-
-    else if (p->hero == AIKO && p->control->right ){
-        unsigned short maxFrame = 70;
-        unsigned short interval = 7;
-        if(p->walking->frame % maxFrame >= maxFrame - interval*1)
-            p->walking->actualPicture = 9;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*2)
-            p->walking->actualPicture = 8;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*3)
-            p->walking->actualPicture = 7;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*4)
-            p->walking->actualPicture = 6;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*5)
-            p->walking->actualPicture = 5;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*6)
-            p->walking->actualPicture = 4;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*7)
-            p->walking->actualPicture = 3;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*8)
-            p->walking->actualPicture = 2;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*9)
-            p->walking->actualPicture = 1;
-        else if (p->walking->frame % maxFrame >= maxFrame - interval*10)
-            p->walking->actualPicture = 0;
 
         p->walking->frame += 1;
         if (p->walking->frame >= maxFrame) p->walking->frame = 0;
@@ -1021,9 +848,9 @@ void updateFrameKick(player* p){
 }
 
 void updateFrameDead(player* p) {
-    if (p->hero == KIRA && p->walkForward){
-        unsigned short maxFrame = 60;
-        unsigned short interval = 12;
+    unsigned short maxFrame = 60;
+    unsigned short interval = 12;
+    if (p->walkForward){
         if(p->dead->frame >= maxFrame - interval*1)
             p->dead->actualPicture = 4;
         else if (p->dead->frame >= maxFrame - interval*2)
@@ -1035,9 +862,7 @@ void updateFrameDead(player* p) {
         else if (p->dead->frame >= maxFrame)
             p->dead->actualPicture = 0;
     }
-    else if (p->hero == KIRA && p->walkBackward){
-        unsigned short maxFrame = 60;
-        unsigned short interval = 12;
+    else if (p->walkBackward){
         if(p->dead->frame >= maxFrame - interval*1)
             p->dead->actualPicture = 9;
         else if (p->dead->frame >= maxFrame - interval*2)
@@ -1049,91 +874,6 @@ void updateFrameDead(player* p) {
         else if (p->dead->frame >= maxFrame)
             p->dead->actualPicture = 5;
     }
-    else if (p->hero == HANZO && p->walkForward){
-        unsigned short maxFrame = 60;
-        unsigned short interval = 12;
-        if(p->dead->frame >= maxFrame - interval*1)
-            p->dead->actualPicture = 4;
-        else if (p->dead->frame >= maxFrame - interval*2)
-            p->dead->actualPicture = 3;
-        else if (p->dead->frame >= maxFrame - interval*3)
-            p->dead->actualPicture = 2;
-        else if (p->dead->frame >= maxFrame - interval*4)
-            p->dead->actualPicture = 1;
-        else if (p->dead->frame >= maxFrame)
-            p->dead->actualPicture = 0;
-    } 
-
-    else if (p->hero == HANZO && p->walkBackward){
-        unsigned short maxFrame = 60;
-        unsigned short interval = 12;
-        if(p->dead->frame >= maxFrame - interval*1)
-            p->dead->actualPicture = 9;
-        else if (p->dead->frame >= maxFrame - interval*2)
-            p->dead->actualPicture = 8;
-        else if (p->dead->frame >= maxFrame - interval*3)
-            p->dead->actualPicture = 7;
-        else if (p->dead->frame >= maxFrame - interval*4)
-            p->dead->actualPicture = 6;
-        else if (p->dead->frame >= maxFrame)
-            p->dead->actualPicture = 5;
-    }
-    else if (p->hero == AIKO && p->walkForward){
-        unsigned short maxFrame = 60;
-        unsigned short interval = 12;
-        if(p->dead->frame >= maxFrame - interval*1)
-            p->dead->actualPicture = 4;
-        else if (p->dead->frame >= maxFrame - interval*2)
-            p->dead->actualPicture = 3;
-        else if (p->dead->frame >= maxFrame - interval*3)
-            p->dead->actualPicture = 2;
-        else if (p->dead->frame >= maxFrame - interval*4)
-            p->dead->actualPicture = 1;
-        else if (p->dead->frame >= maxFrame)
-            p->dead->actualPicture = 0;
-    } 
-    else if (p->hero == AIKO && p->walkBackward){
-        unsigned short maxFrame = 60;
-        unsigned short interval = 12;
-        if(p->dead->frame >= maxFrame - interval*1)
-            p->dead->actualPicture = 9;
-        else if (p->dead->frame >= maxFrame - interval*2)
-            p->dead->actualPicture = 8;
-        else if (p->dead->frame >= maxFrame - interval*3)
-            p->dead->actualPicture = 7;
-        else if (p->dead->frame >= maxFrame - interval*4)
-            p->dead->actualPicture = 6;
-        else if (p->dead->frame >= maxFrame)
-            p->dead->actualPicture = 5;
-    }
-    else if (p->hero == YUNA && p->walkForward){
-        unsigned short maxFrame = 60;
-        unsigned short interval = 12;
-        if(p->dead->frame >= maxFrame - interval*1)
-            p->dead->actualPicture = 4;
-        else if (p->dead->frame >= maxFrame - interval*2)
-            p->dead->actualPicture = 3;
-        else if (p->dead->frame >= maxFrame - interval*3)
-            p->dead->actualPicture = 2;
-        else if (p->dead->frame >= maxFrame - interval*4)
-            p->dead->actualPicture = 1;
-        else if (p->dead->frame >= maxFrame)
-            p->dead->actualPicture = 0;
-    } 
-    else if (p->hero == YUNA && p->walkBackward){
-        unsigned short maxFrame = 60;
-        unsigned short interval = 12;
-        if(p->dead->frame >= maxFrame - interval*1)
-            p->dead->actualPicture = 9;
-        else if (p->dead->frame >= maxFrame - interval*2)
-            p->dead->actualPicture = 8;
-        else if (p->dead->frame >= maxFrame - interval*3)
-            p->dead->actualPicture = 7;
-        else if (p->dead->frame >= maxFrame - interval*4)
-            p->dead->actualPicture = 6;
-        else if (p->dead->frame >= maxFrame)
-            p->dead->actualPicture = 5;
-    } 
 }
 
 void updateFrameSpecial(player* p){
